@@ -1,0 +1,95 @@
+﻿@model IEnumerable<MarCom.ViewModel.MenuViewModel>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>            
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Create_By)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Create_Date)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>            
+            <td>
+                @Html.DisplayFor(modelItem => item.Create_By)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Create_Date)
+            </td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-success btn-search" data-id="@item.Id" title="Details">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger btn-delete" data-id="@item.Id" title="Delete">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $(".table").DataTable();
+    $(".btn-edit").click(function () {
+        $(".modal-title").html("Edit Menu");
+        $.ajax({
+            url: '@Url.Action("Edit", "Menu")',
+            type: 'get',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+        });
+    });
+
+    $(".btn-search").click(function () {
+        $(".modal-title").html("Show Menu");
+        $.ajax({
+            url: '@Url.Action("Show", "Menu")',
+            type: 'get',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+        });
+    });
+
+    $(".btn-delete").click(function () {
+        $(".modal-title").html("Delete Menu");
+        $.ajax({
+            url: '@Url.Action("Delete", "Menu")',
+            type: 'get',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+        });
+    });
+</script>

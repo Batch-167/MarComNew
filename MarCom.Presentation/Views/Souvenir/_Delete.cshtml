@@ -1,0 +1,32 @@
+﻿@model MarCom.ViewModel.SouvenirViewModel
+
+<h5>Delete Data?</h5>
+<div>    
+    @using (Html.BeginForm("Delete", "Souvenir", FormMethod.Post, new { id = "form-delete", name = "form-delete" })) {
+        @Html.AntiForgeryToken()
+        <div class="form-actions no-color">
+            <input type="button" value="Cancel" class="btn btn-default" data-dismiss="modal" />
+            <input type="submit" id="btn-delete" value="Delete" class="btn btn-danger" data-id="@Model.Id" />         
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $("#btn-delete").click(function () {
+        $.ajax({
+            url: '@Url.Action("DeleteConfirm", "Souvenir")',
+            type: 'post',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                if (result.success) {
+                    $(".modal").modal("hide");
+                    GetList();
+                } else {
+                    alert("Error! Category has not been deleted")
+                }
+            }
+        });
+    });
+</script>
+
+
