@@ -1016,6 +1016,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="logo.jpg" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -1119,6 +1120,18 @@
     <Content Include="Views\Menu\_List.cshtml" />
     <Content Include="Views\Menu\_Show.cshtml" />
     <Content Include="Views\Menu\Index.cshtml" />
+    <Content Include="Views\Unit\Index.cshtml" />
+    <Content Include="Views\Unit\_Add.cshtml" />
+    <Content Include="Views\Unit\_Delete.cshtml" />
+    <Content Include="Views\Unit\_Details.cshtml" />
+    <Content Include="Views\Unit\_Edit.cshtml" />
+    <Content Include="Views\Unit\_List.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\_Add.cshtml" />
+    <Content Include="Views\User\_Delete.cshtml" />
+    <Content Include="Views\User\_Details.cshtml" />
+    <Content Include="Views\User\_Edit.cshtml" />
+    <Content Include="Views\User\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1126,8 +1139,6 @@
     <Folder Include="Views\Employee\" />
     <Folder Include="Views\Product\" />
     <Folder Include="Views\Role\" />
-    <Folder Include="Views\Unit\" />
-    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -1,0 +1,149 @@
+﻿@model IEnumerable<MarCom.ViewModel.UnitViewModel>
+
+@{ 
+    int row = 0;
+}
+
+<ol class="breadcrumb">
+    <li><a href="Home">Home</a></li>
+    <li><a href="Master">Master</a></li>
+    <li class="active">List Unit</li>
+</ol>
+<table>
+    <tr>
+        <td colspan="4"></td>
+        <td>
+            <button type="button" id="btn-new" class="btn btn-primary btn-sm">Add</button>
+        </td>
+    </tr>
+    <tr>
+        <td class="col-lg-3">
+            <input class="form-control" value="Search" />
+        </td>
+        <td class="col-lg-3">
+            <input class="form-control" value="Search" />
+        </td>
+        <td class="col-lg-2">
+            <input class="form-control" value="Search" />
+        </td>
+        <td class="col-lg-2">
+            <input class="form-control" value="Search" />
+        </td>
+        <td>
+            <button type="button" id="btn-new" class="btn btn-warning btn-sm">Search</button>
+        </td>
+    </tr>
+</table>
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>
+            No
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Create_Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Create_By)
+        </th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(row+=1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Create_Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Create_By)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-details" data-id="@item.Id" title="Details">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-edit" data-id="@item.Id" title="Edit">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-delete" data-id="@item.Id" title="Delete">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+    $(".table").DataTable();
+    $(".btn-edit").click(function () {
+        $(".modal-title").html("Edit Unit");
+        $.ajax({
+            url: '@Url.Action("Edit", "Unit")',
+            type: 'get',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+        });
+    });
+
+    $(".btn-details").click(function () {
+        $(".modal-title").html("Details Unit");
+        $.ajax({
+            url: '@Url.Action("Details", "Unit")',
+            type: 'get',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+        });
+    });
+
+    $(".btn-delete").click(function () {
+        $(".modal-title").html("Delete Unit");
+        $.ajax({
+            url: '@Url.Action("Delete", "Unit")',
+            type: 'get',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+        });
+    });
+
+    $("#btn-new").click(function () {
+        $(".modal-title").html("Add new Unit");
+        $.ajax({
+            url: '@Url.Action("Add", "Unit")',
+            type: 'get',
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+        });
+    });
+
+</script>
