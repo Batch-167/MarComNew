@@ -1119,13 +1119,22 @@
     <Content Include="Views\Menu\_List.cshtml" />
     <Content Include="Views\Menu\_Show.cshtml" />
     <Content Include="Views\Menu\Index.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\_Create.cshtml" />
+    <Content Include="Views\Product\_Delete.cshtml" />
+    <Content Include="Views\Product\_Edit.cshtml" />
+    <Content Include="Views\Product\_List.cshtml" />
+    <Content Include="Views\Product\_View.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\_Create.cshtml" />
+    <Content Include="Views\Role\_Edit.cshtml" />
+    <Content Include="Views\Role\_List.cshtml" />
+    <Content Include="Views\Role\_View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Company\" />
     <Folder Include="Views\Employee\" />
-    <Folder Include="Views\Product\" />
-    <Folder Include="Views\Role\" />
     <Folder Include="Views\Unit\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
