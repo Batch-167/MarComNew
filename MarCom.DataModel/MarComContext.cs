@@ -221,6 +221,26 @@ namespace MarCom.DataModel
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<M_Role>()
+                .Property(e => e.Name)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<M_Role>()
+                .Property(e => e.Code)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<M_Role>()
+                .Property(e => e.Description)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<M_Role>()
+                .Property(e => e.Create_By)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<M_Role>()
+                .Property(e => e.Update_By)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<M_Role>()
                 .HasMany(e => e.M_Menu_Access)
                 .WithRequired(e => e.M_Role)
                 .HasForeignKey(e => e.M_Role_Id);
