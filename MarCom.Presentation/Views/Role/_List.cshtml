@@ -1,0 +1,111 @@
+﻿@model IEnumerable<MarCom.ViewModel.RoleViewModel>
+
+@{
+    Layout = "";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Create_By)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Create_Date)
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Create_By)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Create_Date)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="View">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger btn-delete" data-id="@item.Id" title="Delete">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+@*<script type="text/javascript">
+    $(".table").DataTable();
+    $(".btn-edit").click(function () {
+        $(".modal-title").html("Edit Role");
+        $.ajax({
+            url: '@Url.Action("Edit", "Role")',
+            type: 'get',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+
+        });
+    });
+
+</script>*@
+
+<script type="text/javascript">
+    $(".table").DataTable();
+    $(".btn-edit").click(function () {
+        $(".modal-title").html("Edit Role");
+        $.ajax({
+            url: '@Url.Action("Edit", "Role")',
+            type: 'get',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+
+        });
+    });
+
+</script>
+
+@*<script type="text/javascript">
+    $(".btn-delete").click(function () {
+        $(".modal-title").html("Delete Role");
+        $.ajax({
+            url: '@Url.Action("Delete", "Role")',
+            type: 'get',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+
+        });
+    });
+</script>*@
+

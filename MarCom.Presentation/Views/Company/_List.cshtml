@@ -1,0 +1,106 @@
+﻿@model IEnumerable<MarCom.ViewModel.CompanyViewModel>
+
+@{
+    int row = 0;
+   
+}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>
+                No
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Create_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Create_By)
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(row += 1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Create_Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Create_By)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-details" data-id="@item.Id" title="Details">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-edit" data-id="@item.Id" title="Edit">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-delete" data-id="@item.Id" title="Delete">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+    $(".table").DataTable();
+    $(".btn-edit").click(function () {
+        $(".modal-title").html("Edit Company");
+        $.ajax({
+            url: '@Url.Action("Edit", "Company")',
+            type: 'get',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+        });
+    });
+
+    $(".btn-details").click(function () {
+        $(".modal-title").html("Details Company");
+        $.ajax({
+            url: '@Url.Action("Details", "Company")',
+            type: 'get',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+        });
+    });
+
+    $(".btn-delete").click(function () {
+        $(".modal-title").html("Delete Unit");
+        $.ajax({
+            url: '@Url.Action("Delete", "Company")',
+            type: 'get',
+            data: { id: $(this).attr('data-id') },
+            success: function (result) {
+                $(".modal-body").html(result);
+                $(".modal").modal("show");
+            }
+        });
+    });
+</script>

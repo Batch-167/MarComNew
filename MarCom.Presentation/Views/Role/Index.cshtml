@@ -1,24 +1,47 @@
-﻿@{
-    ViewBag.Title = "Company";
+﻿
+
+@{
+    ViewBag.Title = "List Role";
 }
 
-@Styles.Render("~/AdminLTE/plugins/datatables/css")
-<div class="panel panel-info">
+@Scripts.Render("~/AdminLTE/plugins/datatables/css")
+
+<div class="panel panel-warning">
     <div class="panel-heading">
         <div class="row">
-            <div class="col-lg-12">
-                        <button type="button" id="btn-new" class="btn btn-primary btn-sm">CREATE NEW</button>
+            <div class="col-lg-offset-11">
+                <button type="button" id="btn-new" class="btn btn-primary btn-sm">Add</button>
             </div>
         </div>
-    </div>
-    <div class="panel-body">
         <div class="row">
-            <div class="col-lg-12" id="table-list">
-                <h3>  Loading... </h3>
+            <div class="col-lg-2">
+                <input name="Code" type="text" class="form-control text-box single-line" value="Product Code" />
+            </div>
+            <div class="col-lg-2">
+                <input name="Name" type="text" class="form-control text-box single-line" value="Product Name" />
+            </div>
+            <div class="col-lg-2">
+                <input name="Created_Date" type="text" class="form-control text-box single-line" value="Created" />
+            </div>
+            <div class="col-lg-2">
+                <input name="Created_By" type="text" class="form-control text-box single-line" value="Created By" />
+            </div>
+            <div class="col-lg-1">
+                <button type="button" id="btn-new" class="btn btn-warning btn-sm">Search</button>
             </div>
         </div>
     </div>
 </div>
+<div class="panel-body">
+
+
+    <div class="row">
+        <div class="col-lg-12" id="table-list">
+            <h3>Loading...</h3>
+        </div>
+    </div>
+</div>
+
 
 
 <div class="modal fade" tabindex="-1" role="dialog">
@@ -31,49 +54,40 @@
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
             </div>
-
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-
 
 @section Scripts{
     @Scripts.Render("~/AdminLTE/plugins/datatables/js")
     <script type="text/javascript">
         $(document).ready(function () {
-            //   alert('Hi, this is me')
             GetList();
-
         });
 
         $("#btn-new").click(function () {
-            $(".modal-title").html("Create New Company");
+            $(".modal-title").html("Create New Role");
             $.ajax({
-                url: '@Url.Action("Create", "Company")',
+                url: '@Url.Action("Create","Role")',
                 type: 'get',
                 success: function (result) {
                     $(".modal-body").html(result);
                     $(".modal").modal("show");
                 }
-
             });
         });
 
-
         function GetList() {
             $.ajax({
-                url: '@Url.Action("List","Company")',
+                url: '@Url.Action("List","Role")',
                 type: 'get',
                 success: function (result) {
                     $("#table-list").html(result);
-
                 },
                 error: function (err) {
-                    $("#table-list").html(err);
+                    $("#table-list").tml(err);
                 }
             });
         }
-
     </script>
 }
