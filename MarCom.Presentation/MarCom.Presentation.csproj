@@ -1120,7 +1120,6 @@
     <Content Include="Views\Menu\_List.cshtml" />
     <Content Include="Views\Menu\_Show.cshtml" />
     <Content Include="Views\Menu\Index.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\_Create.cshtml" />
     <Content Include="Views\Product\_Delete.cshtml" />
@@ -1132,7 +1131,6 @@
     <Content Include="Views\Role\_Edit.cshtml" />
     <Content Include="Views\Role\_List.cshtml" />
     <Content Include="Views\Role\_View.cshtml" />
-=======
     <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\Employee\_List.cshtml" />
     <Content Include="Views\Employee\_Edit.cshtml" />
@@ -1140,17 +1138,13 @@
     <Content Include="Views\Employee\_View.cshtml" />
     <Content Include="Views\Employee\_Create.cshtml" />
     <Content Include="Views\MenuAccess\Index.cshtml" />
->>>>>>> dbe171810406fdb5f238357bc0f03364e19ce478
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Company\" />
-<<<<<<< HEAD
     <Folder Include="Views\Employee\" />
-=======
     <Folder Include="Views\Product\" />
     <Folder Include="Views\Role\" />
->>>>>>> dbe171810406fdb5f238357bc0f03364e19ce478
     <Folder Include="Views\Unit\" />
     <Folder Include="Views\User\" />
   </ItemGroup>

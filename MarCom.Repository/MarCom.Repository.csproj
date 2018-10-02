@@ -78,17 +78,14 @@
     <Content Include="obj\Debug\MarCom.Repository.pdb" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
+    <None Include="App - Copy.config" />
     <None Include="App - Copy.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="App.config" />
-=======
-    <None Include="App - Copy.config" />
+    <None Include="App.config"/>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
->>>>>>> dbe171810406fdb5f238357bc0f03364e19ce478
     <None Include="bin\Debug\MarCom.Repository.dll.config" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="obj\Debug\MarCom.Repository.csprojResolveAssemblyReference.cache" />
