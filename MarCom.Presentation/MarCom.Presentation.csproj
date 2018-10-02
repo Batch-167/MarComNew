@@ -202,6 +202,7 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MenuAccessController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -1127,6 +1128,24 @@
     <Content Include="Views\Company\_Details.cshtml" />
     <Content Include="Views\Company\_Edit.cshtml" />
     <Content Include="Views\Company\_List.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\_Create.cshtml" />
+    <Content Include="Views\Product\_Delete.cshtml" />
+    <Content Include="Views\Product\_Edit.cshtml" />
+    <Content Include="Views\Product\_List.cshtml" />
+    <Content Include="Views\Product\_View.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\_Create.cshtml" />
+    <Content Include="Views\Role\_Edit.cshtml" />
+    <Content Include="Views\Role\_List.cshtml" />
+    <Content Include="Views\Role\_View.cshtml" />
+    <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\Employee\_List.cshtml" />
+    <Content Include="Views\Employee\_Edit.cshtml" />
+    <Content Include="Views\Employee\_Delete.cshtml" />
+    <Content Include="Views\Employee\_View.cshtml" />
+    <Content Include="Views\Employee\_Create.cshtml" />
+    <Content Include="Views\MenuAccess\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -26,5 +26,9 @@ namespace MarCom.DataModel
         public string Update_By { get; set; }
 
         public DateTime? Update_Date { get; set; }
+
+        public virtual M_Menu M_Menu { get; set; }
+
+        public virtual M_Role M_Role { get; set; }
     }
 }
