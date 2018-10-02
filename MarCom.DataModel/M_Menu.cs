@@ -11,6 +11,7 @@ namespace MarCom.DataModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public M_Menu()
         {
+            M_Menu_Access = new HashSet<M_Menu_Access>();
             M_Menu1 = new HashSet<M_Menu>();
         }
 
@@ -42,6 +43,9 @@ namespace MarCom.DataModel
         public string Update_By { get; set; }
 
         public DateTime? Update_Date { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<M_Menu_Access> M_Menu_Access { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<M_Menu> M_Menu1 { get; set; }

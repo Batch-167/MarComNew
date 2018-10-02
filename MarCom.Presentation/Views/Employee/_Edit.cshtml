@@ -1,13 +1,18 @@
 ﻿@model MarCom.ViewModel.EmployeeViewModel
+@{
+    Layout = "";
+}
 
 
-@using (Html.BeginForm("Create", "Employee", FormMethod.Post, new { id = "create-form", name = "create-form" }))
+@using (Html.BeginForm("Edit", "Employee", FormMethod.Post, new { id = "form-edit", name = "form-edit" }))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
         <div class="form-group">
             @Html.LabelFor(model => model.Employee_Number, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -33,10 +38,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.M_Company_Id, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.CompanyName, (IEnumerable<SelectListItem>)ViewBag.Company,"Select Company Name",new  { @class = "form-control" } )
-                @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.M_Company_Id, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.M_Company_Id, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -56,9 +61,9 @@
                         @Html.ValidationMessageFor(model => model.Is_Delete, "", new { @class = "text-danger" })
                     </div>
                 </div>
-            </div>*@
+            </div>
 
-        @*<div class="form-group">
+            <div class="form-group">
                 @Html.LabelFor(model => model.Create_By, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Create_By, new { htmlAttributes = new { @class = "form-control" } })
@@ -76,28 +81,27 @@
 
         <div class="form-group">
             <div class="col-md-4 col-md-offset-8">
-                <input type="button" value="Cancel" class="btn btn-default" data-dismiss="modal" />
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Cancel" class="btn btn-default" data-dismiss="modal" />
+                <input type="submit" value="Save" class="btn btn-warning" />
             </div>
         </div>
     </div>
 }
 
 @Scripts.Render("~/bundles/jqueryval")
-
 <script type="text/javascript">
-    $("#create-form").submit(function () {
+    $("#form-edit").submit(function () {
         $.ajax({
-            url: '@Url.Action("Create", "Employee")',
+            url: '@Url.Action("Edit","Employee")',
             type: this.method,
             data: $(this).serialize(),
             success: function (result) {
                 if (result.success) {
-                    alert("Succesful! Employee data has been saved.");
+                    alert("Succesful!" + result.entity.FullName + " has been saved.");
                     $(".modal").modal("hide");
                     GetList();
                 } else {
-                    alert("Eror! Employee data has not been saved. \n" + result.message);
+                    alert("Eror! UserAccess has not been saved.\n" + result.message);
                 }
             }
         });
