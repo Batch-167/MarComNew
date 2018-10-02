@@ -12,6 +12,7 @@ namespace MarCom.DataModel
         {
         }
 
+        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<M_Company> M_Company { get; set; }
         public virtual DbSet<M_Employee> M_Employee { get; set; }
         public virtual DbSet<M_Menu> M_Menu { get; set; }
@@ -21,6 +22,8 @@ namespace MarCom.DataModel
         public virtual DbSet<M_Souvenir> M_Souvenir { get; set; }
         public virtual DbSet<M_Unit> M_Unit { get; set; }
         public virtual DbSet<M_User> M_User { get; set; }
+        public virtual DbSet<M_User_Claim> M_User_Claim { get; set; }
+        public virtual DbSet<M_User_Login> M_User_Login { get; set; }
         public virtual DbSet<T_Design> T_Design { get; set; }
         public virtual DbSet<T_Design_Item> T_Design_Item { get; set; }
         public virtual DbSet<T_Design_Item_File> T_Design_Item_File { get; set; }
@@ -90,12 +93,6 @@ namespace MarCom.DataModel
             modelBuilder.Entity<M_Employee>()
                 .Property(e => e.Update_By)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<M_Employee>()
-                .HasMany(e => e.M_User)
-                .WithRequired(e => e.M_Employee)
-                .HasForeignKey(e => e.M_Employee_Id)
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<M_Employee>()
                 .HasMany(e => e.T_Design_Item)
@@ -182,37 +179,14 @@ namespace MarCom.DataModel
                 .HasForeignKey(e => e.Settlement_Approved_By);
 
             modelBuilder.Entity<M_Menu>()
-                .Property(e => e.Code)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<M_Menu>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<M_Menu>()
-                .Property(e => e.Controller)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<M_Menu>()
-                .Property(e => e.Create_By)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<M_Menu>()
-                .Property(e => e.Update_By)
-                .IsUnicode(false);
+                .HasMany(e => e.M_Menu_Access)
+                .WithRequired(e => e.M_Menu)
+                .HasForeignKey(e => e.M_Menu_Id);
 
             modelBuilder.Entity<M_Menu>()
                 .HasMany(e => e.M_Menu1)
                 .WithOptional(e => e.M_Menu2)
                 .HasForeignKey(e => e.Parent_Id);
-
-            modelBuilder.Entity<M_Menu_Access>()
-                .Property(e => e.Create_By)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<M_Menu_Access>()
-                .Property(e => e.Update_By)
-                .IsUnicode(false);
 
             modelBuilder.Entity<M_Product>()
                 .Property(e => e.Code)
@@ -247,30 +221,14 @@ namespace MarCom.DataModel
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<M_Role>()
-                .Property(e => e.Code)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<M_Role>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<M_Role>()
-                .Property(e => e.Description)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<M_Role>()
-                .Property(e => e.Create_By)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<M_Role>()
-                .Property(e => e.Update_By)
-                .IsUnicode(false);
+                .HasMany(e => e.M_Menu_Access)
+                .WithRequired(e => e.M_Role)
+                .HasForeignKey(e => e.M_Role_Id);
 
             modelBuilder.Entity<M_Role>()
                 .HasMany(e => e.M_User)
-                .WithRequired(e => e.M_Role)
-                .HasForeignKey(e => e.M_Role_Id)
-                .WillCascadeOnDelete(false);
+                .WithMany(e => e.M_Role)
+                .Map(m => m.ToTable("M_User_Role").MapLeftKey("RoleId").MapRightKey("UserId"));
 
             modelBuilder.Entity<M_Souvenir>()
                 .Property(e => e.Code)
@@ -325,20 +283,14 @@ namespace MarCom.DataModel
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<M_User>()
-                .Property(e => e.Username)
-                .IsUnicode(false);
+                .HasMany(e => e.M_User_Claim)
+                .WithRequired(e => e.M_User)
+                .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<M_User>()
-                .Property(e => e.Password)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<M_User>()
-                .Property(e => e.Create_By)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<M_User>()
-                .Property(e => e.Update_By)
-                .IsUnicode(false);
+                .HasMany(e => e.M_User_Login)
+                .WithRequired(e => e.M_User)
+                .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<T_Design>()
                 .Property(e => e.Code)

@@ -1,12 +1,15 @@
 ﻿@model MarCom.ViewModel.EmployeeViewModel
 
+@{
+    ViewBag.Title = "Menu Access";
+}
 
 @Styles.Render("~/ AdminLTE / plugins / datatables / css")
 <div class="panel panel-danger">
     <div class="panel-heading">
         <div class="row">
             <div class="col-offset-11">
-                <h3>List Employee</h3>
+                <h3>List Menu Access</h3>
             </div>
         </div>
     </div>
@@ -16,14 +19,11 @@
                 <button type="button" id="btn-new" class="btn btn-primary btn-sm">Add</button>
             </div>
             <div class="row">
-                <div class="col-xs-2">
-                    <input type="text" class="form-control" placeholder="Employee ID Number" />
+                <div class="col-xs-3">
+                    <input type="text" class="form-control" placeholder="Select Role Code" />
                 </div>
-                <div class="col-xs-2">
-                    <input type="text" class="form-control" placeholder="Employee Name" />
-                </div>
-                <div class="col-xs-2">
-                    <input type="text" class="form-control" placeholder="Select Company Name" />
+                <div class="col-xs-3">
+                    <input type="text" class="form-control" placeholder="Select Role Name" />
                 </div>
                 <div class="col-xs-2">
                     <input type="text" class="form-control" placeholder="Created" />
@@ -68,7 +68,7 @@
         $("#btn-new").click(function () {
             $(".modal-title").html("Add Employee");
             $.ajax({
-                url: '@Url.Action("Create","Employee")',
+                url: '@Url.Action("Create","MenuAccess")',
                 type: 'get',
                 success: function (result) {
                     $(".modal-body").html(result);
@@ -79,7 +79,7 @@
 
         function GetList() {
             $.ajax({
-                url: '@Url.Action("List","Employee")',
+                url: '@Url.Action("List", "MenuAccess")',
                 type: 'get',
                 success: function (result) {
                     $("#table-list").html(result);
@@ -91,6 +91,10 @@
         }
     </script>
 }
+
+
+
+
 
 
 
