@@ -13,6 +13,7 @@ namespace MarCom.DataModel
         {
             M_Menu_Access = new HashSet<M_Menu_Access>();
             M_User = new HashSet<M_User>();
+            M_User1 = new HashSet<M_User>();
         }
 
         public int Id { get; set; }
@@ -47,5 +48,8 @@ namespace MarCom.DataModel
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<M_User> M_User { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<M_User> M_User1 { get; set; }
     }
 }

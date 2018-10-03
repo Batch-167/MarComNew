@@ -253,7 +253,12 @@ namespace MarCom.DataModel
 
             modelBuilder.Entity<M_Role>()
                 .HasMany(e => e.M_User)
-                .WithMany(e => e.M_Role)
+                .WithOptional(e => e.M_Role)
+                .HasForeignKey(e => e.M_Role_Id);
+
+            modelBuilder.Entity<M_Role>()
+                .HasMany(e => e.M_User1)
+                .WithMany(e => e.M_Role1)
                 .Map(m => m.ToTable("M_User_Role").MapLeftKey("RoleId").MapRightKey("UserId"));
 
             modelBuilder.Entity<M_Souvenir>()

@@ -31,6 +31,8 @@ namespace MarCom.Presentation.Models
         public string Update_By { get; set; }
 
         public DateTime? Update_Date { get; set; }
+
+        
     }
 
     public class CustomUserStore  : UserStore<ApplicationUser, MRole, int, MUserLogin, MUserRole, MUserClaim >
@@ -76,6 +78,8 @@ namespace MarCom.Presentation.Models
         public string Update_By { get; set; }
 
         public DateTime? Update_Date { get; set; }
+
+        public int M_Role_Id { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, MRole, int, MUserLogin, MUserRole, MUserClaim >

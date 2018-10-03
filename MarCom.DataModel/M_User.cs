@@ -13,7 +13,7 @@ namespace MarCom.DataModel
         {
             M_User_Claim = new HashSet<M_User_Claim>();
             M_User_Login = new HashSet<M_User_Login>();
-            M_Role = new HashSet<M_Role>();
+            M_Role1 = new HashSet<M_Role>();
         }
 
         public int Id { get; set; }
@@ -58,7 +58,11 @@ namespace MarCom.DataModel
 
         public DateTime? Update_Date { get; set; }
 
+        public int? M_Role_Id { get; set; }
+
         public virtual M_Employee M_Employee { get; set; }
+
+        public virtual M_Role M_Role { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<M_User_Claim> M_User_Claim { get; set; }
@@ -67,6 +71,6 @@ namespace MarCom.DataModel
         public virtual ICollection<M_User_Login> M_User_Login { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<M_Role> M_Role { get; set; }
+        public virtual ICollection<M_Role> M_Role1 { get; set; }
     }
 }

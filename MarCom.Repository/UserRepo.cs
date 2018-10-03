@@ -20,6 +20,8 @@ namespace MarCom.Repository
                           us.M_Employee_Id equals em.Id
                           join c in db.M_Company on
                           em.M_Company_Id equals c.Id
+                          join ro in db.M_Role on
+                          us.M_Role_Id equals ro.Id
                           select new UserViewModel
                           {
                               Id = us.Id,
@@ -29,6 +31,7 @@ namespace MarCom.Repository
                               Username = us.UserName,
                               Password = us.PasswordHash,
                               Is_Delete = us.Is_Delete,
+                              Role = ro.Name,
 
                               Create_By = us.Create_By,
                               Create_Date = DateTime.Now

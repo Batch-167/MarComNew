@@ -24,7 +24,7 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");            
+            ViewBag.Souvenir = new SelectList(UnitRepo.Get(), "Id", "Name");            
             //ViewBag.code = SouvenirRepo.GetNewCode();
             return PartialView("_Create", new SouvenirViewModel());
         }
@@ -45,7 +45,7 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Edit(int id)
         {
-            ViewBag.Unit = new SelectList(SouvenirRepo.Get(), "Id", "Name");
+            ViewBag.Unit = new SelectList(UnitRepo.Get(), "Id", "Name");
             SouvenirViewModel model = SouvenirRepo.GetById(id);
             return PartialView("_Edit", model);
         }

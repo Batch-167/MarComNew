@@ -58,7 +58,7 @@ namespace MarCom.Repository
                         souvenir.Name = entity.Name;
                         souvenir.Description = entity.Description;
                         souvenir.Quantity = entity.Quantity;
-                        souvenir.M_Unit_Id = 1;/*entity.M_Unit_Id;*/
+                        souvenir.M_Unit_Id = entity.M_Unit_Id;
                         souvenir.Is_Delete = entity.Is_Delete;
 
                         souvenir.Create_By = "Admin";
@@ -75,7 +75,7 @@ namespace MarCom.Repository
                             souvenir.Name = entity.Name;
                             souvenir.Description = entity.Description;
                             souvenir.Quantity = entity.Quantity;
-                            //souvenir.M_Unit_Id = entity.M_Unit_Id;
+                            souvenir.M_Unit_Id = entity.M_Unit_Id;
                             //souvenir.Is_Delete = entity.Is_Delete;
 
                             souvenir.Update_By = "Admin";
