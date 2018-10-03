@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace MarCom.Presentation.Models
 {
@@ -14,6 +16,21 @@ namespace MarCom.Presentation.Models
     {
         public MRole() { }
         public MRole(string name) { Name = name; }
+
+        public string Description { get; set; }
+
+        public bool Is_Delete { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Create_By { get; set; }
+
+        public DateTime Create_Date { get; set; }
+
+        [StringLength(50)]
+        public string Update_By { get; set; }
+
+        public DateTime? Update_Date { get; set; }
     }
 
     public class CustomUserStore  : UserStore<ApplicationUser, MRole, int, MUserLogin, MUserRole, MUserClaim >
@@ -44,6 +61,21 @@ namespace MarCom.Presentation.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public int M_Employee_Id { get; set; }
+
+        public bool Is_Delete { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Create_By { get; set; }
+
+        public DateTime Create_Date { get; set; }
+
+        [StringLength(50)]
+        public string Update_By { get; set; }
+
+        public DateTime? Update_Date { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, MRole, int, MUserLogin, MUserRole, MUserClaim >
@@ -52,6 +84,8 @@ namespace MarCom.Presentation.Models
             : base("IdentityConnection")
         {
         }
+
+        public virtual DbSet<MUserRole> M_User_Role { get; set; }
 
         public static ApplicationDbContext Create()
         {

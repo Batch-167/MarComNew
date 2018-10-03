@@ -10,7 +10,6 @@ namespace MarCom.Repository
 {
     public class UserRepo
     {
-
         public static List<UserViewModel> Get()
         {
             List<UserViewModel> result = new List<UserViewModel>();
@@ -19,21 +18,16 @@ namespace MarCom.Repository
                 result = (from us in db.M_User
                           join em in db.M_Employee on
                           us.M_Employee_Id equals em.Id
-                          join r in db.M_Role on
-                          us.M_Role_Id equals r.Id
                           join c in db.M_Company on
                           em.M_Company_Id equals c.Id
-                          //where u.Is_Delete == false
                           select new UserViewModel
                           {
                               Id = us.Id,
                               M_Employee_Id = us.M_Employee_Id,
                               Fullname = em.First_Name + " " + em.Last_Name,
                               Company = c.Name,
-                              M_Role_Id = us.M_Role_Id,
-                              Role = r.Name,
-                              Username = us.Username,
-                              Password = us.Password,
+                              Username = us.UserName,
+                              Password = us.PasswordHash,
                               Is_Delete = us.Is_Delete,
 
                               Create_By = us.Create_By,
@@ -53,10 +47,9 @@ namespace MarCom.Repository
                     if (entity.Id == 0)
                     {
                         M_User user = new M_User();
-                        user.Username = entity.Username;
-                        user.Password = entity.Password;
+                        user.UserName = entity.Username;
+                        user.PasswordHash = entity.Password;
                         user.M_Employee_Id = entity.M_Employee_Id;
-                        user.M_Role_Id = entity.M_Role_Id;
                         user.Is_Delete = entity.Is_Delete;
 
                         user.Create_By = "Admin";
@@ -71,9 +64,8 @@ namespace MarCom.Repository
                         M_User user = db.M_User.Where(us => us.Id == entity.Id).FirstOrDefault();
                         if (user != null)
                         {
-                            user.Username = entity.Username;
-                            user.Password = entity.Password;
-                            user.M_Role_Id = entity.M_Role_Id;
+                            user.UserName = entity.Username;
+                            user.PasswordHash = entity.Password;
                             user.M_Employee_Id = entity.M_Employee_Id;
                             user.Is_Delete = entity.Is_Delete;
 
@@ -100,16 +92,14 @@ namespace MarCom.Repository
                 result = (from us in db.M_User
                           join em in db.M_Employee on
                           us.M_Employee_Id equals em.Id
-                          join r in db.M_Role on
-                          us.M_Role_Id equals r.Id
                           where us.Id == id
                           select new UserViewModel
                           {
                               Id = us.Id,
-                              Username = us.Username,
-                              Password = us.Password,
-                              Role = r.Name,
-                              Fullname = em.First_Name + " "+ em.Last_Name,
+                              Username = us.UserName,
+                              Password = us.PasswordHash,
+                              M_Employee_Id  = em.Id,
+                              Fullname = em.First_Name + " " + em.Last_Name,
 
                               Is_Delete = us.Is_Delete
                           }).FirstOrDefault();

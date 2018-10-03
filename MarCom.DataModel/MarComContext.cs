@@ -95,6 +95,12 @@ namespace MarCom.DataModel
                 .IsUnicode(false);
 
             modelBuilder.Entity<M_Employee>()
+                .HasMany(e => e.M_User)
+                .WithRequired(e => e.M_Employee)
+                .HasForeignKey(e => e.M_Employee_Id)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<M_Employee>()
                 .HasMany(e => e.T_Design_Item)
                 .WithRequired(e => e.M_Employee)
                 .HasForeignKey(e => e.Request_Pic)
@@ -301,6 +307,14 @@ namespace MarCom.DataModel
                 .WithRequired(e => e.M_Unit)
                 .HasForeignKey(e => e.M_Unit_Id)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<M_User>()
+                .Property(e => e.Create_By)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<M_User>()
+                .Property(e => e.Update_By)
+                .IsUnicode(false);
 
             modelBuilder.Entity<M_User>()
                 .HasMany(e => e.M_User_Claim)

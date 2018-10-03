@@ -43,6 +43,23 @@ namespace MarCom.DataModel
         [StringLength(256)]
         public string UserName { get; set; }
 
+        public int M_Employee_Id { get; set; }
+
+        public bool Is_Delete { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Create_By { get; set; }
+
+        public DateTime Create_Date { get; set; }
+
+        [StringLength(50)]
+        public string Update_By { get; set; }
+
+        public DateTime? Update_Date { get; set; }
+
+        public virtual M_Employee M_Employee { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<M_User_Claim> M_User_Claim { get; set; }
 

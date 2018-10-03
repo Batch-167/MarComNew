@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MarCom.Presentation.Models;
+using MarCom.Repository;
 
 namespace MarCom.Presentation.Controllers
 {
@@ -139,7 +140,8 @@ namespace MarCom.Presentation.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
+            return View(new RegisterViewModel());
         }
 
         //
@@ -151,7 +153,7 @@ namespace MarCom.Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -1130,7 +1130,6 @@
     <Content Include="Views\Unit\_Edit.cshtml" />
     <Content Include="Views\Unit\_List.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\User\_Add.cshtml" />
     <Content Include="Views\User\_Delete.cshtml" />
     <Content Include="Views\User\_Details.cshtml" />
     <Content Include="Views\User\_Edit.cshtml" />
@@ -1159,12 +1158,10 @@
     <Content Include="Views\Employee\_View.cshtml" />
     <Content Include="Views\Employee\_Create.cshtml" />
     <Content Include="Views\MenuAccess\Index.cshtml" />
+    <Content Include="Views\User\_Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Employee\" />
-    <Folder Include="Views\Product\" />
-    <Folder Include="Views\Role\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

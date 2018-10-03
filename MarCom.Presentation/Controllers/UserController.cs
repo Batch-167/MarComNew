@@ -1,8 +1,12 @@
-﻿using MarCom.Repository;
+﻿using MarCom.Presentation.Models;
+using MarCom.Repository;
 using MarCom.ViewModel;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -11,6 +15,7 @@ namespace MarCom.Presentation.Controllers
     //[Authorize]
     public class UserController : Controller
     {
+        private ApplicationUserManager _userManager;
         // GET: User
         public ActionResult Index()
         {
@@ -22,29 +27,46 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_List", UserRepo.Get());
         }
 
+        [AllowAnonymous]
         public ActionResult Add()
         {
-            //ViewBag.Role = new SelectList(RoleRepo.Get(), "Id", "Name");
-            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "Fullname");
-            return View("_Add", new UserViewModel());
+            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
+            ViewBag.Role = new SelectList(RoleRepo.Get(), "Id", "Name");
+            return PartialView("_Add", new RegisterViewModel());
         }
 
-
+        //
+        // POST: /Account/Register
         [HttpPost]
-        public ActionResult Add(UserViewModel model)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Add(RegisterViewModel model)
         {
-            ResultResponse result = UserRepo.Update(model);
-            return Json(new
+            
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
-        }
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                //if (result.Succeeded)
+                //{
+                //   // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
+                //    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                //    // Send an email with this link
+                //    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                //    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                //    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                //    //return RedirectToAction("Index", "Home");
+                //}
+                AddErrors(result);
+            Update(user.Id, model.RoleId);
+            }
+            return RedirectToAction("Index");
+            // If we got this far, something failed, redisplay form
+        }
         public ActionResult Edit(int id)
         {
-            //ViewBag.Role = new SelectList(RoleRepo.Get(), "Id", "Name");
+            ViewBag.Role = new SelectList(RoleRepo.Get(), "Id", "Name");
             ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "Fullname");
             UserViewModel model = UserRepo.GetById(id);
             return PartialView("_Edit", model);
@@ -93,6 +115,52 @@ namespace MarCom.Presentation.Controllers
         {
             UserViewModel model = UserRepo.GetById(id);
             return PartialView("_Details", model);
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
+        //UserRepo
+        public static ResultResponse Update(int id, int roleId)
+        {
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+
+                    MUserRole userRole = new MUserRole();
+                    userRole.UserId = id;
+                    userRole.RoleId = roleId;
+
+                    db.M_User_Role.Add(userRole);
+                    db.SaveChanges();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            return result;
         }
     }
 }

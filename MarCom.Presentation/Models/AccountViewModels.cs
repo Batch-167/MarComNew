@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MarCom.Presentation.Models
@@ -64,10 +65,19 @@ namespace MarCom.Presentation.Models
 
     public class RegisterViewModel
     {
+        public RegisterViewModel()
+        {
+            Is_Delete = false;
+            Create_By = "Admin";
+        }
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        public int RoleId { get; set; }
+
+        public int Id { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -79,6 +89,18 @@ namespace MarCom.Presentation.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public int M_Employee_Id { get; set; }
+
+        //public int M_Role_Id { get; set; }
+
+        public bool Is_Delete { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Create_By { get; set; }
+
+        public DateTime Create_Date { get; set; }
     }
 
     public class ResetPasswordViewModel
