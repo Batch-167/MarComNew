@@ -1,12 +1,12 @@
 ﻿using MarCom.Repository;
-using MarCom.Repository;
-using MarCom.ViewModel;
 using MarCom.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace MarCom.Presentation.Controllers
 {
@@ -24,24 +24,22 @@ namespace MarCom.Presentation.Controllers
             DesignApproveViewModel model = DesignApproveRepo.GetById(id);
             return PartialView("_Approve", model);
         }
-    }
-}
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
-namespace MarCom.Presentation.Controllers
-{
-    public class DesignRequestController : Controller
-    {
-        // GET: DesignRequest
-        public ActionResult Index()
+        [HttpPost]
+        public ActionResult Approve(DesignApproveViewModel model)
         {
-            return View();
-        }
+            model.Create_By = User.Identity.Name;
+            ResultResponse result = DesignApproveRepo.Approve(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
 
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+            
+    
         public ActionResult List()
         {
             return PartialView("_List", DesignRequestRepo.Get());

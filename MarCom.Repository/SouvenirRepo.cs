@@ -163,5 +163,33 @@ namespace MarCom.Repository
             }
             return newRef;
         }
+
+        public static List<SouvenirViewModel> Filter(SouvenirViewModel entity)
+        {
+            List<SouvenirViewModel> result = new List<SouvenirViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from s in db.M_Souvenir
+                          join u in db.M_Unit on s.M_Unit_Id equals u.Id
+                          where s.Code.Contains(entity.Code) || s.Name.Contains(entity.Name) || s.M_Unit_Id == entity.M_Unit_Id || s.Create_By.Contains(entity.Create_By) || s.Create_Date == entity.Create_Date
+                          select new SouvenirViewModel
+                          {
+                              Id = s.Id,
+                              Code = s.Code,
+                              Name = s.Name,
+                              Description = s.Description,
+                              Quantity = s.Quantity,
+                              M_Unit_Id = s.Id,
+                              Unit = u.Name,
+                              Is_Delete = s.Is_Delete,
+
+                              Create_By = s.Create_By,
+                              Create_Date = s.Create_Date
+
+                          })
+                          .ToList();
+            }
+            return result;
+        }
     }
 }

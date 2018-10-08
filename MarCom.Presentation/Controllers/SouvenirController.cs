@@ -19,6 +19,12 @@ namespace MarCom.Presentation.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Filter(SouvenirViewModel model)
+        {
+            return PartialView("_List", SouvenirRepo.Filter(model));
+        }
+
         public ActionResult List()
         {
             return PartialView("_List",SouvenirRepo.Get());

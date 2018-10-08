@@ -1,4 +1,5 @@
-﻿
+﻿@model MarCom.ViewModel.MenuViewModel
+
 @{
     ViewBag.Title = "Index";
 }
@@ -20,10 +21,14 @@
                     </tr>
                     <tr id="search">
                         <td class="col-lg-3">
-                            <input id="Code" name="Code" type="text" class="form-control col-lg-2" placeholder="Menu Code" aria-controls="list-table" />
+                            @Html.DropDownListFor(model => model.Code, (IEnumerable<SelectListItem>)
+               ViewBag.Menu1, "- Select Menu Code -", new { @id = "Code", @class = "form-control lg-2" })
+                            @*<input id="Code" name="Code" type="text" class="form-control col-lg-2" placeholder="Menu Code" />*@
                         </td>
                         <td class="col-lg-3">
-                            <input id="Name" name="Name" "type=" text" class="form-control col-lg-3" placeholder="Menu Name" />
+                            @Html.DropDownListFor(model => model.Name, (IEnumerable<SelectListItem>)
+               ViewBag.Menu2, "- Select Menu Name -", new { @id = "Name", @class = "form-control col-lg-3" })
+                            @*<input id="Name" name="Name" type="text" class="form-control col-lg-3" placeholder="Menu Name" value="@ViewBag.Menu" />*@
                         </td>
                         <td class="col-lg-2">
                             <div class="input-group">
@@ -32,10 +37,10 @@
                             </div>
                         </td>
                         <td class="col-lg-2">
-                            <input id="Create" name="Create" type="text" class="form-control" placeholder="Create" />
+                            <input id="Created" name="Create" type="text" class="form-control" placeholder="Create" />
                         </td>
                         <td class="col-lg-2">
-                            <button id="btn-search" type="button" class="btn btn-warning btn-sm" onclick="Search(this)">
+                            <button id="btn-search" type="button" class="btn btn-warning btn-sm" onclick="Search()">
                                 <span>Search</span>
                             </button>
                         </td>
@@ -93,6 +98,27 @@
             });
             $(".modal").modal("show");
         });
+
+        $("#btn-search").click(function Search() {
+            var data = {
+                code: $("#Code").val(),
+                name: $("#Name").val(),
+                create_date: $("#Date").val(),
+                create_by: $("#Created").val(),
+            };
+            $.ajax({
+                url: '@Url.Action("Filter","Menu")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    $("#table-list").html(result);
+                },
+                error: function (err) {
+                    $("#table-list").html(err);
+                },
+            });
+        });
+
 
         function GetList() {
             $.ajax({

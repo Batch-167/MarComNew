@@ -16,7 +16,15 @@ namespace MarCom.Presentation.Controllers
         // GET: Menu
         public ActionResult Index()
         {
+            ViewBag.Menu1 = new SelectList(MenuRepo.Get(), "Code", "Code");
+            ViewBag.Menu2 = new SelectList(MenuRepo.Get(), "Name", "Name");
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Filter(MenuViewModel model)
+        {
+            return PartialView("_List", MenuRepo.Filter(model));
         }
 
         public ActionResult List()

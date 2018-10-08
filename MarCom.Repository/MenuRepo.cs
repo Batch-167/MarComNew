@@ -43,7 +43,7 @@ namespace MarCom.Repository
             using (var db = new MarComContext())
             {
                 result = (from m in db.M_Menu
-                          where m.Parent_Id != null                                              
+                          where m.Parent_Id != null
                           select new MenuViewModel
                           {
                               Id = m.Id,
@@ -52,7 +52,7 @@ namespace MarCom.Repository
                               Controller = m.Controller,
                               Parent_Id = m.Parent_Id,
                               Is_Delete = m.Is_Delete,
-                              
+
                               Create_By = m.Create_By,
                               Create_Date = m.Create_Date,
                           })
@@ -176,6 +176,32 @@ namespace MarCom.Repository
                 }
             }
             return newRef;
+        }
+
+        public static List<MenuViewModel> Filter(MenuViewModel entity)
+        {
+            string date = entity.Create_Date.ToString();
+            string[] olddate = date.Split(' ');
+            string date1 = olddate[0];
+            string[] datenew = date1.Split('/');
+            string date2 = datenew[0];
+            string date3 = (int.Parse(datenew[1])).ToString("D2");
+            string datenew1 = datenew[2]+'-'+date2+'-'+date3;
+            List<MenuViewModel> result = new List<MenuViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from m in db.M_Menu
+                          where m.Code == entity.Code || m.Name == entity.Name || m.Create_Date.ToString().Contains(datenew1) || m.Create_By.Contains(entity.Create_By)
+                          select new MenuViewModel
+                          {
+                              Code = m.Code,
+                              Name = m.Name,
+
+                              Create_By = m.Create_By,
+                              Create_Date = m.Create_Date
+                          }).ToList();
+            }
+            return result;
         }
     }
 }

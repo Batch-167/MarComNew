@@ -1,7 +1,7 @@
-﻿@{
-    ViewBag.Title = "Souvenir";
-}
-@Styles.Render("~/AdminLTE/plugins/datatables/css")
+﻿@model MarCom.ViewModel.SouvenirViewModel
+
+
+@*@Styles.Render("~/AdminLTE/plugins/datatables/css")*@
 <div class="panel panel-info">
     <div class="panel-heading">
         <div class="row">
@@ -15,25 +15,30 @@
                     </tr>
                     <tr>
                         <td class="col-lg-2">
-                            <input name="Code" type="text" class="form-control" placeholder="Souvenir Code" />
+                            @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @placeholder = "Souvenir Code", @name = "Code" } })*@
+                            <input id="Code" name="Code" type="text" class="form-control" placeholder="Souvenir Code" />
                         </td>
                         <td class="col-lg-3">
-                            <input name="Name" type="text" class="form-control text-box single-line" placeholder="Souvenir Name" />
+                            @*@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Souvenir Name", @name = "Name" } })*@
+                            <input id="Name" name="Name" type="text" class="form-control" placeholder="Souvenir Name" />
                         </td>
                         <td class="col-lg-2">
-                            <input name="Unit" type="text" class="form-control text-box single-line" placeholder="Select Unit Name" />
+                            @*@Html.EditorFor(model => model.M_Unit_Id, new { htmlAttributes = new { @class = "form-control", @placeholder = "Souvenir Unit", @name = "Unit" } })*@
+                            <input id="Unit" name="Unit" type="text" class="form-control" placeholder="Souvenir Unit" />
                         </td>
                         <td class="col-lg-2">
+                            @*@Html.EditorFor(model => model.M_Unit_Id, new { htmlAttributes = new { @type = "date", @class = "form-control datepicker", @placeholder = "Created", @name = "Date" } })*@
                             <div class="input-group">
-                                <input name="Date" class="form-control datepicker" placeholder="Created" type="date" value="Created" />
+                                <input id="Date" name="Date" class="form-control datepicker" placeholder="Created" type="date" value="Created" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
                         </td>
                         <td class="col-lg-2">
-                            <input name="Create" type="text" class="form-control text-box single-line" placeholder="Create By" />
+                            @*@Html.EditorFor(model => model.Create_By, new { htmlAttributes = new { @class = "form-control", @placeholder = "Created By", @name = "Create-by" } })*@
+                            <input id="Create" name="Create" type="text" class="form-control text-box single-line" placeholder="Create By" />
                         </td>
                         <td class="col-lg-1">
-                            <button id="btn-search" type="button" class="btn btn-warning btn-sm" onclick="Search(this)" >Search</button>
+                            <button id="btn-search" type="button" class="btn btn-warning btn-sm">Search</button>
                         </td>
                     </tr>
                 </table>
@@ -70,25 +75,35 @@
 
 
 @section Scripts{
-    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+    @*@Scripts.Render("~/AdminLTE/plugins/datatables/js")*@
 
     <script type="text/javascript">
         $(document).ready(function () {
             GetList();
         });
 
-        function Search(obj) {
-            var tr = $(obj).closest("tr");
-            var code = $(tr).find("Input[name=Code]").val();
-            var name = $(tr).find("Input[name=Name]").val();
-            var unit = $(tr).find("Input[name=Unit]").val();
-            var date = $(tr).find("Input[name=Date]").val();
-            var create = $(tr).find("Input[name=Create]").val();
-            alert('Halo '+code+ ' '+name+ ' '+unit+' '+date+ ' '+create)
-        }
+        $("#btn-search").click(function Search() {
+            var data = {
+                code: $("#Code").val(),
+                name: $("#Name").val(),
+                unit: $("#Unit").val(),
+                date: $("#Date").val(),
+                create: $("#Create").val()
+            };
+            $.ajax({
+                url: '@Url.Action("Filter","Souvenir")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    $("#table-list").html(result);
+                },
+                error: function (err) {
+                    $("#table-list").html(err);
+                }
+            });
+        });
 
         $("#btn-new").click(function () {
-            //alert('Create new button');
             $(".modal-title").html("Create New Souvenir");
             $.ajax({
                 url: '@Url.Action("Create", "Souvenir")',
@@ -114,6 +129,23 @@
             });
         }
 
+        //function Search(obj) {
+        //    var tr = $(obj).closest("tr");
+        //    var code = $(tr).find("Input[name=Code]").val();
+        //    Alert(code);
+        //    $.ajax({
+        //        url: vUrl,
+        //        type: vMethod,
+        //        data: vData,
+        //        success: function (result) {
+        //            $("table-list").html(result);
+        //        },
+        //        error: function (err) {
+        //            $("#table-list").html(err);
+        //        }
+        //    });
+        //}
+
         function Action(act, id) {
             $.ajax({
                 url: '/Souvenir/' + act,
@@ -133,7 +165,7 @@
             var vData = $(this).serialize();
             var info = $(this).attr('name');
             $.ajax({
-                name : name,
+                name: name,
                 url: vUrl,
                 method: vMethod,
                 data: vData,
@@ -149,5 +181,6 @@
             });
             return false;
         });
+
     </script>
 }
