@@ -32,8 +32,8 @@ namespace MarCom.Repository
                               Unit = u.Name,                              
                               Is_Delete = s.Is_Delete,
 
-                              Create_By = "Admin",
-                              Create_Date = DateTime.Now
+                              Create_By = s.Create_By,
+                              Create_Date = s.Create_Date
 
                           })
                           .Where(s => s.Is_Delete == all ? s.Is_Delete : true)
@@ -61,7 +61,7 @@ namespace MarCom.Repository
                         souvenir.M_Unit_Id = entity.M_Unit_Id;
                         souvenir.Is_Delete = entity.Is_Delete;
 
-                        souvenir.Create_By = "Admin";
+                        souvenir.Create_By = entity.Create_By;
                         souvenir.Create_Date = DateTime.Now;
 
                         db.M_Souvenir.Add(souvenir);
@@ -78,7 +78,7 @@ namespace MarCom.Repository
                             souvenir.M_Unit_Id = entity.M_Unit_Id;
                             //souvenir.Is_Delete = entity.Is_Delete;
 
-                            souvenir.Update_By = "Admin";
+                            souvenir.Update_By = entity.Update_By;
                             souvenir.Update_Date = DateTime.Now;
 
                             db.SaveChanges();

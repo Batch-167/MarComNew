@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompanyRepo.cs" />
+    <Compile Include="DesignApproveRepo.cs" />
     <Compile Include="EmployeeRepo.cs" />
     <Compile Include="MenuAccessRepo.cs" />
     <Compile Include="MenuRepo.cs" />
@@ -85,7 +86,7 @@
     <None Include="App - Copy.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="App.config"/>
+    <None Include="App.config" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>

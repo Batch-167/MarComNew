@@ -28,13 +28,11 @@ namespace MarCom.Repository
                               Code = m.Code,
                               Name = m.Name,
                               Controller = m.Controller,
-                              Parent_Id = m.Parent_Id,
                               Is_Delete = m.Is_Delete,
 
-                              Create_By = "Admin",
+                              Create_By = m.Create_By,
                               Create_Date = m.Create_Date,
-                          })                          
-                          .ToList();
+                          }).ToList();
             }
             return result;
         }
@@ -44,7 +42,8 @@ namespace MarCom.Repository
             List<MenuViewModel> result = new List<MenuViewModel>();
             using (var db = new MarComContext())
             {
-                result = (from m in db.M_Menu                                                  
+                result = (from m in db.M_Menu
+                          where m.Parent_Id != null                                              
                           select new MenuViewModel
                           {
                               Id = m.Id,
@@ -54,10 +53,10 @@ namespace MarCom.Repository
                               Parent_Id = m.Parent_Id,
                               Is_Delete = m.Is_Delete,
                               
-                              Create_By = "Admin",
+                              Create_By = m.Create_By,
                               Create_Date = m.Create_Date,
                           })
-                          .Where(m => m.Parent_Id != null)
+                          .Where(m => m.Is_Delete == all ? m.Is_Delete : true)
                           .ToList();
             }
             return result;
@@ -79,7 +78,7 @@ namespace MarCom.Repository
                         menu.Parent_Id = entity.Parent_Id;
                         menu.Is_Delete = entity.Is_Delete;
 
-                        menu.Create_By = "Admin";
+                        menu.Create_By = entity.Create_By;
                         menu.Create_Date = DateTime.Now;
 
                         db.M_Menu.Add(menu);
@@ -95,7 +94,7 @@ namespace MarCom.Repository
                             menu.Controller = entity.Controller;
                             menu.Parent_Id = entity.Parent_Id;
 
-                            menu.Update_By = "Admin";
+                            menu.Update_By = entity.Update_By;
                             menu.Update_Date = DateTime.Now;
 
                             db.SaveChanges();

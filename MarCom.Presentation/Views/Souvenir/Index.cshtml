@@ -1,9 +1,6 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Souvenir";
 }
-
-<h2>Souvenir</h2>
 @Styles.Render("~/AdminLTE/plugins/datatables/css")
 <div class="panel panel-info">
     <div class="panel-heading">
@@ -12,31 +9,31 @@
                 <table>
                     <tr>
                         <td colspan="5"></td>
-                        <td>
+                        <td class="col-lg-1">
                             <button type="button" id="btn-new" class="btn btn-primary btn-sm">ADD</button>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-lg-2">
-                            <input name="SouvCode" type="text" class="form-control" placeholder="Souvenir Code" />
+                            <input name="Code" type="text" class="form-control" placeholder="Souvenir Code" />
                         </td>
                         <td class="col-lg-3">
-                            <input name="SovName" type="text" class="form-control text-box single-line" placeholder="Souvenir Name" />
+                            <input name="Name" type="text" class="form-control text-box single-line" placeholder="Souvenir Name" />
                         </td>
                         <td class="col-lg-2">
-                            <input name="SovName" type="text" class="form-control text-box single-line" placeholder="Select Unit Name" />
+                            <input name="Unit" type="text" class="form-control text-box single-line" placeholder="Select Unit Name" />
                         </td>
                         <td class="col-lg-2">
-                            <div class="input-group">                                
-                                <input class="form-control datepicker" placeholder="Created" type="date" value="Created" />
+                            <div class="input-group">
+                                <input name="Date" class="form-control datepicker" placeholder="Created" type="date" value="Created" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
                         </td>
                         <td class="col-lg-2">
-                            <input name="SovName" type="text" class="form-control text-box single-line" placeholder="Create By" />
+                            <input name="Create" type="text" class="form-control text-box single-line" placeholder="Create By" />
                         </td>
-                        <td>
-                            <button type="button" id="btn-new" class="btn btn-warning btn-sm">Search</button>
+                        <td class="col-lg-1">
+                            <button id="btn-search" type="button" class="btn btn-warning btn-sm" onclick="Search(this)" >Search</button>
                         </td>
                     </tr>
                 </table>
@@ -52,7 +49,7 @@
     </div>
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog">
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -76,26 +73,19 @@
     @Scripts.Render("~/AdminLTE/plugins/datatables/js")
 
     <script type="text/javascript">
-
-        //$(document).ready(function () {
-        //    var date_input = $('input[name="date"]'); //our date input has the name "date"
-        //    var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-        //    var options = {
-        //        format: 'mm/dd/yyyy',
-        //        container: container,
-        //        todayHighlight: true,
-        //        autoclose: true,
-        //    };
-        //    date_input.datepicker(options);
-        //})
-
         $(document).ready(function () {
             GetList();
         });
 
-        //$("#btn-date").click(function () {
-        //    datepicker();
-        //});
+        function Search(obj) {
+            var tr = $(obj).closest("tr");
+            var code = $(tr).find("Input[name=Code]").val();
+            var name = $(tr).find("Input[name=Name]").val();
+            var unit = $(tr).find("Input[name=Unit]").val();
+            var date = $(tr).find("Input[name=Date]").val();
+            var create = $(tr).find("Input[name=Create]").val();
+            alert('Halo '+code+ ' '+name+ ' '+unit+' '+date+ ' '+create)
+        }
 
         $("#btn-new").click(function () {
             //alert('Create new button');
@@ -123,5 +113,41 @@
                 }
             });
         }
+
+        function Action(act, id) {
+            $.ajax({
+                url: '/Souvenir/' + act,
+                type: 'get',
+                data: { id: id },
+                dataType: 'html',
+                success: function (result) {
+                    $('#modal-input').find('.modal-body').html(result);
+                    $('#modal-input').modal('show');
+                },
+            })
+        }
+
+        $('#modal-input').on('submit', '#input-form', function () {
+            var vUrl = $(this).attr('action');
+            var vMethod = $(this).attr('method');
+            var vData = $(this).serialize();
+            var info = $(this).attr('name');
+            $.ajax({
+                name : name,
+                url: vUrl,
+                method: vMethod,
+                data: vData,
+                success: function (result) {
+                    if (result) {
+                        alert(info);
+                        $('#modal-input').modal('hide');
+                        GetList();
+                    } else {
+                        alert("Error ")
+                    }
+                }
+            });
+            return false;
+        });
     </script>
 }

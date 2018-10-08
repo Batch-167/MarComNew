@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompanyViewModel.cs" />
+    <Compile Include="DesignApproveViewModel.cs" />
     <Compile Include="EmployeeViewModel.cs" />
     <Compile Include="MenuAccessViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />

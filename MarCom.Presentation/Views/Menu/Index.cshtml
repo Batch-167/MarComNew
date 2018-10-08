@@ -9,7 +9,38 @@
     <div class="panel-heading">
         <div class="row">
             <div class="col-lg-12">
-                        <button type="button" id="btn-new" class="btn btn-primary btn-sm">Create New</button>                 
+                <table>
+                    <tr>
+                        <td colspan="4"></td>
+                        <td class="col-lg-2">
+                            <button id="btn-new" type="button" class="btn btn-primary btn-sm">
+                                <span> Add </span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr id="search">
+                        <td class="col-lg-3">
+                            <input id="Code" name="Code" type="text" class="form-control col-lg-2" placeholder="Menu Code" aria-controls="list-table" />
+                        </td>
+                        <td class="col-lg-3">
+                            <input id="Name" name="Name" "type=" text" class="form-control col-lg-3" placeholder="Menu Name" />
+                        </td>
+                        <td class="col-lg-2">
+                            <div class="input-group">
+                                <input id="Date" name="Date" class="form-control datepicker" placeholder="" type="date" />
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </td>
+                        <td class="col-lg-2">
+                            <input id="Create" name="Create" type="text" class="form-control" placeholder="Create" />
+                        </td>
+                        <td class="col-lg-2">
+                            <button id="btn-search" type="button" class="btn btn-warning btn-sm" onclick="Search(this)">
+                                <span>Search</span>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
@@ -22,7 +53,7 @@
     </div>
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog">
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -45,7 +76,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             GetList();
+
         });
+
 
         $("#btn-new").click(function () {
             //alert('Create new button');
@@ -73,6 +106,42 @@
                 }
             });
         }
+
+        function Action(act, id) {
+            $.ajax({
+                url: '/Menu/' + act,
+                type: 'get',
+                data: { id: id },
+                dataType: 'html',
+                success: function (result) {
+                    $('.modal-title').html(' ');
+                    $('#modal-input').find('.modal-body').html(result);
+                    $('#modal-input').modal('show');
+                },
+            });
+        }
+
+        $('#modal-input').on('submit', '#input-form', function () {
+            var vUrl = $(this).attr('action');
+            var vMethod = $(this).attr('method');
+            var vData = $(this).serialize();
+            var info = $(this).attr('name');
+            $.ajax({
+                url: vUrl,
+                method: vMethod,
+                data: vData,
+                success: function (result) {
+                    if (result.success) {
+                        alert(info);
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error");
+                    }
+                }
+            });
+            return false;
+        });
     </script>
 }
 
