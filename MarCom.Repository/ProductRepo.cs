@@ -12,22 +12,29 @@ namespace MarCom.Repository
     {
         public static List<ProductViewModel> Get()
         {
-            List<ProductViewModel> entities = new List<ProductViewModel>();
+            return Get(true);
+
+        }
+        public static List<ProductViewModel> Get(bool all)
+        {
+            List<ProductViewModel> result = new List<ProductViewModel>();
             using (var db = new MarComContext())
             {
-                entities = (from p in db.M_Product
-                            select new ProductViewModel
-                            {
-                                Id = p.Id,
-                                Code = p.Code,
-                                Name = p.Name,
-                                Description = p.Description,
-                                Is_Delete = p.Is_Delete,
-                                Create_Date = p.Create_Date,
-                                Create_By = p.Create_By
-                            }).ToList();
+                result = (from p in db.M_Product
+                          select new ProductViewModel
+                          {
+                              Id = p.Id,
+                              Code = p.Code,
+                              Name = p.Name,
+                              Description = p.Description,
+                              Is_Delete = p.Is_Delete,
+
+                              Create_Date = DateTime.Now,
+                              Create_By = "Administrator"
+                          }).Where(p => p.Is_Delete == all ? p.Is_Delete : true)
+                            .ToList();
             }
-            return entities;
+            return result;
         }
 
         public static ResultResponse Update(ProductViewModel entity)
@@ -71,8 +78,8 @@ namespace MarCom.Repository
             }
             catch (Exception ex)
             {
-
-                throw;
+                result.Success = false;
+                result.Message = ex.Message;
             }
             return result;
         }
@@ -107,6 +114,7 @@ namespace MarCom.Repository
                 using (var db = new MarComContext())
                 {
                     M_Product product = db.M_Product.Where(p => p.Id == id).FirstOrDefault();
+
                     if (product != null)
                     {
                         product.Is_Delete = true;
@@ -117,10 +125,33 @@ namespace MarCom.Repository
 
             catch (Exception)
             {
-                result = false;
+                ProductRepo.GetNewCode();
+                return false;
             }
             return result;
         }
 
+        public static string GetNewCode()
+        {
+            string newRef = "PR";
+            using (var db = new MarComContext())
+            {
+                var result = (from p in db.M_Product
+                              where p.Code.Contains(newRef)
+                              select new { code = p.Code })
+                              .OrderByDescending(o => o.code)
+                              .FirstOrDefault();
+                if (result != null)
+                {
+                    string[] oldRef = result.code.Split('R');
+                    newRef += (int.Parse(oldRef[1]) + 1).ToString("D4");
+                }
+                else
+                {
+                    newRef += "0001";
+                }
+            }
+            return newRef;
+        }
     }
 }
