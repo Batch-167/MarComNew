@@ -71,33 +71,44 @@ namespace MarCom.Presentation.Controllers
         }
 
 
-        //DELETE
-        //public ActionResult Delete(int id)
-        //{
+        public ActionResult Delete(int id)
+        {
 
-        //    RoleViewModel model = RoleRepo.GetById(id);
-        //    return View("_Delete", model);
-        //}
+            RoleViewModel model = RoleRepo.GetById(id);
+            return PartialView("_Delete", model);
+        }
 
-        ////POST
-        //[HttpPost]
-        //public ActionResult Delete(RoleViewModel model)
-        //{
-        //    return RedirectToAction("Index");
-        //}
+        //POST
+        [HttpPost]
+        public ActionResult Delete(RoleViewModel model)
+        {
+            return RedirectToAction("Index");
+        }
 
-        //[HttpPost]
-        //public ActionResult DeleteConfirm(int id)
-        //{
-        //    if (RoleRepo.Delete(id))
-        //    {
-        //        return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    else
-        //    {
-        //        return Json(new { success = false }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
+        [HttpPost]
+        public ActionResult DeleteConfirm(int id)
+        {
+            bool result = RoleRepo.Delete(id);
+
+            if (result)
+            {
+                return Json(new
+                {
+                    success = result,
+                    entity = "",
+                    message = "delete success"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = result,
+                    entity = "",
+                    message = "delete failed"
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
     }
 }

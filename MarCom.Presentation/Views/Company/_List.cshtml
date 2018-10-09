@@ -47,13 +47,13 @@
                     @Html.DisplayFor(modelItem => item.Create_By)
                 </td>
                 <td>
-                    <button type="button" class="btn btn-details" data-id="@item.Id" title="Details">
+                    <button type="button" class="btn btn-details" data-id="@item.Id" title="Details" onclick="action('details',@item.Id)" >
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-edit" data-id="@item.Id" title="Edit">
+                    <button type="button" class="btn btn-edit btn-warning" data-id="@item.Id" title="Edit" onclick="action('edit',@item.Id)">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-delete" data-id="@item.Id" title="Delete">
+                    <button type="button" class="btn btn-delete btn-danger" data-id="@item.Id" title="Delete" onclick="action('delete',@item.Id)">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </button>
                 </td>
@@ -61,46 +61,3 @@
         }
     </tbody>
 </table>
-
-
-<script type="text/javascript">
-    $(".table").DataTable();
-    $(".btn-edit").click(function () {
-        $(".modal-title").html("Edit Company");
-        $.ajax({
-            url: '@Url.Action("Edit", "Company")',
-            type: 'get',
-            data: { id: $(this).attr('data-id') },
-            success: function (result) {
-                $(".modal-body").html(result);
-                $(".modal").modal("show");
-            }
-        });
-    });
-
-    $(".btn-details").click(function () {
-        $(".modal-title").html("Details Company");
-        $.ajax({
-            url: '@Url.Action("Details", "Company")',
-            type: 'get',
-            data: { id: $(this).attr('data-id') },
-            success: function (result) {
-                $(".modal-body").html(result);
-                $(".modal").modal("show");
-            }
-        });
-    });
-
-    $(".btn-delete").click(function () {
-        $(".modal-title").html("Delete Unit");
-        $.ajax({
-            url: '@Url.Action("Delete", "Company")',
-            type: 'get',
-            data: { id: $(this).attr('data-id') },
-            success: function (result) {
-                $(".modal-body").html(result);
-                $(".modal").modal("show");
-            }
-        });
-    });
-</script>
