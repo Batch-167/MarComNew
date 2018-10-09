@@ -1,9 +1,9 @@
-﻿@model MarCom.ViewModel.EmployeeViewModel
+﻿@model MarCom.ViewModel.MenuAccessViewModel
 
-<h3>Delete Data?</h3>
+
 <div>
 
-    @using (Html.BeginForm("DeleteConfirm", "Employee", FormMethod.Post, new { @id = "input-form" }))
+    @using (Html.BeginForm("Delete","MenuAccess", FormMethod.Post, new { @id = "input-form" }))
     {
         @Html.AntiForgeryToken()
 

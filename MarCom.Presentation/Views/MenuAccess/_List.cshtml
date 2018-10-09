@@ -1,8 +1,8 @@
-﻿@model IEnumerable<MarCom.ViewModel.EmployeeViewModel>
+﻿@model IEnumerable<MarCom.ViewModel.MenuAccessViewModel>
+
 @{ 
     int row = 0;
 }
-
 <table class="table">
     <thead>
         <tr>
@@ -10,16 +10,10 @@
                 No.
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Employee_Number)
+                @Html.DisplayNameFor(model => model.RoleCode)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CompanyName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @Html.DisplayNameFor(model => model.RoleName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Create_By)
@@ -27,29 +21,23 @@
             <th>
                 @Html.DisplayNameFor(model => model.Create_Date)
             </th>
-            <th>Action</th>
+            <th>
+                Action
+            </th>
         </tr>
     </thead>
-
     <tbody>
-
         @foreach (var item in Model)
         {
             <tr>
                 <td>
-                    @( row += 1)
+                    @(row += 1)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Employee_Number)
+                    @Html.DisplayFor(modelItem => item.RoleCode)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CompanyName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
+                    @Html.DisplayFor(modelItem => item.RoleName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Create_By)
@@ -65,7 +53,7 @@
                         <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" onclick="action('edit',@item.Id)">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </button>
-                        <button type="button" class="btn btn-danger btn-delete" data-id="@item.Id" title="Delete" onclick="action('delete',@item.Id)">
+                        <button type="button" class="btn btn-warning btn-delete" data-id="@item.Id" title="Delete" onclick="action('delete',@item.Id)">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         </button>
                     </div>
@@ -74,4 +62,3 @@
         }
     </tbody>
 </table>
-

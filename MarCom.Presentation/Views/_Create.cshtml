@@ -1,21 +1,21 @@
 ﻿@model MarCom.ViewModel.EmployeeViewModel
-
 @using MarCom.Repository
-
-@{
+@{ 
     string employee_number = EmployeeRepo.GetNewCode();
 }
 
-@using (Html.BeginForm("Create", "Employee", FormMethod.Post, new { id = "input-form" }))
+
+@using (Html.BeginForm("Create", "Employee", FormMethod.Post, new { @id = "input-form"}))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
         <div class="form-group">
             @Html.LabelFor(model => model.Employee_Number, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => employee_number, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
+                @Html.EditorFor(model => employee_number, new { htmlAttributes = new { @class = "form-control", @readonly="ReadOnly"} })
                 @Html.ValidationMessageFor(model => model.Employee_Number, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -37,9 +37,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.M_Company_Id, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-              @Html.DropDownListFor(model => model.M_Company_Id, (IEnumerable<SelectListItem>)ViewBag.Company, "Select Company", new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.M_Company_Id, (IEnumerable<SelectListItem>)ViewBag.Company,"Select Company Name",new  { @class = "form-control" } )
                 @Html.ValidationMessageFor(model => model.M_Company_Id, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -53,10 +53,7 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="button" value="Cancel" class="btn btn-default" data-dismiss="modal" />
-                <input type="submit" value="Save" class="btn btn-success" />
-            </div>
+            c
         </div>
     </div>
 }

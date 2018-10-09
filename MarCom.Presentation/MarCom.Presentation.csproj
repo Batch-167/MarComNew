@@ -208,6 +208,7 @@
     <Compile Include="Controllers\MenuAccessController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\PromotionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SouvenirController.cs" />
     <Compile Include="Controllers\SouvenirStockController.cs" />
@@ -1080,6 +1081,9 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\SouvenirStock\_Edit.cshtml" />
     <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -1161,7 +1165,7 @@
     <Content Include="Views\Employee\_Edit.cshtml" />
     <Content Include="Views\Employee\_Delete.cshtml" />
     <Content Include="Views\Employee\_View.cshtml" />
-    <Content Include="Views\Employee\_Create.cshtml" />
+    <Content Include="Views\_Create.cshtml" />
     <Content Include="Views\MenuAccess\Index.cshtml" />
     <Content Include="Views\User\_Add.cshtml" />
     <Content Include="Views\SouvenirStock\Index.cshtml" />
@@ -1177,6 +1181,13 @@
     <Content Include="Views\DesignRequest\Index.cshtml" />
     <Content Include="Views\SouvenirRequest\Index.cshtml" />
     <Content Include="Views\SouvenirRequest\_List.cshtml" />
+    <Content Include="Views\MenuAccess\_Create.cshtml" />
+    <Content Include="Views\MenuAccess\_List.cshtml" />
+    <Content Include="Views\Promotion\Index.cshtml" />
+    <Content Include="Views\Promotion\_List.cshtml" />
+    <Content Include="Views\Employee\_Create.cshtml" />
+    <Content Include="Views\MenuAccess\_Edit.cshtml" />
+    <Content Include="Views\MenuAccess\_Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

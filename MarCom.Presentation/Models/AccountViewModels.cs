@@ -62,6 +62,7 @@ namespace MarCom.Presentation.Models
         public bool RememberMe { get; set; }
     }
 
+    
     public class RegisterViewModel
     {
         public RegisterViewModel()
@@ -106,6 +107,7 @@ namespace MarCom.Presentation.Models
         public string Create_By { get; set; }
 
         public DateTime Create_Date { get; set; }
+        //public string UserName { get; set; }
     }
 
     public class ResetPasswordViewModel

@@ -1,7 +1,6 @@
 ﻿@model MarCom.ViewModel.EmployeeViewModel
-
 @{
-    ViewBag.Title = "Menu Access";
+    ViewBag.Title = "List Marketing Promotion";
 }
 
 @Styles.Render("~/ AdminLTE / plugins / datatables / css")
@@ -11,17 +10,29 @@
             <div class="col-lg-12">
                 <table>
                     <tr>
-                        <td colspan="4"></td>
-                        <td>
+                        <td colspan="5"></td>
+                        <td class="col-lg-offset-11">
                             <button type="button" id="btn-new" class="btn btn-primary btn-sm">Add</button>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-lg-3">
-                            <input type="text" class="form-control" placeholder="-Select Role Code-" />
+                            <input type="text" class="form-control" placeholder="Transaction Code" />
                         </td>
-                        <td class="col-lg-3">
-                            <input type="text" class="form-control" placeholder="Role Name" />
+                        <td class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="Request By" />
+                        </td>
+                        <td class="col-lg-2">
+                            <div class="input-group">
+                                <input class="form-control datepicker" placeholder="Request Date" type="date" value="Created" />
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </td>
+                        <td class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="-Assign To-" />
+                        </td>
+                        <td class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="Status" />
                         </td>
                         <td class="col-lg-2">
                             <div class="input-group">
@@ -29,8 +40,8 @@
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
                         </td>
-                        <td class="col-lg-3">
-                            <input type="text" class="form-control" placeholder="Created By" />
+                        <td class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="Create By" />
                         </td>
                         <td class="col-lg-offset-1">
                             <button type="button" id="btn-new" class="btn btn-warning btn-sm">Search</button>
@@ -45,7 +56,6 @@
 <div class="col-lg-12" id="table-list">
     <h3>Loading...</h3>
 </div>
-
 
 
 <div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
@@ -70,35 +80,20 @@
         });
 
         $("#btn-new").click(function () {
-            $(".modal-title").html("Add Menu Access");
+            $(".modal-title").html("Add Data");
             $.ajax({
-                url: '@Url.Action("Create","MenuAccess")',
+                url: '@Url.Action("Create","Promotion")',
                 type: 'get',
                 success: function (result) {
                     $(".modal-body").html(result);
                     $(".modal").modal("show");
                 }
             });
-
         });
-
-
-        function GetList() {
-            $.ajax({
-                url: '@Url.Action("List", "MenuAccess")',
-                type: 'get',
-                success: function (result) {
-                    $("#table-list").html(result);
-                },
-                error: function (err) {
-                    $("#table-list").tml(err);
-                }
-            });
-        }
 
         function action(act, id) {
             $.ajax({
-                url: '/MenuAccess/' + act,
+                url: '/Promotion/' + act,
                 type: 'get',
                 data: { id: id },
                 dataType: 'html',
@@ -112,50 +107,39 @@
             });
         }
 
-
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
-            //var vData = $(this).serialize();
-            var roleId = $(this).find("#M_Role_Id").val();
-            var menus = [];
-            $(this).find("input[name='menu']").each(function (index) {
-                var menu = { M_Menu_Id: $(this).val() };
-                menus.push(menu);
-            });
-            var vData = { M_Role_Id: roleId, Menu: menus };
-            //console.log(vData);
-            //debugger;
+            var vData = $(this).serialize();
             $.ajax({
                 url: vUrl,
                 type: vMethod,
                 data: vData,
                 success: function (result) {
                     if (result.success) {
-                        alert("Successful! The data has been saved.");
+                        alert("Succesful! Data has been saved.");
                         $("#modal-input").modal("hide");
                         GetList();
-
                     } else {
-                        alert("Eror! Employee data has not been saved. \n" + result.message);
+                        alert("Eror! Data has not been saved. \n" + result.message);
                     }
                 }
-            })
+            });
             return false;
         });
+
+        function GetList() {
+            $.ajax({
+                url: '@Url.Action("List","Promotion")',
+                type: 'get',
+                success: function (result) {
+                    $("#table-list").html(result);
+                },
+                error: function (err) {
+                    $("#table-list").tml(err);
+                }
+            });
+        }
     </script>
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
