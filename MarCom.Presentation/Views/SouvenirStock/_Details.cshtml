@@ -1,0 +1,45 @@
+﻿@model MarCom.ViewModel.SouvenirStockViewModel
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Received_By)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.R_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Received_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Received_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+    </dl>
+    @using (Html.BeginForm("Details", "SovenirStock", FormMethod.Post, new { @id = "input-form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="button" value="Close" class="btn btn-warning" data-dismiss="modal" />
+        </div>
+    }
+</div>

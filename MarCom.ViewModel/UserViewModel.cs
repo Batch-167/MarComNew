@@ -23,6 +23,11 @@ namespace MarCom.ViewModel
         [StringLength(50)]
         public string Password { get; set; }
 
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+
         [Display(Name = "Role Name")]
         public int M_Role_Id { get; set; }
 

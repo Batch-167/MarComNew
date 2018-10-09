@@ -42,10 +42,10 @@ namespace MarCom.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Add(RegisterViewModel model)
         {
-            
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date, M_Role_Id = model.RoleId };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date, M_Role_Id = model.RoleId };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 //if (result.Succeeded)
                 //{
@@ -59,7 +59,7 @@ namespace MarCom.Presentation.Controllers
                 //    //return RedirectToAction("Index", "Home");
                 //}
                 AddErrors(result);
-            Update(user.Id, model.RoleId);
+                Update(user.Id, model.RoleId);
             }
             return RedirectToAction("Index");
             // If we got this far, something failed, redisplay form

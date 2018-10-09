@@ -44,7 +44,7 @@ namespace MarCom.Repository
                         unit.Name = entity.Name;
                         unit.Description = entity.Description;
                         unit.Is_Delete = entity.Is_Delete;
-                        unit.Create_By = "Admin";
+                        unit.Create_By = entity.Create_By;
                         
                         unit.Create_Date = DateTime.Now;
 
@@ -61,7 +61,7 @@ namespace MarCom.Repository
                             unit.Name = entity.Name;
                             unit.Description = entity.Description;
 
-                            unit.Update_By = "Admin";
+                            unit.Update_By = entity.Update_By;
                             unit.Update_Date = DateTime.Now;
                             db.SaveChanges();
                         }
@@ -138,6 +138,24 @@ namespace MarCom.Repository
                 }
             }
             return newRef;
-        } 
+        }
+
+        public static List<UnitViewModel> Filter(UnitViewModel entity)
+        {
+            List<UnitViewModel> result = new List<UnitViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from u in db.M_Unit
+                          where u.Code == entity.Code || u.Name == entity.Name ||(u.Create_Date.ToString()).Contains(entity.Create_Date.ToString()) || u.Create_By.Contains(entity.Create_By) 
+                          select new UnitViewModel
+                          {
+                              Code = u.Code,
+                              Name = u.Name,
+                              Create_By = u.Create_By,
+                              Create_Date = u.Create_Date
+                          }).ToList();
+            }
+            return result;
+        }
     }
 }

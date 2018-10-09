@@ -76,7 +76,7 @@ namespace MarCom.Presentation.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -140,7 +140,7 @@ namespace MarCom.Presentation.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
+            //ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
             return View(new RegisterViewModel());
         }
 
@@ -154,6 +154,8 @@ namespace MarCom.Presentation.Controllers
             if (ModelState.IsValid)
             { 
                 var user = new ApplicationUser { UserName=model.Email, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date };
+                var user = new ApplicationUser { UserName = model.Username, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -9,7 +9,7 @@
     string code = UnitRepo.GetNewCode();
 }
 
-@using (Html.BeginForm("Add", "Unit", FormMethod.Post, new { id = "add-form", name = "add-form" }))
+@using (Html.BeginForm("Add", "Unit", FormMethod.Post, new { @id="input-form"}))
 {
     @Html.AntiForgeryToken()
     
@@ -47,28 +47,3 @@
         </div>
     </div>
 }
-
-
-@Scripts.Render("~/bundles/jqueryval")
-
-<script type="text/javascript">
-    $("#add-form").submit(function () {
-        $.ajax({
-            url: '@Url.Action("Add", "Unit")',
-            type: this.method,
-            data: $(this).serialize(),
-            success: function (result) {
-                if (result.success) {
-                    alert("Succesful! " + result.entity.Name + " has been saved")
-                    $(".modal").modal("hide");
-                    GetList();
-                }
-                else {
-                    alert("Error! Unit has not been saved. \n" + result.message);
-                }
-            }
-        });
-        return false;
-    });
-</script>
-

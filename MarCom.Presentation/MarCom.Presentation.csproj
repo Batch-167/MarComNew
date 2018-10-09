@@ -202,6 +202,7 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\DesignRequestController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MenuAccessController.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Controllers\PromotionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SouvenirController.cs" />
+    <Compile Include="Controllers\SouvenirStockController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1077,6 +1079,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\SouvenirStock\_Edit.cshtml" />
+    <Content Include="Web.config" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1164,6 +1168,13 @@
     <Content Include="Views\_Create.cshtml" />
     <Content Include="Views\MenuAccess\Index.cshtml" />
     <Content Include="Views\User\_Add.cshtml" />
+    <Content Include="Views\SouvenirStock\Index.cshtml" />
+    <Content Include="Views\SouvenirStock\_List.cshtml" />
+    <Content Include="Views\SouvenirStock\_Add.cshtml" />
+    <Content Include="Views\SouvenirStock\_Details.cshtml" />
+    <Content Include="Views\Event\Index.cshtml" />
+    <Content Include="Views\Event\_List.cshtml" />
+    <Content Include="Views\Event\_Add.cshtml" />
     <Content Include="Views\DesignRequest\_Approve.cshtml" />
     <Content Include="Views\DesignRequest\_Create.cshtml" />
     <Content Include="Views\DesignRequest\_List.cshtml" />
