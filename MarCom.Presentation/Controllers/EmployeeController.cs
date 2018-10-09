@@ -5,20 +5,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace MarCom.Presentation.Controllers
 {
+    //[Authorize]
     public class EmployeeController : Controller
     {
         // GET: Employee
         public ActionResult Index()
         {
+            ViewBag.CompanyName = new SelectList(CompanyRepo.Get(), "Name", "Name");
             return View();
         }
+
+        //public ActionResult Filter()
+        //{
+        //    return PartialView("_List", EmployeeRepo.Filter());
+        //}
+
 
         // GET: List
         public ActionResult List()
         {
+            
             return PartialView("_List", EmployeeRepo.Get());
         }
 
@@ -31,7 +41,7 @@ namespace MarCom.Presentation.Controllers
         // GET : Create
         public ActionResult Create()
         {
-            ViewBag.Company = new SelectList(EmployeeRepo.Get(), "id","Name");
+            ViewBag.Company = new SelectList(CompanyRepo.Get(), "id","Name");
             return PartialView("_Create", new EmployeeViewModel());
         }
 
@@ -39,6 +49,7 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Create(EmployeeViewModel model)
         {
+            //model.Create_By = User.Identity.Name;
             ResultResponse result = EmployeeRepo.Update(model);
             return Json(new
             {
@@ -51,8 +62,9 @@ namespace MarCom.Presentation.Controllers
         //GET : Edit
         public ActionResult Edit(int id)
         {
+            ViewBag.Company = new SelectList(CompanyRepo.Get(), "id", "Name");
             EmployeeViewModel model = EmployeeRepo.GetById(id);
-            return View("_Edit", model);
+            return PartialView("_Edit", model);
         }
         //POST: edit
         [HttpPost]
@@ -85,13 +97,25 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult DeleteConfirm(int id)
         {
-            if (EmployeeRepo.Delete(id))
+            bool result = EmployeeRepo.Delete(id);
+            
+            if (result)
             {
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = result,
+                    entity = "null",
+                    message = "Delete Success"
+                }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = result,
+                    entity = "null",
+                    message = "Delete Failed"
+                }, JsonRequestBehavior.AllowGet);
             }
         }
 

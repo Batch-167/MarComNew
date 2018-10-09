@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace MarCom.Presentation.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class SouvenirController : Controller
     {
         // GET: Souvenir
