@@ -62,12 +62,14 @@ namespace MarCom.Presentation.Models
         public bool RememberMe { get; set; }
     }
 
+    
     public class RegisterViewModel
     {
         public RegisterViewModel()
         {
             Is_Delete = false;
             Create_By = "Admin";
+            Create_Date = DateTime.Now;
         }
         [Required]
         [EmailAddress]
@@ -82,6 +84,7 @@ namespace MarCom.Presentation.Models
 
         public int Id { get; set; }
        
+
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
@@ -105,6 +108,7 @@ namespace MarCom.Presentation.Models
         public string Create_By { get; set; }
 
         public DateTime Create_Date { get; set; }
+        //public string UserName { get; set; }
     }
 
     public class ResetPasswordViewModel

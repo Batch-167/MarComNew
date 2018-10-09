@@ -154,6 +154,8 @@ namespace MarCom.Presentation.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date };
+            { 
+                var user = new ApplicationUser { UserName=model.Email, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -10,7 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace MarCom.Presentation.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class SouvenirController : Controller
     {
         // GET: Souvenir

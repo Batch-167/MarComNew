@@ -10,6 +10,10 @@ namespace MarCom.ViewModel
 {
     public class MenuAccessViewModel
     {
+
+        [DisplayName("Menu Name")]
+        public int M_Menu_Id { get; set; }
+
         public MenuAccessViewModel()
         {
             Is_Delete = false;
@@ -17,12 +21,17 @@ namespace MarCom.ViewModel
         public int Id { get; set; }
 
         [DisplayName("Role Code")]
+        public string RoleCode { get; set; }
+
+        [DisplayName("Role Name")]
         public int M_Role_Id { get; set; }
 
         [DisplayName("Role Name")]
         public string RoleName { get; set; }
 
-        public int M_Menu_Id { get; set; }
+        [DisplayName("Menu Name")]
+        public string MenuName { get; set; }
+
 
         public bool Is_Delete { get; set; }
 
@@ -33,5 +42,9 @@ namespace MarCom.ViewModel
 
         [DisplayName("Create Date")]
         public DateTime Create_Date { get; set; }
+
+        public List<MenuAccessViewModel> Menu { get; set; }
+
+        
     }
 }

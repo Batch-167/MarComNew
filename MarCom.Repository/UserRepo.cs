@@ -68,7 +68,10 @@ namespace MarCom.Repository
                         if (user != null)
                         {
                             user.UserName = entity.Username;
-                            user.PasswordHash = entity.Password;
+                            if (!string.IsNullOrEmpty(entity.Password))
+                            {
+                                user.PasswordHash = entity.Password;
+                            }
                             user.M_Employee_Id = entity.M_Employee_Id;
                             user.Is_Delete = entity.Is_Delete;
 
