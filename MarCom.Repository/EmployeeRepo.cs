@@ -162,16 +162,33 @@ namespace MarCom.Repository
             }
         }
 
-        //public static List<EmployeeViewModel> Filter()
-        //{
-        //    List<EmployeeViewModel> result = new List<EmployeeViewModel>();
-        //    using (var db = new MarComContext())
-        //    {
-        //        result = (from e in db.M_Employee
-        //                  where e.Employee_Number.Contains(employee_number)
-        //                  )
-        //    } 
-        //}
+        public static List<EmployeeViewModel> Filter(EmployeeViewModel entity)
+        {
+            List<EmployeeViewModel> result = new List<EmployeeViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from e in db.M_Employee
+                          join c in db.M_Company on e.M_Company_Id equals c.Id
+                          where e.Employee_Number.Contains(entity.Employee_Number) || e.First_Name.Contains(entity.FullName) && e.Last_Name.Contains(entity.FullName) || e.M_Company_Id == entity.M_Company_Id || e.Create_By.Contains(entity.Create_By) || c.Create_Date==entity.Create_Date
+
+                          select new EmployeeViewModel
+                          {
+                              Id = e.Id,
+                              Employee_Number=e.Employee_Number,
+                              First_Name=e.First_Name,
+                              Last_Name=e.Last_Name,
+                              M_Company_Id = e.M_Company_Id,
+                              CompanyName = c.Name,
+                              Email = e.Email,
+                              Is_Delete = e.Is_Delete,
+
+                              Create_By = "Princess",
+                              Create_Date = DateTime.Now
+
+                          }).ToList();
+            }
+            return result;
+        }
 
     }
 }

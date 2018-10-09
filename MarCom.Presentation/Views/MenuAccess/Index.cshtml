@@ -116,7 +116,16 @@
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
-            var vData = $(this).serialize();
+            //var vData = $(this).serialize();
+            var roleId = $(this).find("#M_Role_Id").val();
+            var menus = [];
+            $(this).find("input[name='menu']").each(function (index) {
+                var menu = { M_Menu_Id: $(this).val() };
+                menus.push(menu);
+            });
+            var vData = { M_Role_Id: roleId, Menu: menus };
+            //console.log(vData);
+            //debugger;
             $.ajax({
                 url: vUrl,
                 type: vMethod,
@@ -132,7 +141,8 @@
                     }
                 }
             })
-            });
+            return false;
+        });
     </script>
 }
 

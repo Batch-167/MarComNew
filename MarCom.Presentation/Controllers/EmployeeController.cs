@@ -19,10 +19,11 @@ namespace MarCom.Presentation.Controllers
             return View();
         }
 
-        //public ActionResult Filter()
-        //{
-        //    return PartialView("_List", EmployeeRepo.Filter());
-        //}
+        [HttpPost]
+        public ActionResult Filter(EmployeeViewModel model)
+        {
+            return PartialView("_List", EmployeeRepo.Filter(model));
+        }
 
 
         // GET: List

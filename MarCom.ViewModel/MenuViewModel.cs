@@ -35,13 +35,9 @@ namespace MarCom.ViewModel
 
         [DisplayName("Created")]
         [StringLength(50), Required]
-        [DisplayName("Created By")]
-        [Required]
-        [StringLength(50)]
         public string Create_By { get; set; }
 
         [DisplayName("Create Date")]
-        [DisplayName("Created")]
         public DateTime Create_Date { get; set; }
 
         [DisplayName("Update By")]

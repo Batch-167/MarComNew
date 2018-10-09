@@ -23,7 +23,7 @@ namespace MarCom.Repository
                               Id = ma.Id,
                               M_Role_Id = ma.M_Role_Id,
                               RoleName = r.Name,
-                              RoleCode=r.Code,
+                              RoleCode = r.Code,
                               M_Menu_Id = ma.M_Menu_Id,
                               MenuName = m.Name,
 
@@ -45,15 +45,18 @@ namespace MarCom.Repository
                 {
                     if (entity.Id == 0)
                     {
-                        M_Menu_Access menuaccess = new M_Menu_Access();
-                        menuaccess.M_Role_Id = entity.M_Role_Id;
-                        menuaccess.M_Menu_Id = entity.M_Menu_Id;
-                        menuaccess.Is_Delete = entity.Is_Delete;
+                        foreach (var item in entity.Menu)
+                        {
+                            M_Menu_Access menuaccess = new M_Menu_Access();
+                            menuaccess.M_Role_Id = entity.M_Role_Id;
+                            menuaccess.M_Menu_Id = item.M_Menu_Id;
+                            menuaccess.Is_Delete = entity.Is_Delete;
 
-                        menuaccess.Create_By = "Princess";
-                        menuaccess.Create_Date = DateTime.Now;
+                            menuaccess.Create_By = "Princess";
+                            menuaccess.Create_Date = DateTime.Now;
 
-                        db.M_Menu_Access.Add(menuaccess);
+                            db.M_Menu_Access.Add(menuaccess);
+                        }
                         db.SaveChanges();
                     }
                     else
@@ -103,7 +106,7 @@ namespace MarCom.Repository
         //    }
         //    return result;
         //}
-        
+
         public static MenuAccessViewModel GetById(int id)
         {
             MenuAccessViewModel result = new MenuAccessViewModel();
@@ -118,8 +121,8 @@ namespace MarCom.Repository
                               Id = ma.Id,
                               M_Menu_Id = ma.M_Menu_Id,
                               M_Role_Id = ma.M_Role_Id,
-                              RoleCode=r.Code,
-                              MenuName=m.Name,
+                              RoleCode = r.Code,
+                              MenuName = m.Name,
                           }).FirstOrDefault();
             }
             return result;
@@ -130,7 +133,7 @@ namespace MarCom.Repository
             bool result = true;
             try
             {
-                using (var db=new MarComContext())
+                using (var db = new MarComContext())
                 {
                     M_Menu_Access menuaccess = db.M_Menu_Access.Where(e => e.Id == id).FirstOrDefault();
                     if (menuaccess != null)
