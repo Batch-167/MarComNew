@@ -1188,6 +1188,7 @@
     <Content Include="Views\Employee\_Create.cshtml" />
     <Content Include="Views\MenuAccess\_Edit.cshtml" />
     <Content Include="Views\MenuAccess\_Delete.cshtml" />
+    <Content Include="Views\DesignRequest\_ProductList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

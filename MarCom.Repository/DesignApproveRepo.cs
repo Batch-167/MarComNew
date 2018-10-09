@@ -64,5 +64,31 @@ namespace MarCom.Repository
             }
             return result;
         }
+
+        public static List<DesignItemViewModel> Get(int id)
+        {
+            List<DesignItemViewModel> result = new List<DesignItemViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from di in db.T_Design_Item
+                          join d in db.T_Design on di.T_Design_Id equals d.Id
+                          join p in db.M_Product on di.M_Product_Id equals p.Id
+                          where di.T_Design_Id == id
+                          select new DesignItemViewModel
+                          {
+                              Id = di.Id,
+                              T_Design_Id = di.T_Design_Id,
+                              ProductName = p.Name,
+                              Description = p.Description,
+                              Title_Item = di.Title_Item,
+                              Request_Pic = di.Request_Pic,
+                              Request_Due_Date = di.Request_Due_Date,
+                              Start_Date = di.Start_Date,
+                              End_Date = di.End_Date,
+                              Note = di.Note,
+                          }).ToList();
+            }
+         return result;
+        }
     }
 }

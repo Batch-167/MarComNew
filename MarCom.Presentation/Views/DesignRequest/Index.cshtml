@@ -60,11 +60,12 @@
 
 
 
-<div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
-    <div class="modal-dialog" role="document">
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" id="modal-input">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-header bg-blue">
+                <h4 class="text-bold">Approval Design Request</h4>
+                <button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
@@ -99,35 +100,35 @@
                     $("#table-list").html(result);
                 },
                 error: function (err) {
-                    $("#table-list").tml(err);
+                    $("#table-list").html(err);
                 }
+            });
+        }
+
+        function GetItemList(id) {
+            $.ajax({
+                url: '@Url.Action("ProductList","DesignRequest")',
+                type: 'get',
+                data: {id: id},
+                success: function (result) {
+                    $("#productitem-list").html(result);
+                },
+                error: function (err) {
+                    $("#productitem-list").html(result);
+                },
             });
         }
 
         function action(act, id) {
             $.ajax({
-                url: '/DesignRequest/'+act,
+                url: '/DesignRequest/' + act,
                 type: 'get',
                 data: { id: id },
                 dataType: 'html',
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
                     $('#modal-input').modal('show');
-                },
-                error: function (err) {
-                    $("#table-list").tml(err);
-                }
-            });
-        }
-        function action(act, id) {
-            $.ajax({
-                url: '/DesignProduct/' + act,
-                type: 'get',
-                data: { id: id },
-                dataType: 'html',
-                success: function (result) {
-                    $('#modal-input').find('.modal-body').html(result);
-                    $('#modal-input').modal('show');
+                    GetItemList(id);
                 },
                 error: function (err) {
                     $("#table-list").tml(err);
@@ -158,45 +159,13 @@
             return false;
         });
 
-        //$(function () {
-        //    $("#datepicker").datepicker({ minDate: 0 });
-        //});
-        $("#modal-input").on("submit", "#input-form", function () {
-            var vUrl = $(this).attr('action');
-            var vMethod = $(this).attr('method');
-            var vData = $(this).serialize();
-            var name = $(this).attr('name');
-            var name2 = $(this).attr('name2');
-            $.ajax({
-                url: vUrl,
-                type: vMethod,
-                data: vData,
-                success: function (result) {
-                    if (result.success) {
-                        alert(name + " " + result.entity.Code + " " + name2);
-                        $("#modal-input").modal("hide");
-                        GetList();
-                    } else {
-                        alert("Eror!\n" + result.message);
-                    }
-                }
-            });
-            return false;
-        });
-
-        function Approve(id) {
-            if (id==2) {
-                var data = {
-                    assign_to: $('#assignto').val(),
-                    status: id,
-                };
-            } else if (id==0) {
-                var data = {
-                    reject_reason: $('#reject-reason').val(),
-                    status: id,
-                    id : $('#request-id').val(),
-                };
-            }
+        function Approve(stats) {
+            var data = {
+                assign_to: $('#assignto').val(),
+                status: stats,
+                reject_reason: $('#reject-reason').val(),
+                id: $('#request-id').val(),
+            };
             $.ajax({
                 url: '@Url.Action("Approve","DesignRequest")',
                 type: 'post',
@@ -206,7 +175,9 @@
                         $("#reason-input").modal("hide");
                         $("#modal-input").modal("hide");
                         GetList();
-                    };
+                    } else {
+                        alert("Error")
+                    }
                 }
             });
         };

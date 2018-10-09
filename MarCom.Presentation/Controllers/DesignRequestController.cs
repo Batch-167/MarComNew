@@ -90,5 +90,10 @@ namespace MarCom.Presentation.Controllers
             }
         return result;
         }
+
+        public ActionResult ProductList (int id)
+        {
+            return PartialView("_ProductList", DesignApproveRepo.Get(id));
+        }
     }
 }

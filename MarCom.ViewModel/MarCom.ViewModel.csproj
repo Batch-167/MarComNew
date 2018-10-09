@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="CompanyViewModel.cs" />
     <Compile Include="DesignApproveViewModel.cs" />
+    <Compile Include="DesignItemViewModel.cs" />
     <Compile Include="DesignRequestViewModel.cs" />
     <Compile Include="EmployeeViewModel.cs" />
     <Compile Include="EventApproveViewModel.cs" />
