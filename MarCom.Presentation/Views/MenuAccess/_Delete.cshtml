@@ -1,0 +1,16 @@
+﻿@model MarCom.ViewModel.MenuAccessViewModel
+
+
+<div>
+
+    @using (Html.BeginForm("Delete","MenuAccess", FormMethod.Post, new { @id = "input-form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="button" value="Cancel" class="btn btn-warning" data-dismiss="modal" />
+            <input type="submit" id="btn-delete" value="Delete" class="btn btn-primary" data-id="@Model.Id" />
+        </div>
+    }
+</div>

@@ -13,6 +13,8 @@ namespace MarCom.ViewModel
         public DesignRequestViewModel()
         {
             Is_Delete = false;
+            Request_Date = DateTime.Now;
+            Create_Date = DateTime.Now;
         }
         public int Id { get; set; }
 
@@ -21,7 +23,9 @@ namespace MarCom.ViewModel
         [StringLength(50)]
         public string Code { get; set; }
 
-        public int T_Event_Id { get; set; }
+        //public int T_Event_Id { get; set; }
+
+        //public string EventCode { get; set; }
 
         [DisplayName("Design Title")]
         [Required]
@@ -30,6 +34,8 @@ namespace MarCom.ViewModel
 
         [DisplayName("Request By")]
         public int Request_By { get; set; }
+
+        public string NameRequest { get; set; }
 
         [DisplayName("Request Date")]
         public DateTime Request_Date { get; set; }

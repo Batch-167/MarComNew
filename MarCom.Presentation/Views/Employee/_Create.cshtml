@@ -1,17 +1,21 @@
 ﻿@model MarCom.ViewModel.EmployeeViewModel
 
+@using MarCom.Repository
 
-@using (Html.BeginForm("Create", "Employee", FormMethod.Post, new { id = "create-form", name = "create-form" }))
+@{
+    string employee_number = EmployeeRepo.GetNewCode();
+}
+
+@using (Html.BeginForm("Create", "Employee", FormMethod.Post, new { id = "input-form" }))
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
-
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Employee_Number, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Employee_Number, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => employee_number, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
                 @Html.ValidationMessageFor(model => model.Employee_Number, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -35,8 +39,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.CompanyName, (IEnumerable<SelectListItem>)ViewBag.Company,"Select Company Name",new  { @class = "form-control" } )
-                @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+              @Html.DropDownListFor(model => model.M_Company_Id, (IEnumerable<SelectListItem>)ViewBag.Company, "Select Company", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.M_Company_Id, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -48,59 +52,11 @@
             </div>
         </div>
 
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.Is_Delete, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.Is_Delete)
-                        @Html.ValidationMessageFor(model => model.Is_Delete, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>*@
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.Create_By, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Create_By, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Create_By, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Create_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Create_Date, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Create_Date, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
         <div class="form-group">
-            <div class="col-md-4 col-md-offset-8">
+            <div class="col-md-offset-2 col-md-10">
                 <input type="button" value="Cancel" class="btn btn-default" data-dismiss="modal" />
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </div>
     </div>
 }
-
-@Scripts.Render("~/bundles/jqueryval")
-
-<script type="text/javascript">
-    $("#create-form").submit(function () {
-        $.ajax({
-            url: '@Url.Action("Create", "Employee")',
-            type: this.method,
-            data: $(this).serialize(),
-            success: function (result) {
-                if (result.success) {
-                    alert("Succesful! Employee data has been saved.");
-                    $(".modal").modal("hide");
-                    GetList();
-                } else {
-                    alert("Eror! Employee data has not been saved. \n" + result.message);
-                }
-            }
-        });
-        return false;
-    });
-</script>

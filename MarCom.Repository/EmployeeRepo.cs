@@ -12,10 +12,15 @@ namespace MarCom.Repository
     {
         public static List<EmployeeViewModel> Get()
         {
+            return Get(true);
+        }
+        public static List<EmployeeViewModel> Get(bool yes)
+        {
             List<EmployeeViewModel> result = new List<EmployeeViewModel>();
             using (var db = new MarComContext())
             {
                 result = (from e in db.M_Employee
+                          join c in db.M_Company on e.M_Company_Id equals c.Id
                           select new EmployeeViewModel
                           {
                               Id = e.Id,
@@ -23,11 +28,14 @@ namespace MarCom.Repository
                               First_Name = e.First_Name,
                               Last_Name = e.Last_Name,
                               M_Company_Id = e.M_Company_Id,
+                              CompanyName=c.Name,
                               Email = e.Email,
                               Is_Delete = e.Is_Delete,
-                              Create_By = e.Create_By,
-                              Create_Date = e.Create_Date
-                          }).ToList();
+                              Create_By = "Princess",
+                              Create_Date = DateTime.Now
+                          })
+                          .Where(e=>e.Is_Delete== yes? e.Is_Delete : true)
+                          .ToList();
             }
             return result;
         }
@@ -42,6 +50,7 @@ namespace MarCom.Repository
                     if (entity.Id == 0)
                     {
                         M_Employee employee = new M_Employee();
+                        
                         employee.Employee_Number = entity.Employee_Number;
                         employee.First_Name = entity.First_Name;
                         employee.Last_Name = entity.Last_Name;
@@ -49,6 +58,7 @@ namespace MarCom.Repository
                         employee.Email = entity.Email;
                         employee.Is_Delete = entity.Is_Delete;
                         employee.Create_By = "Princess";
+                        //employee.Create_By = entity.Create_By;
                         employee.Create_Date = DateTime.Now;
 
                         db.M_Employee.Add(employee);
@@ -65,6 +75,7 @@ namespace MarCom.Repository
                             employee.Email = entity.Email;
 
                             employee.Update_By = "Princess";
+                            //employee.Update_By = entity.Create_By;
                             employee.Update_Date = DateTime.Now;
 
                             db.SaveChanges();
@@ -86,13 +97,16 @@ namespace MarCom.Repository
             using (var db = new MarComContext())
             {
                 result = (from e in db.M_Employee
+                          join c in db.M_Company on e.M_Company_Id equals c.Id
                           where e.Id == id
                           select new EmployeeViewModel
                           {
                               Id = e.Id,
+                              Employee_Number=e.Employee_Number,
                               First_Name = e.First_Name,
                               Last_Name = e.Last_Name,
                               M_Company_Id = e.M_Company_Id,
+                              CompanyName=c.Name,
                               Email = e.Email
                           }).FirstOrDefault();
             }
@@ -120,5 +134,61 @@ namespace MarCom.Repository
             }
             return result;
         }
+
+        public static string GetNewCode()
+        {
+            string year = DateTime.Now.ToString("yy");
+            string month = DateTime.Now.Month.ToString("D2");
+            string date = DateTime.Now.Day.ToString("D2");
+            string newRef = year + "." + month + "." + date + ".";
+
+            using (var db = new MarComContext())
+            {
+                var result = (from e in db.M_Employee
+                              where e.Employee_Number.Contains(newRef)
+                              select new {employee_number = e.Employee_Number })
+                              .OrderByDescending(o => o.employee_number)
+                              .FirstOrDefault();
+                if (result !=null)
+                {
+                    string[] oldRef = result.employee_number.Split('.');
+                    newRef += (int.Parse(oldRef[3]) + 1).ToString("D2");
+                }
+                else
+                {
+                    newRef += "01";
+                }
+                return newRef;
+            }
+        }
+
+        public static List<EmployeeViewModel> Filter(EmployeeViewModel entity)
+        {
+            List<EmployeeViewModel> result = new List<EmployeeViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from e in db.M_Employee
+                          join c in db.M_Company on e.M_Company_Id equals c.Id
+                          where e.Employee_Number.Contains(entity.Employee_Number) || e.First_Name.Contains(entity.FullName) && e.Last_Name.Contains(entity.FullName) || e.M_Company_Id == entity.M_Company_Id || e.Create_By.Contains(entity.Create_By) || c.Create_Date==entity.Create_Date
+
+                          select new EmployeeViewModel
+                          {
+                              Id = e.Id,
+                              Employee_Number=e.Employee_Number,
+                              First_Name=e.First_Name,
+                              Last_Name=e.Last_Name,
+                              M_Company_Id = e.M_Company_Id,
+                              CompanyName = c.Name,
+                              Email = e.Email,
+                              Is_Delete = e.Is_Delete,
+
+                              Create_By = "Princess",
+                              Create_Date = DateTime.Now
+
+                          }).ToList();
+            }
+            return result;
+        }
+
     }
 }

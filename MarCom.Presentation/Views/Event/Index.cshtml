@@ -1,0 +1,172 @@
+﻿
+@{
+    ViewBag.Title = "Event";
+}
+
+@Styles.Render("~/AdminLTE/plugins/datatables/css")
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <div>
+            <div>
+                <table>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td col-lg-11></td>
+                        <td>
+                            <button type="button" id="btn-new" class="btn btn-primary btn-sm" style="width:60px">Add</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="col-lg-2">
+                            <input id="Code" name="CompCode" type="text" class="form-control" placeholder="Company Code" />
+                        </td>
+                        <td class="col-lg-3">   
+                            <input id="Name" name="CompName" type="text" class="form-control text-box single-line" placeholder="Company Name" />
+                        </td>
+                        <td class="col-lg-3">
+                            <div class="input-group">
+                                <input id="Date" class="form-control datepicker" type="date" value="Created" />
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </td>
+                        <td class="col-lg-3">
+                            <input id="Create" name="CompCreate" type="text" class="form-control text-box single-line" placeholder="Created By" />
+                        </td>
+                        <td>
+                            <button id="btn-search" type="button" onclick="Search()" class="btn btn-default btn-sm" style="width:60px">Search</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-12" id="table-list">
+                <h3>  Loading... </h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+@section Scripts{
+    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //   alert('Hi, this is me')
+            GetList();
+
+        });
+
+        $("#btn-new").click(function () {
+            $(".modal-title").html("Create New Event");
+            $.ajax({
+                url: '@Url.Action("Add", "Event")',
+                type: 'get',
+                success: function (result) {
+                    $(".modal-body").html(result);
+                    $(".modal").modal("show");
+                }
+
+            });
+        });
+
+        $("#btn-search").click(function Search() {
+            var data = {
+                code: $("#Code").val(),
+                name: $("#Name").val(),
+                date: $("#Date").val(),
+                create: $("#Create").val(),
+
+            };
+            $.ajax({
+                url: '@Url.Action("Filter","Company")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    $("#table-list").html(result);
+                },
+                error: function (err) {
+                    $("table-list").html(result);
+                }
+            });
+        });
+
+
+        function GetList() {
+            $.ajax({
+                url: '@Url.Action("List","Event")',
+                type: 'get',
+                success: function (result) {
+                    $("#table-list").html(result);
+
+                },
+                error: function (err) {
+                    $("#table-list").html(err);
+                }
+            });
+        }
+
+        function action(act, id) {
+            $.ajax({
+                url: '/Event/' + act,
+                type: 'get',
+                data: { id: id },
+                dataType: 'html',
+                success: function (result) {
+                    $('#modal-input').find('.modal-body').html(result);
+                    $('#modal-input').modal('show');
+                },
+
+                error: function (err) {
+                    $('#table-list').tml(err);
+                }
+            });
+        }
+
+        $('#modal-input').on('submit', '#input-form', function () {
+            var vUrl = $(this).attr('action');
+            var vMethod = $(this).attr('method');
+            var vData = $(this).serialize();
+            $.ajax({
+                url: vUrl,
+                type: vMethod,
+                data: vData,
+                success: function (result) {
+                    if (result.success) {
+                        alert("Data change for " + result.entity.Code + " been saved!");
+                        $('#modal-input').modal('hide');
+                        GetList();
+                    } else {
+                        alert("Error! Change has not been saved. \n" + result.message);
+                    }
+                }
+            });
+            return false;
+        });
+    </script>
+}

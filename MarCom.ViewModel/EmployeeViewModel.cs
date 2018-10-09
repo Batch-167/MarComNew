@@ -12,7 +12,7 @@ namespace MarCom.ViewModel
     {
         public EmployeeViewModel()
         {
-            Is_Delete = true;
+            Is_Delete = false;
         }
         public int Id { get; set; }
 
@@ -36,7 +36,7 @@ namespace MarCom.ViewModel
         {
             get
             {
-                return First_Name + (String.IsNullOrEmpty(Last_Name) ? "" : "" + Last_Name);
+                return First_Name + (String.IsNullOrEmpty(Last_Name) ? " " : " " + Last_Name);
             }
         }
 

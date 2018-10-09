@@ -1,55 +1,61 @@
 ﻿@model MarCom.ViewModel.EmployeeViewModel
+@{
+    ViewBag.Title = "List Employee";
+}
 
+@Scripts.Render("~/AdminLTE/plugins/datatables/css")
 
-@Styles.Render("~/ AdminLTE / plugins / datatables / css")
 <div class="panel panel-danger">
     <div class="panel-heading">
         <div class="row">
-            <div class="col-offset-11">
-                <h3>List Employee</h3>
-            </div>
-        </div>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-lg-offset-11">
-                <button type="button" id="btn-new" class="btn btn-primary btn-sm">Add</button>
-            </div>
-            <div class="row">
-                <div class="col-xs-2">
-                    <input type="text" class="form-control" placeholder="Employee ID Number" />
-                </div>
-                <div class="col-xs-2">
-                    <input type="text" class="form-control" placeholder="Employee Name" />
-                </div>
-                <div class="col-xs-2">
-                    <input type="text" class="form-control" placeholder="Select Company Name" />
-                </div>
-                <div class="col-xs-2">
-                    <input type="text" class="form-control" placeholder="Created" />
-                </div>
-                <div class="col-xs-2">
-                    <input type="text" class="form-control" placeholder="Created By" />
-                </div>
-                <div class="col-lg-offset-11">
-                    <button type="button" id="btn-new" class="btn btn-warning btn-sm">Search</button>
-                </div>
-
-            </div>
-            <div class="col-lg-12" id="table-list">
-                <h3>Loading...</h3>
+            <div class="col-lg-12">
+                <table>
+                    <tr>
+                        <td colspan="5"></td>
+                        <td>
+                            <button type="button" id="btn-new" class="btn btn-primary btn-sm" title="Add New">Add</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-lg-3">
+                            <input id="Employee_Number" name="Employee_Number" type="text" class="form-control text-box single-line" placeholder="Employee ID Number" />
+                        </td>
+                        <td class="col-lg-3">
+                            <input id="FullName" name="FullName" type="text" class="form-control text-box single-line" placeholder="Employee Name" />
+                        </td>
+                        <td class="col-lg-3">
+                            @Html.DropDownListFor(model => model.M_Company_Id, (IEnumerable<SelectListItem>)ViewBag.CompanyName,"-Select Company Name-", new{@id="CompanyName", @class="form-control"})
+                        </td>
+                        <td class="col-lg-1">
+                            <div class="input-group">
+                                <input class="form-control datepicker" id="Create_Date" placeholder="Created" type="date" value="Created" />
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </td>
+                        <td class="col-lg-2">
+                            <input id="Created_By" name="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
+                        </td>
+                        <td class="col-lg-offset-1">
+                            <button type="button" id="btn-search" class="btn btn-warning btn-sm">Search</button>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
 </div>
 
+<div class="col-lg-12" id="table-list">
+    <h3>Loading...</h3>
+</div>
 
-<div class="modal fade" tabindex="-1" role="dialog">
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
             </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
@@ -66,7 +72,6 @@
         });
 
         $("#btn-new").click(function () {
-            $(".modal-title").html("Add Employee");
             $.ajax({
                 url: '@Url.Action("Create","Employee")',
                 type: 'get',
@@ -89,15 +94,65 @@
                 }
             });
         }
+
+        function action(act, id) {
+            $.ajax({
+                url: '/Employee/' + act,
+                type: 'get',
+                data: { id: id },
+                dataType: 'html',
+                success: function (result) {
+                    $('#modal-input').find('.modal-body').html(result);
+                    $('#modal-input').modal('show');
+                },
+                error: function (err) {
+                    $("#table-list").tml(err);
+                }
+            });
+        }
+
+        $("#btn-search").click(function Search() {
+            var data = {
+                employee_number: $("Employee_Number").val(),
+                fullname: $("FullName").val(),
+                companyname: $("CompanyName").val(),
+                create_date: $("Create_Date").val(),
+                create_by: $("Created_By").val(),
+            };
+
+            $.ajax({
+                url: '@Url.Action("Filter","Employee")',
+                type: 'post',
+                data: 'data',
+                success: function (result) {
+                    $("#table-list").html(result);
+                },
+                error: function (err) {
+                    $("table - list").html(result);
+                }
+            });
+        });
+
+
+        $("#modal-input").on("submit", "#input-form", function () {
+            var vUrl = $(this).attr('action');
+            var vMethod = $(this).attr('method');
+            var vData = $(this).serialize();
+            $.ajax({
+                url: vUrl,
+                type: vMethod,
+                data: vData,
+                success: function (result) {
+                    if (result.success) {
+                        alert("Successful! The data has been saved.");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Eror! Product has not been saved. \n" + result.message);
+                    }
+                }
+            });
+            return false;
+        });
     </script>
 }
-
-
-
-
-
-
-
-
-
-

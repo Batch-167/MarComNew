@@ -1,0 +1,151 @@
+﻿@Styles.Render("~/AdminLTE/plugins/datatables/css")
+
+@{
+    ViewBag.Title = "SouvenirStock";
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-12">
+                List Souvenir Stock
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <ol class="breadcrumb">
+            <li><a href="Home">Home</a></li>
+            <li><a href="Master">Master</a></li>
+            <li class="active">List Souvenir Stock</li>
+        </ol>
+        <table>
+            <tr>
+                <td colspan="5"></td>
+                <td>
+                    <button type="button" id="btn-new" class="btn btn-primary btn-sm">Add</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-lg-2">
+                    <input name="TransCode" type="text" class="form-control" placeholder="Transaction Code" />
+                </td>
+                <td class="col-lg-3">
+                    <input name="TransvName" type="text" class="form-control text-box single-line" placeholder="Received By" />
+                </td>
+                <td class="col-lg-2">
+                    <div class="input-group">
+                        <input class="form-control datepicker" placeholder="Received Date" type="date" value="ReceivedDate" />
+                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </td>
+                <td class="col-lg-2">
+                    <div class="input-group">
+                        <input class="form-control datepicker" placeholder="Created" type="date" value="Created" />
+                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </td>
+                <td class="col-lg-2">
+                    <input name="TransName" type="text" class="form-control text-box single-line" placeholder="Create By" />
+                </td>
+                <td>
+                    <button type="button" id="btn-new" class="btn btn-warning btn-sm">Search</button>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <div class="row" id="table-list">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                    <span class="sr-only">45% Complete</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @*<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">@ViewBag.title</h4>
+            </div>*@
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+@section Scripts{
+    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+    <script type="text/javascript">
+        //(".table").DataTable();
+        $(document).ready(function () {
+            GetList();
+        });
+
+        function GetList() {
+            $.ajax({
+                url: '@Url.Action("List", "SouvenirStock")',
+                type: 'get',
+                success: function (result) {
+                    $("#table-list").html(result);
+                },
+                error: function (err) {
+                    $("#table-list").html(err);
+                }
+            });
+        }
+
+        $("#btn-new").click(function () {
+            $(".modal-title").html("Add Souvenir Stock");
+            $.ajax({
+                url: '@Url.Action("Add", "SouvenirStock")',
+                type: 'get',
+                success: function (result) {
+                    $(".modal-body").html(result);
+                    $(".modal").modal("show");
+                }
+            });
+        });
+
+        function action(act, id) {
+            $.ajax({
+                url: '/SouvenirStock/' + act,
+                type: 'get',
+                data: { id: id },
+                dataType: 'html',
+                success: function (result) {
+                    $('#modal-input').find('.modal-body').html(result);
+                    $('#modal-input').modal('show');
+                },
+                error: function (err) {
+                    $('#table-list').tml(err);
+                }
+            });
+        }
+
+        $('#modal-input').on("submit", "#input-form", function () {
+            var vUrl = $(this).attr('action');
+            var vMethod = $(this).attr('method');
+            var vData = $(this).serialize();
+            $.ajax({
+                url: vUrl,
+                type: vMethod,
+                data: vData,
+                success: function (result) {
+                    if (result.success) {
+                        alert("Data code : " + result.entity.Code + " has been saved");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error! Souvenir Stock has not been saved. \n " + result.message);
+                    }
+                }
+            });
+            return false;
+        });
+
+    </script>
+}

@@ -50,9 +50,8 @@ namespace MarCom.Presentation.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -63,22 +62,28 @@ namespace MarCom.Presentation.Models
         public bool RememberMe { get; set; }
     }
 
+    
     public class RegisterViewModel
     {
         public RegisterViewModel()
         {
             Is_Delete = false;
             Create_By = "Admin";
+            Create_Date = DateTime.Now;
         }
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        [Required]
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
+
         public int RoleId { get; set; }
 
         public int Id { get; set; }
-        public string UserName { get; set; }
+       
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -91,6 +96,7 @@ namespace MarCom.Presentation.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        [Display(Name ="Employee Name")]
         public int M_Employee_Id { get; set; }
 
         //public int M_Role_Id { get; set; }
@@ -102,6 +108,7 @@ namespace MarCom.Presentation.Models
         public string Create_By { get; set; }
 
         public DateTime Create_Date { get; set; }
+        //public string UserName { get; set; }
     }
 
     public class ResetPasswordViewModel
