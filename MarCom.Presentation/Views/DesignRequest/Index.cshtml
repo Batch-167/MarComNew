@@ -119,22 +119,7 @@
                 }
             });
         }
-        function action(act, id) {
-            $.ajax({
-                url: '/DesignProduct/' + act,
-                type: 'get',
-                data: { id: id },
-                dataType: 'html',
-                success: function (result) {
-                    $('#modal-input').find('.modal-body').html(result);
-                    $('#modal-input').modal('show');
-                },
-                error: function (err) {
-                    $("#table-list").tml(err);
-                }
-            });
-        }
-
+                    
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
@@ -152,32 +137,6 @@
                         GetList();
                     } else {
                         alert("Eror! Product has not been saved. \n" + result.message);
-                    }
-                }
-            });
-            return false;
-        });
-
-        //$(function () {
-        //    $("#datepicker").datepicker({ minDate: 0 });
-        //});
-        $("#modal-input").on("submit", "#input-form", function () {
-            var vUrl = $(this).attr('action');
-            var vMethod = $(this).attr('method');
-            var vData = $(this).serialize();
-            var name = $(this).attr('name');
-            var name2 = $(this).attr('name2');
-            $.ajax({
-                url: vUrl,
-                type: vMethod,
-                data: vData,
-                success: function (result) {
-                    if (result.success) {
-                        alert(name + " " + result.entity.Code + " " + name2);
-                        $("#modal-input").modal("hide");
-                        GetList();
-                    } else {
-                        alert("Eror!\n" + result.message);
                     }
                 }
             });
