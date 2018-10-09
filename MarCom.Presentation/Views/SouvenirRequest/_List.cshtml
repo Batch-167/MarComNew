@@ -1,7 +1,7 @@
-﻿@model IEnumerable<MarCom.ViewModel.ProductViewModel>
-           @{
-               int row = 0;
-           }
+﻿@model IEnumerable<MarCom.ViewModel.SouvenirRequestViewModel>
+@{
+    int row = 0;
+}
 
 <table class="table">
     <thead>
@@ -11,10 +11,17 @@
                 @Html.DisplayNameFor(model => model.Code)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Request_By)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.Request_Date)
+            </th>
+            <th>
+                Due Date
+                @*@Html.DisplayNameFor(model => model.Due_Date)*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Create_Date)
@@ -22,26 +29,31 @@
             <th>
                 @Html.DisplayNameFor(model => model.Create_By)
             </th>
-
             <th>Action</th>
         </tr>
     </thead>
-
+    
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
                 <td>
-                    @(row+=1)
+                    @(row += 1)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Code)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => item.Request_By)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayFor(modelItem => item.Request_Date)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Due_Date)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Create_Date)
@@ -49,7 +61,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Create_By)
                 </td>
-
                 <td>
                     <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="View" onclick="action('view', @item.Id)">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -66,7 +77,3 @@
     </tbody>
 
 </table>
-
-
-
-

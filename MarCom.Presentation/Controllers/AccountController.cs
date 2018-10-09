@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity.Owin; //reset password, dll 
 using Microsoft.Owin.Security;
 using MarCom.Presentation.Models;
 using MarCom.Repository;
@@ -152,6 +152,8 @@ namespace MarCom.Presentation.Controllers
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date };
             { 
                 var user = new ApplicationUser { UserName=model.Email, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date };
                 var result = await UserManager.CreateAsync(user, model.Password);

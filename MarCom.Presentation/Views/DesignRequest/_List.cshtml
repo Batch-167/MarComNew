@@ -1,7 +1,7 @@
-﻿@model IEnumerable<MarCom.ViewModel.ProductViewModel>
-           @{
-               int row = 0;
-           }
+﻿@model IEnumerable<MarCom.ViewModel.DesignRequestViewModel>
+@{
+    int row = 0;
+}
 
 <table class="table">
     <thead>
@@ -11,10 +11,16 @@
                 @Html.DisplayNameFor(model => model.Code)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Request_By)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.Request_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Assign_To)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Create_Date)
@@ -22,7 +28,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Create_By)
             </th>
-
             <th>Action</th>
         </tr>
     </thead>
@@ -32,16 +37,22 @@
         {
             <tr>
                 <td>
-                    @(row+=1)
+                    @(row += 1)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Code)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => item.Request_By)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayFor(modelItem => item.Request_Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Assign_To)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Create_Date)
@@ -49,7 +60,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Create_By)
                 </td>
-
                 <td>
                     <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="View" onclick="action('view', @item.Id)">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -57,8 +67,8 @@
                     <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" onclick="action('edit', @item.Id)">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-danger btn-delete" data-id="@item.Id" title="Delete" onclick="action('delete', @item.Id)">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    <button type="button" class="btn btn-danger btn-approve" data-id="@item.Id" title="Approve" onclick="action('approve', @item.Id)">
+                        <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
                     </button>
                 </td>
             </tr>
@@ -66,7 +76,3 @@
     </tbody>
 
 </table>
-
-
-
-

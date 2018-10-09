@@ -30,12 +30,16 @@ namespace MarCom.ViewModel
 
         public int? Quantity { get; set; }
 
+        [DisplayName("Unit Name")]
         public int M_Unit_Id { get; set; }
         public string Unit { get; set; }
         public bool Is_Delete { get; set; }
-        [DisplayName("Create By")]
+        [DisplayName("Created")]
         public string Create_By { get; set; }
         [DisplayName("Create Date")]
         public DateTime Create_Date { get; set; }
+
+        [DisplayName("Update By")]
+        public string Update_By { get; set; }
     }
 }

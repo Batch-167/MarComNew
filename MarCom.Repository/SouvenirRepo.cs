@@ -32,8 +32,8 @@ namespace MarCom.Repository
                               Unit = u.Name,                              
                               Is_Delete = s.Is_Delete,
 
-                              Create_By = "Admin",
-                              Create_Date = DateTime.Now
+                              Create_By = s.Create_By,
+                              Create_Date = s.Create_Date
 
                           })
                           .Where(s => s.Is_Delete == all ? s.Is_Delete : true)
@@ -61,7 +61,7 @@ namespace MarCom.Repository
                         souvenir.M_Unit_Id = entity.M_Unit_Id;
                         souvenir.Is_Delete = entity.Is_Delete;
 
-                        souvenir.Create_By = "Admin";
+                        souvenir.Create_By = entity.Create_By;
                         souvenir.Create_Date = DateTime.Now;
 
                         db.M_Souvenir.Add(souvenir);
@@ -78,7 +78,7 @@ namespace MarCom.Repository
                             souvenir.M_Unit_Id = entity.M_Unit_Id;
                             //souvenir.Is_Delete = entity.Is_Delete;
 
-                            souvenir.Update_By = "Admin";
+                            souvenir.Update_By = entity.Update_By;
                             souvenir.Update_Date = DateTime.Now;
 
                             db.SaveChanges();
@@ -162,6 +162,34 @@ namespace MarCom.Repository
                 }
             }
             return newRef;
+        }
+
+        public static List<SouvenirViewModel> Filter(SouvenirViewModel entity)
+        {
+            List<SouvenirViewModel> result = new List<SouvenirViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from s in db.M_Souvenir
+                          join u in db.M_Unit on s.M_Unit_Id equals u.Id
+                          where s.Code.Contains(entity.Code) || s.Name.Contains(entity.Name) || s.M_Unit_Id == entity.M_Unit_Id || s.Create_By.Contains(entity.Create_By) || s.Create_Date == entity.Create_Date
+                          select new SouvenirViewModel
+                          {
+                              Id = s.Id,
+                              Code = s.Code,
+                              Name = s.Name,
+                              Description = s.Description,
+                              Quantity = s.Quantity,
+                              M_Unit_Id = s.Id,
+                              Unit = u.Name,
+                              Is_Delete = s.Is_Delete,
+
+                              Create_By = s.Create_By,
+                              Create_Date = s.Create_Date
+
+                          })
+                          .ToList();
+            }
+            return result;
         }
     }
 }
