@@ -1,0 +1,63 @@
+﻿@model IEnumerable<MarCom.ViewModel.SouvenirStockViewModel>
+
+@{ 
+    int row = 0;
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                No
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Received_By)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Received_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Create_By)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Create_Date)
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(row += 1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.R_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Received_Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Create_By)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Create_Date)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-details" data-id="@item.Id" title="Details" onclick="action('details', @item.Id)">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-edit" data-id="@item.Id" title="Edit" onclick="action('edit', @item.Id)">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

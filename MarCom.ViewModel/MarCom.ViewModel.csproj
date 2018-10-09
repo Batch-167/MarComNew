@@ -50,8 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompanyViewModel.cs" />
+    <Compile Include="DesignApproveViewModel.cs" />
     <Compile Include="DesignRequestViewModel.cs" />
     <Compile Include="EmployeeViewModel.cs" />
+    <Compile Include="EventViewModel.cs" />
     <Compile Include="MenuAccessViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultResponse.cs" />
     <Compile Include="RoleViewModel.cs" />
+    <Compile Include="SouvenirStockViewModel.cs" />
     <Compile Include="SouvenirRequestViewModel.cs" />
     <Compile Include="SouvenirViewModel.cs" />
     <Compile Include="UnitViewModel.cs" />

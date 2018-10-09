@@ -4,7 +4,8 @@
     string code = SouvenirRepo.GetNewCode();
 }
 
-@using (Html.BeginForm("Create", "Souvenir", FormMethod.Post, new { id = "create-form", name = "create-form" })) 
+
+@using (Html.BeginForm("Create", "Souvenir", FormMethod.Post, new { @id = "input-form", name = ("Data Saved ! New souvenir has been add with code "+code.ToString())})) 
 {
     @Html.AntiForgeryToken()
     
@@ -59,24 +60,3 @@
         </div>
     </div>
 }
-
-    @Scripts.Render("~/bundles/jqueryval")
-<script type="text/javascript">
-    $("#create-form").submit(function () {
-        $.ajax({
-            url: '@Url.Action("Create", "Souvenir")',
-            type: this.method,
-            data: $(this).serialize(),
-            success: function (result) {
-                if (result.success) {
-                    alert("Successfull " + result.entity.Name + " has been saved");
-                    $(".modal").modal("hide");
-                    GetList();
-                } else {
-                    alert("Error !! Souvenir has not been saved /n" + result.message);
-                }
-            }
-        });
-        return false;
-    });
-</script>

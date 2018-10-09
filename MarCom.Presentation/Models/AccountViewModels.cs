@@ -50,9 +50,8 @@ namespace MarCom.Presentation.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -75,6 +74,12 @@ namespace MarCom.Presentation.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        [Required]
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
+
+        public string Username { get; set; }
+
         public int RoleId { get; set; }
 
         public int Id { get; set; }
@@ -91,6 +96,7 @@ namespace MarCom.Presentation.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        [Display(Name ="Employee Name")]
         public int M_Employee_Id { get; set; }
 
         //public int M_Role_Id { get; set; }
