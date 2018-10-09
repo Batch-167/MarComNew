@@ -198,7 +198,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\DesignRequestController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1163,9 +1165,16 @@
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\Event\_List.cshtml" />
     <Content Include="Views\Event\_Add.cshtml" />
+    <Content Include="Views\DesignRequest\_Approve.cshtml" />
+    <Content Include="Views\DesignRequest\_Create.cshtml" />
+    <Content Include="Views\DesignRequest\_List.cshtml" />
+    <Content Include="Views\DesignRequest\Index.cshtml" />
+    <Content Include="Views\SouvenirRequest\Index.cshtml" />
+    <Content Include="Views\SouvenirRequest\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Ajax\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

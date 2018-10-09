@@ -1,6 +1,6 @@
-﻿@model MarCom.ViewModel.ProductViewModel
+﻿@model MarCom.ViewModel.DesignRequestViewModel
 @{
-    ViewBag.Title = "List Product";
+    ViewBag.Title = "List Design Request";
 }
 
 @Scripts.Render("~/AdminLTE/plugins/datatables/css")
@@ -11,28 +11,37 @@
             <div class="col-lg-12">
                 <table>
                     <tr>
-                        <td colspan="5"></td>
+                        <td colspan="7"></td>
                         <td>
                             <button type="button" id="btn-new" class="btn btn-primary btn-sm" title="Add New">Add</button>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-lg-2">
-                            <input name="Code" type="text" class="form-control text-box single-line" placeholder="Product Code" />
+                            <input name="Code" type="text" class="form-control text-box single-line" placeholder="Transaction Code" />
                         </td>
-                        <td class="col-lg-3">
-                            <input name="Name" type="text" class="form-control text-box single-line" placeholder="Product Name" />
-                        </td>
-                        <td class="col-lg-3">
-                            <input name="Description" type="text" class="form-control text-box single-line" placeholder="Description" />
+                        <td class="col-lg-2">
+                            <input name="Request_By" type="text" class="form-control text-box single-line" placeholder="Request By" />
                         </td>
                         <td class="col-lg-2">
                             <div class="input-group">
-                                <input class="form-control datepicker" placeholder="Created" type="date" value="Created" />
+                                <input class="form-control datepicker" placeholder="Request Date" type="date" value="Request Date" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
                         </td>
                         <td class="col-lg-2">
+                            <input name="Assign_To" type="text" class="form-control text-box single-line" placeholder="Assign To" />
+                        </td>
+                        <td class="col-lg-2">
+                            <input name="Status" type="text" class="form-control text-box single-line" placeholder="Status" />
+                        </td>
+                        <td class="col-lg-1">
+                            <div class="input-group">
+                                <input class="form-control datepicker" placeholder="Created" type="date" />
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </td>
+                        <td class="col-lg-1">
                             <input name="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
                         </td>
                         <td>
@@ -73,7 +82,7 @@
 
         $("#btn-new").click(function () {
             $.ajax({
-                url: '@Url.Action("Create","Product")',
+                url: '@Url.Action("Create","DesignRequest")',
                 type: 'get',
                 success: function (result) {
                     $(".modal-body").html(result);
@@ -84,7 +93,7 @@
 
         function GetList() {
             $.ajax({
-                url: '@Url.Action("List","Product")',
+                url: '@Url.Action("List", "DesignRequest")',
                 type: 'get',
                 success: function (result) {
                     $("#table-list").html(result);
@@ -97,7 +106,7 @@
 
         function action(act, id) {
             $.ajax({
-                url: '/Product/' + act,
+                url: '/DesignRequest/'+act,
                 type: 'get',
                 data: { id: id },
                 dataType: 'html',
@@ -127,7 +136,7 @@
                         $("#modal-input").modal("hide");
                         GetList();
                     } else {
-                        alert("Eror! Product has not been saved. \n" + result.message);
+                        alert("Eror!\n" + result.message);
                     }
                 }
             });

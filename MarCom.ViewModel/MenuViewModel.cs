@@ -28,14 +28,19 @@ namespace MarCom.ViewModel
         [StringLength(150)]
         public string Controller { get; set; }
 
+        [DisplayName("Parent")]
         public int? Parent_Id { get; set; }
 
         public bool Is_Delete { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [DisplayName("Created")]
+        [StringLength(50), Required]
         public string Create_By { get; set; }
 
+        [DisplayName("Create Date")]
         public DateTime Create_Date { get; set; }
+
+        [DisplayName("Update By")]
+        public string Update_By { get; set; }
     }
 }

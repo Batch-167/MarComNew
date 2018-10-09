@@ -1,0 +1,13 @@
+﻿@model MarCom.ViewModel.RoleViewModel
+
+@using (Html.BeginForm("DeleteConfirm", "Role", FormMethod.Post, new { @id = "input-form", name = "Data Deleted! Data product with code", name2 = "has been deleted!" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Delete Data?</h4>
+    <hr />
+    <div class="form-actions no-color">
+        <input type="hidden" name="id" value="@Model.Id"/>
+        <input type="submit" id="btn-delete" value="Delete" class="btn btn-danger" data-id="@Model.Id"/>
+        <input type="button" value="Cancel" class="btn btn-default" data-dismiss="modal" />
+    </div>
+}

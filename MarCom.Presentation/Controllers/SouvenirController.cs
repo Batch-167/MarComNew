@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace MarCom.Presentation.Controllers
 {
@@ -17,6 +19,12 @@ namespace MarCom.Presentation.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Filter(SouvenirViewModel model)
+        {
+            return PartialView("_List", SouvenirRepo.Filter(model));
+        }
+
         public ActionResult List()
         {
             return PartialView("_List",SouvenirRepo.Get());
@@ -25,7 +33,6 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Create()
         {
             ViewBag.Souvenir = new SelectList(UnitRepo.Get(), "Id", "Name");            
-            //ViewBag.code = SouvenirRepo.GetNewCode();
             return PartialView("_Create", new SouvenirViewModel());
         }
 
@@ -33,6 +40,7 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Create(SouvenirViewModel model)
         {
+            model.Create_By = User.Identity.Name;
             ResultResponse result = SouvenirRepo.Update(model);
             return Json(new
             {
@@ -54,6 +62,7 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Edit(SouvenirViewModel model)
         {
+            model.Update_By = User.Identity.Name;
             ResultResponse result = SouvenirRepo.Update(model);
             return Json(new
             {

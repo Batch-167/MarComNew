@@ -1,9 +1,12 @@
 ﻿@model MarCom.ViewModel.ProductViewModel
-
-@{
-    Layout = "";
+@using MarCom.Repository
+<h4>Add Product</h4>
+<hr />
+@{ 
+    string code = ProductRepo.GetNewCode();
 }
-@using (Html.BeginForm("Create", "Product", FormMethod.Post, new { id = "create-form", name = "create-form" }))
+
+@using (Html.BeginForm("Create", "Product", FormMethod.Post, new { @id = "input-form", name = "Data Saved! New product has been add with code", name2 = "!"}))
 {
     @Html.AntiForgeryToken()
 
@@ -12,7 +15,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => code, new { htmlAttributes = new { @class = "form-control", @readonly="ReadOnly" } })
                 @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -42,24 +45,3 @@
         </div>
     </div>
 }
-
-    @Scripts.Render("~/bundles/jqueryval")
-    <script type="text/javascript">
-    $("#create-form").submit(function () {
-        $.ajax({
-            url: '@Url.Action("Create", "Product")',
-            type: this.method,
-            data: $(this).serialize(),
-            success: function (result) {
-                if (result.success) {
-                    alert("Data Save! New product has been add with code" + result.entity.Code + "!");
-                    $(".modal").modal("hide");
-                    GetList();
-                } else {
-                    alert("Eror! Product has not been saved. \n" + result.message);
-                }
-            }
-        });
-        return false;
-    });
-    </script>

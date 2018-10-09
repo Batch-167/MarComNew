@@ -29,9 +29,11 @@ namespace MarCom.Presentation.Controllers
         }
 
         //POS
+        //[Authorize]
         [HttpPost]
         public ActionResult Create(ProductViewModel model)
         {
+            //model.Create_By = User.Identity.Name;
             ResultResponse result = ProductRepo.Update(model);
             return Json(new
             {
@@ -88,13 +90,25 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult DeleteConfirm(int id)
         {
-            if (ProductRepo.Delete(id))
+            bool result = ProductRepo.Delete(id);
+            
+            if (result)
             {
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = result,
+                    entity = "",
+                    message = "delete success"
+                }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = result,
+                    entity = "",
+                    message = "delete failed"
+                }, JsonRequestBehavior.AllowGet);
             }
         }
     }
