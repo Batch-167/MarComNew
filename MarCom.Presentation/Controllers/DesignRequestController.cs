@@ -34,12 +34,11 @@ namespace MarCom.Presentation.Controllers
             {
                 success = result.Success,
                 entity = model,
-
                 message = result.Message
             }, JsonRequestBehavior.AllowGet);
         }
-            
-    
+
+
         public ActionResult List()
         {
             return PartialView("_List", DesignRequestRepo.Get());

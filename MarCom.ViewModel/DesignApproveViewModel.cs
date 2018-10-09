@@ -12,7 +12,7 @@ namespace MarCom.ViewModel
     {
         public DesignApproveViewModel()
         {
-            Status = 1;
+            Is_Delete = false;
         }
         public int Id { get; set; }
 

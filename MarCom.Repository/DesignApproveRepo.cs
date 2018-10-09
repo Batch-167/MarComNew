@@ -15,13 +15,20 @@ namespace MarCom.Repository
             ResultResponse result = new ResultResponse();
             try
             {
-                using(var db = new MarComContext())
+                using (var db = new MarComContext())
                 {
                     T_Design design = db.T_Design.Where(d => d.Id == entity.Id).FirstOrDefault();
                     if (design != null)
                     {
+                        design.Reject_Reason = entity.Reject_Reason;
+                        design.Status = entity.Status;
                         design.Assign_To = entity.Assign_To;
 
+                        if (entity.Status == 2)
+                        {
+                            design.Approved_Date = DateTime.Now;
+                            design.Approved_By = 1;
+                        }
                         db.SaveChanges();
                     }
                 }
