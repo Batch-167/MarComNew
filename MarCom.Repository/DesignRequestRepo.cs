@@ -24,14 +24,14 @@ namespace MarCom.Repository
                               Code = dr.Code,
                               //T_Event_Id=dr.T_Event_Id,
                               //EventCode=e.Code,
-                              Request_By = 1,
-                              Request_Date =DateTime.Now,
+                              Request_By = dr.Request_By,
+                              Request_Date =dr.Request_Date,
                               Assign_To = dr.Assign_To,
                               Status = dr.Status,
 
                               Is_Delete = dr.Is_Delete,
 
-                              Create_Date = DateTime.Now,
+                              Create_Date = dr.Create_Date,
                               Create_By = "Administrator"
                           })//.Where(p => p.Is_Delete == all ? p.Is_Delete : true)
                             .ToList();
