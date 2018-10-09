@@ -21,7 +21,9 @@ namespace MarCom.ViewModel
         [StringLength(50)]
         public string Code { get; set; }
 
-        public int T_Event_Id { get; set; }
+        //public int T_Event_Id { get; set; }
+
+        //public string EventCode { get; set; }
 
         [DisplayName("Design Title")]
         [Required]
@@ -30,6 +32,8 @@ namespace MarCom.ViewModel
 
         [DisplayName("Request By")]
         public int Request_By { get; set; }
+
+        public string NameRequest { get; set; }
 
         [DisplayName("Request Date")]
         public DateTime Request_Date { get; set; }

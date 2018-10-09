@@ -1,4 +1,5 @@
-﻿@{
+﻿@model MarCom.ViewModel.RoleViewModel
+@{
     ViewBag.Title = "List Role";
 }
 
@@ -17,22 +18,22 @@
                     </tr>
                     <tr>
                         <td class="col-lg-3">
-                            <input name="Code" type="text" class="form-control text-box single-line" placeholder="Product Code" />
+                            @Html.DropDownListFor(model => model.Code, (IEnumerable<SelectListItem>)ViewBag.Role1, "-Select Role Code-", new { @id = "Code", @class = "form-control lg-2" })                    
                         </td>
                         <td class="col-lg-3">
-                            <input name="Name" type="text" class="form-control text-box single-line" placeholder="Product Name" />
+                            @Html.DropDownListFor(model => model.Name, (IEnumerable<SelectListItem>)ViewBag.Role2, "-Select Role Code-", new { @id = "Name", @class = "form-control lg-2" })
                         </td>
                         <td class="col-lg-3">
                             <div class="input-group">
-                                <input class="form-control datepicker" placeholder="Created" type="date"/>
+                                <input id="Date" class="form-control datepicker" placeholder="Created" type="date"/>
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
                         </td>
                         <td class="col-lg-3">
-                            <input name="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
+                            <input id="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
                         </td>
                         <td>
-                            <button type="button" id="btn-new" class="btn btn-warning btn-sm">Search</button>
+                            <button type="button" id="btn-search" class="btn btn-warning btn-sm">Search</button>
                         </td>
                     </tr>
                 </table>
@@ -81,6 +82,26 @@
                     $(".modal-body").html(result);
                     $(".modal").modal("show");
                 }
+            });
+        });
+
+        $("#btn-search").click(function Search() {
+            var data = {
+                code: $("#Code").val(),
+                name: $("#Name").val(),
+                create_date: $("#Date").val(),
+                create_by: $("#Created_By").val(),
+            };
+            $.ajax({
+                url: '@Url.Action("Filter","Role")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    $("#table-list").html(result);
+                },
+                error: function (err) {
+                    $("#table-list").html(err);
+                },
             });
         });
 

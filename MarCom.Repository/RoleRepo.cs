@@ -153,5 +153,23 @@ namespace MarCom.Repository
             }
             return newRef;
         }
+
+        public static List<RoleViewModel> Filter(RoleViewModel entity)
+        {
+            List<RoleViewModel> result = new List<RoleViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from r in db.M_Role
+                          where r.Code == entity.Code || r.Name == entity.Name || r.Create_Date == entity.Create_Date || r.Create_By.Contains(entity.Create_By)
+                          select new RoleViewModel
+                          {
+                              Code = r.Code,
+                              Name = r.Name,
+                              Create_Date = r.Create_Date,
+                              Create_By = r.Create_By
+                          }).ToList();
+            }
+            return result;
+        }
     }
 }

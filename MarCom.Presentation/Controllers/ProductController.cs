@@ -16,6 +16,12 @@ namespace MarCom.Presentation.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Filter(ProductViewModel model)
+        {
+            return PartialView("_List", ProductRepo.Filter(model));
+        }
+
         public ActionResult List()
         {
             return PartialView("_List", ProductRepo.Get());

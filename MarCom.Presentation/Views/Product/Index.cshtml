@@ -18,25 +18,25 @@
                     </tr>
                     <tr>
                         <td class="col-lg-2">
-                            <input name="Code" type="text" class="form-control text-box single-line" placeholder="Product Code" />
+                            <input id="Code" type="text" class="form-control text-box single-line" placeholder="Product Code" />
                         </td>
                         <td class="col-lg-3">
-                            <input name="Name" type="text" class="form-control text-box single-line" placeholder="Product Name" />
+                            <input id="Name" type="text" class="form-control text-box single-line" placeholder="Product Name" />
                         </td>
                         <td class="col-lg-3">
-                            <input name="Description" type="text" class="form-control text-box single-line" placeholder="Description" />
+                            <input id="Description" type="text" class="form-control text-box single-line" placeholder="Description" />
                         </td>
                         <td class="col-lg-2">
                             <div class="input-group">
-                                <input class="form-control datepicker" placeholder="Created" type="date" value="Created" />
+                                <input id="Date" class="form-control datepicker" placeholder="Created" type="date" value="Created" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
                         </td>
                         <td class="col-lg-2">
-                            <input name="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
+                            <input id="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
                         </td>
                         <td>
-                            <button type="button" id="btn-new" class="btn btn-warning btn-sm">Search</button>
+                            <button type="button" id="btn-search" class="btn btn-warning btn-sm">Search</button>
                         </td>
                     </tr>
                 </table>
@@ -81,6 +81,27 @@
                 }
             });
         });
+
+        $("#btn-search").click(function Search() {
+            var data= {
+                code : $("#Code").val(),
+                name : $("#Name").val(),
+                description : $("#Description").val(),
+                create_date : $("#Date").val(),
+                create_by: $("#Created_By").val(),
+            };
+            $.ajax({
+                url: '@Url.Action("Filter","Product")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    $("#table-list").html(result);
+                },
+                error: function (err) {
+                    $("#table-list").tml(err);
+                }
+            });
+        })
 
         function GetList() {
             $.ajax({

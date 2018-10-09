@@ -14,10 +14,10 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Create_By)
+                @Html.DisplayNameFor(model => model.Create_Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Create_Date)
+                @Html.DisplayNameFor(model => model.Create_By)
             </th>
             <th>Action</th>
         </tr>
@@ -38,10 +38,10 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Create_By)
+                    @Html.DisplayFor(modelItem => item.Create_Date)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Create_Date)
+                    @Html.DisplayFor(modelItem => item.Create_By)
                 </td>
                 <td>
                     <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="View" onclick="action('view',@item.Id)">

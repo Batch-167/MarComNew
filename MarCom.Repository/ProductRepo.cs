@@ -153,5 +153,29 @@ namespace MarCom.Repository
             }
             return newRef;
         }
+
+        public static List<ProductViewModel> Filter(ProductViewModel entity)
+        {
+            string date = entity.Create_Date.ToString();
+            string[] olddate = date.Split(' ');
+            date = olddate[0];
+            List<ProductViewModel> result = new List<ProductViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from p in db.M_Product
+                          where p.Code.Contains(entity.Code) || p.Name.Contains(entity.Name) || p.Description.Contains(entity.Description) || p.Create_Date.ToString().Contains(entity.Create_Date.ToString()) || p.Create_By.Contains(entity.Create_By)
+                          select new ProductViewModel
+                          {
+                              Code = p.Code,
+                              Name = p.Name,
+                              Description = p.Description,
+
+                              Create_Date = p.Create_Date,
+                              Create_By = p.Create_By
+
+                          }).ToList();
+            }
+            return result;
+        }
     }
 }

@@ -17,13 +17,15 @@ namespace MarCom.Repository
             {
                 result = (from dr in db.T_Design
                           //join e in db.T_Event on
-                          //dr.Code equals e.Code
+                          //dr.T_Event_Id equals e.Id
                           select new DesignRequestViewModel
                           {
                               Id = dr.Id,
                               Code = dr.Code,
-                              Request_By = dr.Request_By,
-                              Request_Date = dr.Request_Date,
+                              //T_Event_Id=dr.T_Event_Id,
+                              //EventCode=e.Code,
+                              Request_By = 1,
+                              Request_Date =DateTime.Now,
                               Assign_To = dr.Assign_To,
                               Status = dr.Status,
 
