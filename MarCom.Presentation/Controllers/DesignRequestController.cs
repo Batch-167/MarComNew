@@ -1,3 +1,4 @@
+using MarCom.DataModel;
 using MarCom.Repository;
 using MarCom.ViewModel;
 using System;
@@ -34,7 +35,6 @@ namespace MarCom.Presentation.Controllers
             {
                 success = result.Success,
                 entity = model,
-
                 message = result.Message
             }, JsonRequestBehavior.AllowGet);
         }
@@ -48,8 +48,47 @@ namespace MarCom.Presentation.Controllers
         //GET : New Product
         public ActionResult Create()
         {
-            ViewBag.DesignRequest = new SelectList(DesignRequestRepo.Get(), "Id", "Code");
+            UserViewModel model2 = GetIdByName(User.Identity.Name);
+            DesignRequestViewModel model = new DesignRequestViewModel();
+            //model.NameRequest = model2.Fullname;
+            //ViewBag.DesignRequest = new SelectList(DesignRequestRepo.Get(), "Id", "Code");
             return PartialView("_Create", new DesignRequestViewModel());
+        }
+
+        [HttpPost]
+        public ActionResult Create(DesignRequestViewModel model)
+        {
+            UserViewModel model2 = GetIdByName(User.Identity.Name);
+            model.Request_By = model2.M_Employee_Id;
+            model.Create_By = User.Identity.Name;
+            ResultResponse result = DesignRequestRepo.Update(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public static UserViewModel GetIdByName(string name)
+        {
+            UserViewModel result = new UserViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from u in db.M_User
+                          join e in db.M_Employee
+                          on u.M_Employee_Id equals e.Id
+                          where name == u.UserName
+                          select new UserViewModel
+                          {
+                              Id = u.Id,
+                              Password = u.PasswordHash,
+                              M_Employee_Id = u.M_Employee_Id,
+                              Fullname = e.First_Name + " " + e.Last_Name
+                          }).FirstOrDefault();
+            }
+        return result;
         }
     }
 }

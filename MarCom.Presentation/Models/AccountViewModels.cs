@@ -69,6 +69,7 @@ namespace MarCom.Presentation.Models
         {
             Is_Delete = false;
             Create_By = "Admin";
+            Create_Date = DateTime.Now;
         }
         [Required]
         [EmailAddress]
@@ -82,6 +83,7 @@ namespace MarCom.Presentation.Models
         public int RoleId { get; set; }
 
         public int Id { get; set; }
+       
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

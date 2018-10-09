@@ -8,43 +8,47 @@ using System.Threading.Tasks;
 
 namespace MarCom.ViewModel
 {
-    public class DesignRequestViewModel
+    public class EventApproveViewModel
     {
-        public DesignRequestViewModel()
+        public EventApproveViewModel()
         {
-            Is_Delete = false;
-            Request_Date = DateTime.Now;
-            Create_Date = DateTime.Now;
+            Status = 1;
         }
         public int Id { get; set; }
 
-        [DisplayName("Transaction Code")]
         [Required]
         [StringLength(50)]
+        [DisplayName("Transaction Code")]
         public string Code { get; set; }
 
-        //public int T_Event_Id { get; set; }
-
-        //public string EventCode { get; set; }
-
-        [DisplayName("Design Title")]
         [Required]
         [StringLength(255)]
-        public string Title_Header { get; set; }
+        public string Event_Name { get; set; }
 
-        [DisplayName("Request By")]
+        [DisplayName("Start Date")]
+        [DataType(DataType.Date)]
+        public DateTime? Start_Date { get; set; }
+
+        [DisplayName("End Date")]
+        [DataType(DataType.Date)]
+        public DateTime? End_Date { get; set; }
+
+        [StringLength(255)]
+        public string Place { get; set; }
+
+        public decimal? Budget { get; set; }
+
         public int Request_By { get; set; }
 
         public string NameRequest { get; set; }
 
-        [DisplayName("Request Date")]
+        [DataType(DataType.Date)]
         public DateTime Request_Date { get; set; }
 
         public int? Approved_By { get; set; }
 
         public DateTime? Approved_Date { get; set; }
 
-        [DisplayName("Assign To")]
         public int? Assign_To { get; set; }
 
         public DateTime? Closed_Date { get; set; }
@@ -56,16 +60,5 @@ namespace MarCom.ViewModel
 
         [StringLength(255)]
         public string Reject_Reason { get; set; }
-
-        public bool? Is_Delete { get; set; }
-
-        [DisplayName("Create By")]
-        [Required]
-        [StringLength(50)]
-        public string Create_By { get; set; }
-
-        [DisplayName("Created Date")]
-        public DateTime Create_Date { get; set; }
-
     }
 }
