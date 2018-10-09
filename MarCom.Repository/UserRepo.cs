@@ -95,13 +95,18 @@ namespace MarCom.Repository
                 result = (from us in db.M_User
                           join em in db.M_Employee on
                           us.M_Employee_Id equals em.Id
+                          join ro in db.M_Role on
+                          us.M_Role_Id equals ro.Id
                           where us.Id == id
                           select new UserViewModel
                           {
                               Id = us.Id,
                               Username = us.UserName,
                               Password = us.PasswordHash,
-                              M_Employee_Id  = em.Id,
+                              ConfirmPassword = us.PasswordHash,
+                              M_Role_Id = ro.Id,
+                              Role = ro.Name,
+                              M_Employee_Id = em.Id,
                               Fullname = em.First_Name + " " + em.Last_Name,
 
                               Is_Delete = us.Is_Delete

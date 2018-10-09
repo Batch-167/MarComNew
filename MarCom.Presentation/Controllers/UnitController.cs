@@ -5,16 +5,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace MarCom.Presentation.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class UnitController : Controller
     {
         // GET: Unit
         public ActionResult Index()
         {
+            ViewBag.Unit1 = new SelectList(UnitRepo.Get(), "Code", "Code");
+            ViewBag.Unit2 = new SelectList(UnitRepo.Get(), "Name", "Name");
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Filter(UnitViewModel model)
+        {
+            return PartialView("_List", UnitRepo.Filter(model));
         }
 
         public ActionResult List()
@@ -30,6 +40,7 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Add(UnitViewModel model)
         {
+            model.Create_By = User.Identity.Name;
             ResultResponse result = UnitRepo.Update(model);
             return Json(new
             {
@@ -48,6 +59,7 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Edit(UnitViewModel model)
         {
+            model.Create_By = User.Identity.Name;
             ResultResponse result = UnitRepo.Update(model);
             return Json(new
             {
@@ -72,13 +84,24 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult DeleteConfirm(int id)
         {
+            bool result = UnitRepo.Delete(id);
             if (UnitRepo.Delete(id))
             {
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = result,
+                    entity = "",
+                    message = "Delete Success"
+                }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = result,
+                    entity = "",
+                    message = "Delete Failed"
+                }, JsonRequestBehavior.AllowGet);
             }
         }
 

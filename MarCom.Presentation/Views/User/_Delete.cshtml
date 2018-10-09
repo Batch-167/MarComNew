@@ -1,6 +1,5 @@
 ﻿@model MarCom.ViewModel.UserViewModel
 
-
 <h3>Delete Data?</h3>
 <div>
 
@@ -24,6 +23,7 @@
             success: function (result) {
                 if (result.success) {
                     $(".modal").modal("hide");
+                    alert("Data has been deleted");
                     GetList();
                 } else {
                     alert("Error! Data hasn't been deleted")

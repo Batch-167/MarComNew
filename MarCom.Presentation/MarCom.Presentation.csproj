@@ -207,6 +207,7 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SouvenirController.cs" />
+    <Compile Include="Controllers\SouvenirStockController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1074,6 +1075,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\SouvenirStock\_Edit.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1159,6 +1161,10 @@
     <Content Include="Views\Employee\_Create.cshtml" />
     <Content Include="Views\MenuAccess\Index.cshtml" />
     <Content Include="Views\User\_Add.cshtml" />
+    <Content Include="Views\SouvenirStock\Index.cshtml" />
+    <Content Include="Views\SouvenirStock\_List.cshtml" />
+    <Content Include="Views\SouvenirStock\_Add.cshtml" />
+    <Content Include="Views\SouvenirStock\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
