@@ -18,7 +18,27 @@ namespace MarCom.Presentation.Controllers
         {
             return View();
         }
-                public ActionResult List()
+
+        public ActionResult Approve(int id)
+        {
+            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
+            EventApproveViewModel model = EventApproveRepo.GetById(id);
+            return PartialView("_Approve", model);
+        }
+
+        [HttpPost]
+        public ActionResult Approve(EventApproveViewModel model)
+        {
+            ResultResponse result = EventApproveRepo.Approve(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult List()
         {
             return PartialView("_List", EventRepo.Get());
         }
