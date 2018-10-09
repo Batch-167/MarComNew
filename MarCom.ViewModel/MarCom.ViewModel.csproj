@@ -53,6 +53,7 @@
     <Compile Include="DesignApproveViewModel.cs" />
     <Compile Include="DesignRequestViewModel.cs" />
     <Compile Include="EmployeeViewModel.cs" />
+    <Compile Include="EventApproveViewModel.cs" />
     <Compile Include="EventViewModel.cs" />
     <Compile Include="MenuAccessViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
