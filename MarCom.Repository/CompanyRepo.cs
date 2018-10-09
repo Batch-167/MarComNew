@@ -69,7 +69,7 @@ namespace MarCom.Repository
                         comp.Phone = entity.Phone;
                         comp.Is_Delete = entity.Is_Delete;
 
-                        comp.Create_By = "Admin";
+                        comp.Create_By = entity.Create_By;
                         comp.Create_Date = DateTime.Now;
 
 
@@ -88,7 +88,7 @@ namespace MarCom.Repository
                             comp.Email = entity.Email;
                             comp.Phone = entity.Phone;
 
-                            comp.Update_By = "Admin";
+                            comp.Update_By = entity.Update_By;
                             comp.Update_Date = DateTime.Now;
 
                             db.SaveChanges();
@@ -154,6 +154,27 @@ namespace MarCom.Repository
                 }
             }
             return newRef;
+        }
+
+        public static List<CompanyViewModel> Filter(CompanyViewModel entity)
+        {
+            List<CompanyViewModel> result = new List<CompanyViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from c in db.M_Company
+                          where c.Code == entity.Code || c.Name == entity.Name || c.Create_By.Contains(entity.Create_By) || c.Create_Date == entity.Create_Date
+                          select new CompanyViewModel
+                          {
+                              Code = c.Code,
+                              Name = c.Name,
+                              Create_By =c.Create_By,
+                              Create_Date=c.Create_Date
+                            
+                          }
+                          ).ToList();
+            }
+            return result;
+                  
         }
 
     }

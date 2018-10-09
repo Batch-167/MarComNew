@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="CompanyRepo.cs" />
     <Compile Include="EmployeeRepo.cs" />
+    <Compile Include="EventRepo.cs" />
     <Compile Include="MenuAccessRepo.cs" />
     <Compile Include="MenuRepo.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
@@ -85,7 +86,7 @@
     <None Include="App - Copy.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="App.config"/>
+    <None Include="App.config" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>

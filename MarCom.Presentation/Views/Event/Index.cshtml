@@ -1,6 +1,6 @@
-﻿@model MarCom.ViewModel.CompanyViewModel
+﻿
 @{
-    ViewBag.Title = "Company";
+    ViewBag.Title = "Event";
 }
 
 @Styles.Render("~/AdminLTE/plugins/datatables/css")
@@ -22,14 +22,14 @@
                     <tr>
                         <td></td>
                         <td class="col-lg-2">
-                            @Html.DropDownListFor(model => model.Name, (IEnumerable<SelectListItem>)ViewBag.Company, "-Select Company Code-", new { @id = "Code", @class = "form-control" })
+                            <input id="Code" name="CompCode" type="text" class="form-control" placeholder="Company Code" />
                         </td>
-                        <td class="col-lg-3">
-                            @Html.DropDownListFor(model => model.Name, (IEnumerable<SelectListItem>)ViewBag.Company1, "-Select Company Name-", new { @id = "Name", @class = "form-control" })
+                        <td class="col-lg-3">   
+                            <input id="Name" name="CompName" type="text" class="form-control text-box single-line" placeholder="Company Name" />
                         </td>
                         <td class="col-lg-3">
                             <div class="input-group">
-                                <input class="form-control datepicker" id="Date" type="date" value="Created" />
+                                <input id="Date" class="form-control datepicker" type="date" value="Created" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
                         </td>
@@ -37,7 +37,7 @@
                             <input id="Create" name="CompCreate" type="text" class="form-control text-box single-line" placeholder="Created By" />
                         </td>
                         <td>
-                            <button type="button" id="btn-search" onclick="Search()" class="btn btn-default btn-sm" style="width:60px">Search</button>
+                            <button id="btn-search" type="button" onclick="Search()" class="btn btn-default btn-sm" style="width:60px">Search</button>
                         </td>
                     </tr>
                 </table>
@@ -83,9 +83,9 @@
         });
 
         $("#btn-new").click(function () {
-            $(".modal-title").html("Create New Company");
+            $(".modal-title").html("Create New Event");
             $.ajax({
-                url: '@Url.Action("Create", "Company")',
+                url: '@Url.Action("Add", "Event")',
                 type: 'get',
                 success: function (result) {
                     $(".modal-body").html(result);
@@ -99,8 +99,8 @@
             var data = {
                 code: $("#Code").val(),
                 name: $("#Name").val(),
-                create_date: $("#Date").val(),
-                create_by: $("#Create").val(),
+                date: $("#Date").val(),
+                create: $("#Create").val(),
 
             };
             $.ajax({
@@ -116,9 +116,10 @@
             });
         });
 
+
         function GetList() {
             $.ajax({
-                url: '@Url.Action("List","Company")',
+                url: '@Url.Action("List","Event")',
                 type: 'get',
                 success: function (result) {
                     $("#table-list").html(result);
@@ -132,7 +133,7 @@
 
         function action(act, id) {
             $.ajax({
-                url: '/Company/' + act,
+                url: '/Event/' + act,
                 type: 'get',
                 data: { id: id },
                 dataType: 'html',
@@ -148,16 +149,16 @@
         }
 
         $('#modal-input').on('submit', '#input-form', function () {
-            var vUrl= $(this).attr('action');
-            var vMethod= $(this).attr('method');
-            var vData= $(this).serialize();
+            var vUrl = $(this).attr('action');
+            var vMethod = $(this).attr('method');
+            var vData = $(this).serialize();
             $.ajax({
                 url: vUrl,
                 type: vMethod,
                 data: vData,
                 success: function (result) {
                     if (result.success) {
-                        alert("Data change for "+result.entity.Name+" been saved!");
+                        alert("Data change for " + result.entity.Code + " been saved!");
                         $('#modal-input').modal('hide');
                         GetList();
                     } else {

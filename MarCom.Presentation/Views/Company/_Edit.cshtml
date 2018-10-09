@@ -1,6 +1,6 @@
 ﻿@model MarCom.ViewModel.CompanyViewModel
 
-@using (Html.BeginForm("Edit", "Company", FormMethod.Post, new { id = "form-edit", name = "form-edit" }))
+@using (Html.BeginForm("Edit", "Company", FormMethod.Post, new { @id = "input-form" }))
 {
     @Html.AntiForgeryToken()
 
@@ -56,27 +56,3 @@
         </div>
     </div>
 }
-
-
-@Scripts.Render("~/bundles/jqueryval")
-
-<script type="text/javascript">
-    $("#form-edit").submit(function () {
-        $.ajax({
-            url: '@Url.Action("Edit", "Company")',
-            type: this.method,
-            data: $(this).serialize(),
-            success: function (result) {
-                if (result.success) {
-                    alert("Succesful! " + result.entity.Name + " has been Edited")
-                    $(".modal").modal("hide");
-                    GetList();
-                }
-                else {
-                    alert("Error! Company has not been Edited. \n" + result.message);
-                }
-            }
-        });
-        return false;
-    });
-</script>
