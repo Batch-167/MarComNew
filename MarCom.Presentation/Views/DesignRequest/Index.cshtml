@@ -62,6 +62,8 @@
 
 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" id="modal-input">
     <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-blue">
                 <h4 class="text-bold">Approval Design Request<button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button></h4>
@@ -103,6 +105,10 @@
                 }
             });
         }
+
+        function addAction(){
+                 $('#item-body').append("<br>Yeay Bisa<br>");
+             };
 
         function GetItemList(id) {
             $.ajax({

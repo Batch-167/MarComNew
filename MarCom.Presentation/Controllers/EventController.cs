@@ -90,5 +90,46 @@ namespace MarCom.Presentation.Controllers
             }
             return result;
         }
+
+        public static EmployeeViewModel GetIdByNames(string name)
+        {
+            EmployeeViewModel result = new EmployeeViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from e in db.M_Employee
+                          where name == e.First_Name+" "+e.Last_Name
+                          select new EmployeeViewModel
+                          {
+                              Id = e.Id,
+                           }
+                         ).FirstOrDefault();
+            }
+            return result;
+        }
+
+        public ActionResult Edit (int id)
+        {
+            return PartialView("_Edit", EventRepo.GetById(id));
+        }
+
+        [HttpPost]
+        public ActionResult Edit(EventViewModel model)
+        {
+            EmployeeViewModel model2 = GetIdByNames(model.NameRequest);
+            model.Request_By = model2.Id;
+            model.Update_By = User.Identity.Name;
+            ResultResponse result = EventRepo.Update(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Details(int id)
+        {
+            return PartialView("_Details", EventRepo.GetById(id));
+        }
     }
 }

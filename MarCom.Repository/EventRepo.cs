@@ -13,15 +13,19 @@ namespace MarCom.Repository
         public static List<EventViewModel> Get()
         {
             List<EventViewModel> result = new List<EventViewModel>();
-            using (var db = new MarComContext()) 
+            using (var db = new MarComContext())
             {
                 result = (from e in db.T_Event
+                          join em in db.M_Employee
+                          on e.Request_By equals em.Id
                           select new EventViewModel
                           {
-                              Id = e.Id,
+                              Id=e.Id,
                               Code = e.Code,
+                              Event_Name = e.Event_Name,
                               Request_By = e.Request_By,
                               Request_Date = e.Request_Date,
+                              NameRequest = em.First_Name +" "+ em.Last_Name,
                               Status = e.Status,
                               Create_Date = e.Create_Date,
                               Create_By = e.Create_By
@@ -38,14 +42,23 @@ namespace MarCom.Repository
             using (var db = new MarComContext())
             {
                 result = (from e in db.T_Event
+                          join em in db.M_Employee
+                          on e.Request_By equals em.Id
                           where e.Id == id
                           select new EventViewModel
                           {
                               Id = e.Id,
                               Code = e.Code,
-                              Event_Name=e.Event_Name,
+                              Event_Name = e.Event_Name,
+                              Place = e.Place,
+                              Start_Date = e.Start_Date,
+                              End_Date = e.End_Date,
+                              NameRequest = em.First_Name + " " + em.Last_Name,
                               Budget = e.Budget,
-                              Is_Delete=e.Is_Delete
+                              Request_By = e.Request_By,
+                              Request_Date = e.Request_Date,
+                              Note = e.Note,
+                              Status = e.Status
 
                           }
                           ).FirstOrDefault();
@@ -56,7 +69,7 @@ namespace MarCom.Repository
         public static string GetCode()
         {
             string tgl = DateTime.Now.ToString("dd") + DateTime.Now.Month.ToString("D2") + DateTime.Now.ToString("yy");
-            string inisial = "TRWOEV" + tgl+"-";
+            string inisial = "TRWOEV" + tgl + "-";
             using (var db = new MarComContext())
             {
                 var result = (from c in db.T_Event
@@ -64,7 +77,7 @@ namespace MarCom.Repository
                               select new { code = c.Code }
                              ).OrderByDescending(c => c.code)
                              .FirstOrDefault();
-                if (result !=null)
+                if (result != null)
                 {
                     string[] oldInis = result.code.Split('-');
                     inisial += (int.Parse(oldInis[1]) + 1).ToString("D4");
@@ -97,6 +110,7 @@ namespace MarCom.Repository
                         ev.Request_Date = entity.Request_Date;
                         ev.Note = entity.Note;
                         ev.Is_Delete = entity.Is_Delete;
+                        ev.Status = entity.Status;
 
                         ev.Create_By = entity.Create_By;
                         ev.Create_Date = DateTime.Now;
@@ -120,7 +134,7 @@ namespace MarCom.Repository
                             ev.Request_By = entity.Request_By;
                             ev.Request_Date = entity.Request_Date;
                             ev.Note = entity.Note;
-                            ev.Is_Delete = entity.Is_Delete;
+                            
                             ev.Update_By = entity.Update_By;
                             ev.Update_Date = DateTime.Now;
 
