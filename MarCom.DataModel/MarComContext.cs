@@ -12,7 +12,6 @@ namespace MarCom.DataModel
         {
         }
 
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<M_Company> M_Company { get; set; }
         public virtual DbSet<M_Employee> M_Employee { get; set; }
         public virtual DbSet<M_Menu> M_Menu { get; set; }
@@ -440,6 +439,22 @@ namespace MarCom.DataModel
             modelBuilder.Entity<T_Event>()
                 .Property(e => e.Update_By)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<T_Event>()
+                .HasMany(e => e.T_Design)
+                .WithRequired(e => e.T_Event)
+                .HasForeignKey(e => e.T_Event_Id)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<T_Event>()
+                .HasOptional(e => e.T_Event1)
+                .WithRequired(e => e.T_Event2);
+
+            modelBuilder.Entity<T_Event>()
+                .HasMany(e => e.T_Promotion)
+                .WithRequired(e => e.T_Event)
+                .HasForeignKey(e => e.T_Event_Id)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<T_Promotion>()
                 .Property(e => e.Code)

@@ -40,7 +40,6 @@ namespace MarCom.DataModel
         [StringLength(50)]
         public string First_Name { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string Last_Name { get; set; }
 
