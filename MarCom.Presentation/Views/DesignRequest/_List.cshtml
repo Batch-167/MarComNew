@@ -53,6 +53,24 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Status)
+                    @*@{
+                        switch (item.Status)
+                        {
+                            case 0:
+                                <p>Rejected</p>
+                                break;
+                            case 1:
+                                <p>Submited</p>
+                                break;
+                            case 2:
+                                <p>In Progress</p>
+                                break;
+                            case 3:
+                                <p>Done</p>
+                            default:
+                                break;
+                        }
+                    }*@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Create_Date)

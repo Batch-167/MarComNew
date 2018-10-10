@@ -55,6 +55,7 @@
     <Compile Include="DesignApproveRepo.cs" />
     <Compile Include="DesignRequestRepo.cs" />
     <Compile Include="EmployeeRepo.cs" />
+    <Compile Include="EventApproveRepo.cs" />
     <Compile Include="EventRepo.cs" />
     <Compile Include="MenuAccessRepo.cs" />
     <Compile Include="MenuRepo.cs" />
