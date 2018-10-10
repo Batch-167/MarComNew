@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -15,20 +16,25 @@ namespace MarCom.ViewModel
 
         public int M_Product_Id { get; set; }
 
+        [DisplayName("Product Name")]
         public string ProductName { get; set; }
 
         public string Description { get; set; }
 
-        [Required]
-        [StringLength(255)]
+        [DisplayName("Title")]
+        [StringLength(255), Required]
         public string Title_Item { get; set; }
 
+        [DisplayName("Request Pic")]
         public int Request_Pic { get; set; }
 
+        [DisplayName("Start Date")]
         public DateTime? Start_Date { get; set; }
 
+        [DisplayName("End Date")]
         public DateTime? End_Date { get; set; }
 
+        [DisplayName("Due Date")]
         public DateTime? Request_Due_Date { get; set; }
 
         [StringLength(255)]

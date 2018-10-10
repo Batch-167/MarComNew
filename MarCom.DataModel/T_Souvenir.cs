@@ -20,6 +20,7 @@ namespace MarCom.DataModel
         [StringLength(50)]
         public string Code { get; set; }
 
+        [Required]
         [StringLength(11)]
         public string Type { get; set; }
 
@@ -29,7 +30,11 @@ namespace MarCom.DataModel
 
         public DateTime? Request_Date { get; set; }
 
+        public DateTime? Request_Due_Date { get; set; }
+
         public int? Approved_By { get; set; }
+
+        public DateTime? Approve_Date { get; set; }
 
         public int? Received_By { get; set; }
 
@@ -53,10 +58,11 @@ namespace MarCom.DataModel
 
         public bool? Is_Delete { get; set; }
 
+        [Required]
         [StringLength(50)]
         public string Create_By { get; set; }
 
-        public DateTime? Create_Date { get; set; }
+        public DateTime Create_Date { get; set; }
 
         [StringLength(50)]
         public string Update_By { get; set; }
