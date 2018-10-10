@@ -447,6 +447,11 @@ namespace MarCom.DataModel
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<T_Event>()
+           // modelBuilder.Entity<T_Event>();
+                //.HasOptional(e => e.T_Event1)
+                //.WithRequired(e => e.T_Event2);
+
+            modelBuilder.Entity<T_Event>()
                 .HasMany(e => e.T_Promotion)
                 .WithRequired(e => e.T_Event)
                 .HasForeignKey(e => e.T_Event_Id)

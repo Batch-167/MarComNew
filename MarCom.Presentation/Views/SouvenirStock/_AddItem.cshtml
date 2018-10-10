@@ -1,0 +1,23 @@
+﻿@model MarCom.ViewModel.SouvenirStockViewModel
+
+@Html.HiddenFor(model => model.Id)
+
+<tr id="item-@Model.Id">
+    <td>
+        @Html.DropDownListFor(model => model.M_Souvenir_Id, (IEnumerable<SelectListItem>)ViewBag.Souvenir, "--Select Souvenir--", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.M_Souvenir_Id, "", new { @class = "text-danger" })
+    </td>
+    <td>
+        @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })
+    </td>
+    <td>
+        @Html.EditorFor(model => model.Note_Item, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Note_Item, "", new { @class = "text-danger" })
+    </td>
+
+    <td>
+        <button type="button" class="btn btn-edit" title="Edit"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+        <button type="button" class="btn btn-delete" onclick="RemoveRow(this)" title="Delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+    </td>
+</tr>
