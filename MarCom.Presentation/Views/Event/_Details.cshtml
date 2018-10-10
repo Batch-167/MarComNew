@@ -1,0 +1,106 @@
+﻿@model MarCom.ViewModel.EventViewModel
+
+<div>
+
+    <table>
+        <tr>
+            <td class="col-lg-2">
+               <span>Code</span>
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Code)
+            </td>
+            <td class="col-lg-1"></td>
+            <td>
+               <span>Name Request</span>
+            </td>
+
+            <td class="col-lg-2">
+                @Html.DisplayFor(model => model.NameRequest)
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td class="col-lg-2">
+               <span>Event Name</span>
+            </td>           
+            <td>
+                @Html.DisplayFor(model => model.Event_Name)
+            </td>
+            <td class="col-lg-1"></td>
+            <td>
+                <span>Request Date</span>
+            </td>
+
+            <td class="col-lg-1">
+                @Html.DisplayFor(model => model.Request_Date)
+            </td >
+        </tr>
+
+        <tr>
+            <td class="col-lg-2">
+              <span>Place</span>
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Place)
+            </td>
+            <td class="col-lg-1"></td>
+            <td>
+               <span>Note</span>
+            </td>
+
+            <td class="col-lg-2">
+                @Html.DisplayFor(model => model.Note)
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td class="col-lg-2">
+               <span>Start Date</span>
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Start_Date)
+            </td>
+            <td class="col-lg-1"></td>
+
+        </tr>
+        <tr>
+
+            <td class="col-lg-2">
+                @Html.DisplayNameFor(model => model.End_Date)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.End_Date)
+            </td>
+            <td class="col-lg-1"></td>
+        </tr>
+
+        <tr>
+
+            <td class="col-lg-1">
+               <span>Budget</span>
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Budget)
+            </td>
+            <td class="col-lg-1"></td>
+            <td>
+               <span>Status</span>
+            </td>
+
+            <td class="col-lg-2">
+                @Html.DisplayFor(model => model.StatusName)
+            </td>
+        </tr>
+    </table>
+</div>
+

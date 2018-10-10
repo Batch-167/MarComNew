@@ -12,7 +12,6 @@ namespace MarCom.DataModel
         {
         }
 
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<M_Company> M_Company { get; set; }
         public virtual DbSet<M_Employee> M_Employee { get; set; }
         public virtual DbSet<M_Menu> M_Menu { get; set; }
