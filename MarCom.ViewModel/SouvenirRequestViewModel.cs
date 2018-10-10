@@ -25,11 +25,17 @@ namespace MarCom.ViewModel
         [StringLength(11)]
         public string Type { get; set; }
 
+        [DisplayName("Event")]
         public int? T_Event_Id { get; set; }
 
+        [DisplayName("Request By")]
         public int? Request_By { get; set; }
 
+        [DisplayName("Request Date")]
         public DateTime? Request_Date { get; set; }
+
+        [DisplayName("Due Date")]
+        public DateTime? Request_Due_Date { get; set; }
 
         public int? Approved_By { get; set; }
 
@@ -65,5 +71,6 @@ namespace MarCom.ViewModel
         [DisplayName("Create Date")]
         public DateTime Create_Date { get; set; }
 
+        public string Name { get; set; }
     }
 }

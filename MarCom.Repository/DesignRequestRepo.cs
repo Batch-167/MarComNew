@@ -16,14 +16,14 @@ namespace MarCom.Repository
             using (var db = new MarComContext())
             {
                 result = (from dr in db.T_Design
-                          //join e in db.T_Event on
-                          //dr.T_Event_Id equals e.Id
+                          join e in db.T_Event on
+                          dr.T_Event_Id equals e.Id
                           select new DesignRequestViewModel
                           {
                               Id = dr.Id,
                               Code = dr.Code,
-                              //T_Event_Id=dr.T_Event_Id,
-                              //EventCode=e.Code,
+                              T_Event_Id = dr.T_Event_Id,
+                              EventCode = e.Code,
                               Request_By = dr.Request_By,
                               Request_Date =dr.Request_Date,
                               Assign_To = dr.Assign_To,
@@ -51,7 +51,7 @@ namespace MarCom.Repository
                         T_Design design = new T_Design();
                         design.Code = entity.Code;
                         design.Title_Header = entity.Title_Header;
-                        //design.Event_Code = entity.Event_Code;
+                        design.T_Event_Id = entity.T_Event_Id;
                         design.Request_By = entity.Request_By;
                         design.Request_Date = DateTime.Now;
                         design.Note = entity.Note;
@@ -70,6 +70,7 @@ namespace MarCom.Repository
                         {
                             design.Code = entity.Code;
                             design.Title_Header = entity.Title_Header;
+                            design.T_Event_Id = entity.T_Event_Id;
                             design.Request_By = entity.Request_By;
                             design.Request_Date = DateTime.Now;
                             design.Note = entity.Note;

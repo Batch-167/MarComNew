@@ -21,7 +21,7 @@ namespace MarCom.DataModel
         [StringLength(256)]
         public string Email { get; set; }
 
-        public bool? EmailConfirmed { get; set; }
+        public bool EmailConfirmed { get; set; }
 
         public string PasswordHash { get; set; }
 

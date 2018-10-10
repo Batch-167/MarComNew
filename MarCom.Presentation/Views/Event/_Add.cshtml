@@ -3,28 +3,26 @@
 
 @{
     string code = EventRepo.GetCode();
-    string date = DateTime.Now.ToString("dd-MM-yyyy");
+    string datenow = DateTime.Now.ToString("dd-MM-yyyy");
 }
 @using (Html.BeginForm("Add", "Event", FormMethod.Post, new { @id = "input-form" }))
 {
     @Html.AntiForgeryToken()
-
-
     <div class="form-horizontal">
-        <table style="padding-bottom:15px">
+        <table cellspacing="10">
             <tr class="row">
                 <td>
                     <span>Transaction Code</span>
                 </td>
                 <td>
-                    @Html.EditorFor(model => code, new { htmlAttributes = new { @class = "form-control" } })
+                    <input id="Code" name="Code" type="text" value="@code" class="form-control" readonly />
                 </td>
                 <td class="col-lg-1"></td>
                 <td>
                     <span>Request By</span>
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.NameRequest, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <input id="NameRequest" name="NameRequest" type="text" value="@Model.NameRequest" class="form-control" readonly />
                 </td>
             </tr>
 
@@ -33,30 +31,29 @@
                     <span>Event Name</span>
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.Event_Name, new { htmlAttributes = new { @class = "form-control" } })
+                    <input id="Event_Name" name="Event_Name" type="text" class="form-control" placeholder="Event Name" />
                 </td>
                 <td class="col-lg-1"></td>
                 <td>
                     <span>Request Date</span>
                 </td>
                 <td>
-                    @Html.EditorFor(model => date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    <input id="Date" name="date" value="@datenow" readonly />
                 </td>
             </tr>
-
             <tr class="row">
                 <td>
                     <span> Event Place</span>
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control" } })
+                    <input id="Place" name="Place" type="text" class="form-control" placeholder="Place" />
                 </td>
                 <td class="col-lg-1"></td>
                 <td>
                     <span>Note</span>
                 </td>
                 <td>
-                    @Html.TextAreaFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                    <textarea id="Note" name="Note" type="text" class="form-control" />
                 </td>
             </tr>
             <tr class="row">
@@ -64,7 +61,7 @@
                     Start Date
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @class = "form-control" } })
+                    <input id="Start_Date" name="Start_Date" type="date" class="form-control datepicker" />
                 </td>
             </tr>
             <tr class="row">
@@ -72,7 +69,7 @@
                     End Date
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.End_Date, new { htmlAttributes = new { @class = "form-control" } })
+                    <input id="End_Date" name="End_Date" type="date" class="form-control datepicker" placeholder="Select Date" />
                 </td>
             </tr>
             <tr class="row">
@@ -80,14 +77,25 @@
                     Budget
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.Budget, new { htmlAttributes = new { @class = "form-control" } })
+                    <input id="Budget" name="Budget" type="number" class="form-control" placeholder="Budget" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <input type="submit" value="Save" class="btn btn-primary btn-sm" style="width:65px" />
+                    <input type="button" value="Cancel" class="btn btn-warning" data-dismiss="modal" style="width:65px" />
                 </td>
             </tr>
         </table>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="button" value="Cancel" class="btn btn-default" data-dismiss="modal" />
-                <input type="submit" value="Add" class="btn btn-success" />
+                <input type="button" value="Cancel" class="btn btn-warning" data-dismiss="modal" />
+                <input type="submit" value="Add" class="btn btn-primary" />
             </div>
         </div>
     </div>
