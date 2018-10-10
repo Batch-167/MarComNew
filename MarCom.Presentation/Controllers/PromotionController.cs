@@ -42,6 +42,8 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_Create", model);
         }
 
+
+
         public static UserViewModel GetIdByName(string name)
         {
             UserViewModel result = new UserViewModel();

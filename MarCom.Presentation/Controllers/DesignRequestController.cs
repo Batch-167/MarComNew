@@ -50,7 +50,7 @@ namespace MarCom.Presentation.Controllers
         {
             //UserViewModel model2 = GetIdByName(User.Identity.Name);
             //DesignRequestViewModel model = new DesignRequestViewModel();
-            model.NameRequest = model2.Fullname;
+            //model.NameRequest = model2.Fullname;
             ViewBag.DesignRequest = new SelectList(EventRepo.Get(), "Id", "Code");
             return PartialView("_Create", new DesignRequestViewModel());
         }
