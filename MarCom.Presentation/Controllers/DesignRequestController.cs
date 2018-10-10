@@ -38,8 +38,8 @@ namespace MarCom.Presentation.Controllers
                 message = result.Message
             }, JsonRequestBehavior.AllowGet);
         }
-            
-    
+
+
         public ActionResult List()
         {
             return PartialView("_List", DesignRequestRepo.Get());
@@ -90,5 +90,10 @@ namespace MarCom.Presentation.Controllers
         //    }
         //return result;
         //}
+
+        public ActionResult ProductList (int id)
+        {
+            return PartialView("_ProductList", DesignApproveRepo.Get(id));
+        }
     }
 }

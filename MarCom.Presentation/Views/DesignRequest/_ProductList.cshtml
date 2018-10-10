@@ -1,0 +1,64 @@
+﻿@model IEnumerable<MarCom.ViewModel.DesignItemViewModel>
+
+<table class="table col-lg-12">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title_Item)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request_Pic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request_Due_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Start_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.End_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Note)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title_Item)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Request_Pic)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Start_Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Request_Due_Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.End_Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>                
+            </tr>
+        }
+    </tbody>
+</table>

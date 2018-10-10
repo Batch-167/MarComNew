@@ -1,4 +1,4 @@
-﻿@model MarCom.ViewModel.DesignRequestViewModel
+﻿
 @{
     ViewBag.Title = "List Souvenir Request";
 }
@@ -48,7 +48,7 @@
                             <input name="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
                         </td>
                         <td>
-                            <button type="button" id="btn-new" class="btn btn-warning btn-sm">Search</button>
+                            <button type="button" id="btn-search" class="btn btn-warning btn-sm" title="Search">Search</button>
                         </td>
                     </tr>
                 </table>
@@ -64,10 +64,10 @@
 
 
 <div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-header bg-blue">
+                    <h4 class="text-bold">Add Souvenir Request <button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button></h4>
             </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
@@ -85,7 +85,7 @@
 
         $("#btn-new").click(function () {
             $.ajax({
-                url: '@Url.Action("Create","SouvenirRequest")',
+                url: '@Url.Action("Add","SouvenirRequest")',
                 type: 'get',
                 success: function (result) {
                     $(".modal-body").html(result);
@@ -107,6 +107,23 @@
             });
         }
 
+        function AddItem() {
+            $.ajax({
+                url: '@Url.Action("AddItem", "SouvenirRequest")',
+                type: 'get',
+                success: function (result) {
+                    $('#item-body').append(result);
+                },
+                error: function (err) {
+                    $("#item-body").html(err);
+                }
+            });
+        }
+
+        function RemoveRow(obj) {
+            $(obj).closest('tr').remove();
+        }
+
         function action(act, id) {
             $.ajax({
                 url: '/SouvenirRequest/' + act,
@@ -123,12 +140,11 @@
             });
         }
 
+
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
             var vData = $(this).serialize();
-            var name = $(this).attr('name');
-            var name2 = $(this).attr('name2');
             $.ajax({
                 url: vUrl,
                 type: vMethod,

@@ -1,4 +1,5 @@
-﻿using MarCom.Repository;
+﻿using MarCom.DataModel;
+using MarCom.Repository;
 using MarCom.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -7,59 +8,39 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using MarCom.DataModel;
 
 namespace MarCom.Presentation.Controllers
 {
-    public class EventController : Controller
+    public class SouvenirRequestController : Controller
     {
-        // GET: Event
+        // GET: SouvenirRequest
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Approve(int id)
-        {
-            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
-            EventApproveViewModel model = EventApproveRepo.GetById(id);
-            return PartialView("_Approve", model);
-        }
-
-        [HttpPost]
-        public ActionResult Approve(EventApproveViewModel model)
-        {
-            ResultResponse result = EventApproveRepo.Approve(model);
-            return Json(new
-            {
-                success = result.Success,
-                entity = model,
-
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
-        }
         public ActionResult List()
         {
-            return PartialView("_List", EventRepo.Get());
+            return PartialView("_List", SouvenirRequestRepo.Get());
         }
 
         public ActionResult Add()
         {
-            //string name = User.Identity.Name;
-            UserViewModel model2 = GetIdByName(User.Identity.Name);
-            EventViewModel model = new EventViewModel();           
-            model.NameRequest = model2.Fullname;
+            UserViewModel result = GetIdByName(User.Identity.Name);
+            SouvenirRequestViewModel model = new SouvenirRequestViewModel();
+            ViewBag.Event = new SelectList(EventRepo.Get(), "Id", "Code");
+            model.Request_By = result.M_Employee_Id;
+            model.Name = result.Fullname;
+            model.Code = SouvenirRequestRepo.GetNewCode();
+            model.Request_Date = DateTime.Now;
             return PartialView("_Add", model);
         }
 
         [HttpPost]
-
-        public ActionResult Add(EventViewModel model)
+        public ActionResult Add(SouvenirRequestViewModel model)
         {
-            UserViewModel model2 = GetIdByName(User.Identity.Name);
-            model.Request_By = model2.M_Employee_Id;
             model.Create_By = User.Identity.Name;
-            ResultResponse result = EventRepo.Update(model);
+            ResultResponse result = SouvenirRequestRepo.Update(model);
             return Json(new
             {
                 success = result.Success,
@@ -67,6 +48,14 @@ namespace MarCom.Presentation.Controllers
                 message = result.Message
             }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult AddItem ()
+        {
+            ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
+            SouvenirItemViewModel model = new SouvenirItemViewModel();
+            return PartialView("_AddItem", model);
+        }
+
 
         public static UserViewModel GetIdByName(string name)
         {
@@ -82,11 +71,8 @@ namespace MarCom.Presentation.Controllers
                               Id = u.Id,
                               Password = u.PasswordHash,
                               M_Employee_Id = u.M_Employee_Id,
-                              Fullname = e.First_Name +" "+ e.Last_Name
-                              
-
-                          }
-                         ).FirstOrDefault();
+                              Fullname = e.First_Name + " " + e.Last_Name
+                          }).FirstOrDefault();
             }
             return result;
         }

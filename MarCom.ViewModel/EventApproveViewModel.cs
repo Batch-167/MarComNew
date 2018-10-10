@@ -26,11 +26,9 @@ namespace MarCom.ViewModel
         public string Event_Name { get; set; }
 
         [DisplayName("Start Date")]
-        [DataType(DataType.Date)]
         public DateTime? Start_Date { get; set; }
 
         [DisplayName("End Date")]
-        [DataType(DataType.Date)]
         public DateTime? End_Date { get; set; }
 
         [StringLength(255)]
@@ -42,7 +40,6 @@ namespace MarCom.ViewModel
 
         public string NameRequest { get; set; }
 
-        [DataType(DataType.Date)]
         public DateTime Request_Date { get; set; }
 
         public int? Approved_By { get; set; }

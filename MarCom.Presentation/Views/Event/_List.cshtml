@@ -61,7 +61,10 @@
                 </button>
                 <button type="button" class="btn btn-edit btn-default" data-id="@item.Id"title="Edit" onclick="action('edit',@item.Id)">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 
-                </button>          
+                </button>  
+                <button type="button" class="btn btn-default btn-approve" data-id="@item.Id" title="Approve" onclick="action('approve', @item.Id)">
+                    <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                </button>        
             </td>
         </tr>
     }

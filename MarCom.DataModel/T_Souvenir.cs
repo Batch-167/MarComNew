@@ -36,6 +36,8 @@ namespace MarCom.DataModel
 
         public DateTime? Approved_Date { get; set; }
 
+        public DateTime? Approve_Date { get; set; }
+
         public int? Received_By { get; set; }
 
         public DateTime? Received_Date { get; set; }
