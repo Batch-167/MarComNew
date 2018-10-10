@@ -139,5 +139,32 @@ namespace MarCom.Repository
             }
             return result;
         }
+
+        public static List<UserViewModel> Filter(UserViewModel entity)
+        {
+            List<UserViewModel> result = new List<UserViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from us in db.M_User
+                          join em in db.M_Employee on
+                          us.M_Employee_Id equals em.Id
+                          join c in db.M_Company on
+                          em.M_Company_Id equals c.Id
+                          join ro in db.M_Role on
+                          us.M_Role_Id equals ro.Id
+                          where em.Id== entity.Id || ro.Id == entity.Id || c.Id == entity.Id || us.UserName.Contains(entity.Username) || (us.Create_Date.ToString()).Contains(entity.Create_Date.ToString()) || us.Create_By.Contains(entity.Create_By)
+                          select new UserViewModel
+                          {
+                              M_Employee_Id = us.M_Employee_Id,
+                              M_Role_Id = ro.Id,
+                              Company = c.Name,
+                              Username = us.UserName,
+
+                              Create_By = us.Create_By,
+                              Create_Date = us.Create_Date
+                          }).ToList();
+            }
+            return result;
+        }
     }
 }
