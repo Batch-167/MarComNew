@@ -70,6 +70,7 @@ namespace MarCom.Repository
                         {
                             design.Code = entity.Code;
                             design.Title_Header = entity.Title_Header;
+                            design.T_Event_Id = entity.T_Event_Id;
                             design.Request_By = entity.Request_By;
                             design.Request_Date = DateTime.Now;
                             design.Note = entity.Note;

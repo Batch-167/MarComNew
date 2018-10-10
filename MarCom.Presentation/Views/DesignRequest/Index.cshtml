@@ -61,7 +61,7 @@
 
 
 <div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -104,25 +104,13 @@
             });
         }
 
+        function addAction(){
+                 $('#item-body').append("<br>Yeay Bisa<br>");
+             };
+
         function action(act, id) {
             $.ajax({
                 url: '/DesignRequest/'+act,
-                type: 'get',
-                data: { id: id },
-                dataType: 'html',
-                success: function (result) {
-                    $('#modal-input').find('.modal-body').html(result);
-                    $('#modal-input').modal('show');
-                },
-                error: function (err) {
-                    $("#table-list").tml(err);
-                }
-            });
-        }
-                    
-        function action(act, id) {
-            $.ajax({
-                url: '/DesignRequest/' + act,
                 type: 'get',
                 data: { id: id },
                 dataType: 'html',
