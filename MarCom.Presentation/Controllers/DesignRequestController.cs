@@ -21,6 +21,7 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Approve(int id)
         {
+            ViewBag.Panel = "Approval Design Request";
             ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
             DesignApproveViewModel model = DesignApproveRepo.GetById(id);
             return PartialView("_Approve", model);

@@ -75,6 +75,10 @@ namespace MarCom.DataModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_Design> T_Design { get; set; }
 
+        public virtual T_Event T_Event1 { get; set; }
+
+        public virtual T_Event T_Event2 { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_Promotion> T_Promotion { get; set; }
     }
