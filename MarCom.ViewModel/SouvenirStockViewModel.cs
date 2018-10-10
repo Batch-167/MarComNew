@@ -16,6 +16,7 @@ namespace MarCom.ViewModel
 
         public int Id { get; set; }
 
+
         [Display(Name ="Transaction Code")]
         [Required]
         [StringLength(50)]
@@ -51,5 +52,13 @@ namespace MarCom.ViewModel
         public string Update_By { get; set; }
 
         public DateTime? Update_Date { get; set; }
+
+        public int M_Souvenir_Id { get; set; }
+
+        public int? Qty { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string Note_Item { get; set; }
     }
 }

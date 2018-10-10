@@ -19,7 +19,16 @@ namespace MarCom.Presentation.Controllers
         // GET: User
         public ActionResult Index()
         {
+            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
+            ViewBag.Role = new SelectList(RoleRepo.Get(), "Id", "Name");
+            ViewBag.Company = new SelectList(CompanyRepo.Get(), "Id", "Name");
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Filter(UserViewModel model)
+        {
+            return PartialView("_List", UserRepo.Filter(model));
         }
 
         public ActionResult List()

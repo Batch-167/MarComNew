@@ -1192,6 +1192,7 @@
     <Content Include="Views\Promotion\_Awal.cshtml" />
     <Content Include="Views\Role\_Delete.cshtml" />
     <Content Include="Views\Event\_Approve.cshtml" />
+    <Content Include="Views\SouvenirStock\_AddItem.cshtml" />
     <Content Include="Views\Event\_Edit.cshtml" />
     <Content Include="Views\Event\_Details.cshtml" />
     <Content Include="Views\SouvenirRequest\_List.cshtml" />

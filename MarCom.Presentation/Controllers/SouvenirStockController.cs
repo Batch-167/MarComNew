@@ -22,6 +22,13 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_List", SouvenirStockRepo.Get());
         }
 
+        public ActionResult AddItem()
+        {
+            ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
+            SouvenirStockViewModel model = new SouvenirStockViewModel();
+            return PartialView("_AddItem");
+        }
+
         public ActionResult Add()
         {
             ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");

@@ -35,7 +35,6 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Received_By, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-
                         @Html.DropDownListFor(model => model.Received_By, (IEnumerable<SelectListItem>)ViewBag.Employee, "- Select Employee -", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Received_By, "", new { @class = "text-danger" })
                     </div>
@@ -62,7 +61,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="col-lg-12">
-                        <input type="button" id="AddItem" value="Add Item" class="btn btn-primary" onclick="AddItem()" />
+                        <input type="button" id="add-item" value="Add Item" class="btn btn-primary" onclick="Additem()" />
                     </div>
                     <table class="table">
                         <thead>
@@ -70,31 +69,19 @@
                                 <th class="col-lg-4">
                                     <span>Souvenir Name</span>
                                 </th>
-                                <th class="col-lg-1">
+                                <th class="col-lg-2">
                                     <span>Qty</span>
                                 </th>
                                 <th class="col-lg-4">
                                     <span>Note</span>
                                 </th>
                                 <th class="col-lg-3">
-                                    <span></span>
+                                    <span>Action</span>
                                 </th>
                             </tr>
                         </thead>
-                        <tbody id="ItemBody">
-                            <tr>
-                                <td>asas</td>
-                                <td>1</td>
-                                <td>vscwc</td>
-                                <td>
-                                    <button type="button" class="btn btn-edit" title="Edit">
-                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-delete" title="Delete">
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                    </button>
-                                </td>
-                            </tr>
+                        <tbody id="item-body">   
+                                 
                         </tbody>
                     </table>
                 </div>
