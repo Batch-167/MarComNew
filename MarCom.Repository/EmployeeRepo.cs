@@ -67,7 +67,7 @@ namespace MarCom.Repository
                     else
                     {
                         M_Employee employee = db.M_Employee.Where(c => c.Id == entity.Id).FirstOrDefault();
-                        if (employee != null)
+                        if (employee != null) 
                         {
                             employee.First_Name = entity.First_Name;
                             employee.Last_Name = entity.Last_Name;
