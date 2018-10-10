@@ -14,6 +14,7 @@ namespace MarCom.ViewModel
         {
             Is_Delete = false;
             Request_Date = DateTime.Now;
+            Status = 1;
         }
         public int Id { get; set; }
 
