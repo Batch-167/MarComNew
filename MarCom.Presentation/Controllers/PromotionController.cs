@@ -24,11 +24,20 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_List", PromotionRepo.Get());
         }
 
+        public ActionResult AddItem()
+        {
+            ViewBag.Promotion = new SelectList(PromotionRepo.Get(), "Id", "Name");
+            PromotionViewModel model = new PromotionViewModel();
+            return PartialView("_AddItem");
+        }
+
         public ActionResult Awal()
         {
             ViewBag.EventCode = new SelectList(EventRepo.Get(), "id", "Code");
             ViewBag.DesignCode = new SelectList(DesignRequestRepo.Get(), "id", "Code");
+            UserViewModel model2 = GetIdByName(User.Identity.Name);
             PromotionViewModel model = new PromotionViewModel();
+            model.RequestBy = model2.Fullname;
             return PartialView("_Awal", model);
         }
 
@@ -36,9 +45,7 @@ namespace MarCom.Presentation.Controllers
         {
             ViewBag.EventCode = new SelectList(EventRepo.Get(), "id", "Code");
             ViewBag.DesignCode = new SelectList(DesignRequestRepo.Get(), "id", "Code");
-            UserViewModel user1 = GetIdByName(User.Identity.Name);
             PromotionViewModel model = new PromotionViewModel();
-            model.RequestBy = user1.Fullname;
             return PartialView("_Create", model);
         }
 

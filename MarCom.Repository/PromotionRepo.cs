@@ -18,11 +18,13 @@ namespace MarCom.Repository
                 result = (from pr in db.T_Promotion
                           join ev in db.T_Event on pr.T_Event_Id equals ev.Id
                           join de in db.T_Design on pr.T_Design_Id equals de.Id
+                          join e in db.M_Employee on pr.Request_By equals e.Id
                           select new PromotionViewModel
                           {
                               Id=pr.Id,
                               Code=pr.Code,
                               Request_By=pr.Request_By,
+                              RequestBy=e.First_Name+" "+e.Last_Name,
                               Request_Date=pr.Request_Date,
                               Assign_To=pr.Assign_To,
                               Status=pr.Status,
@@ -131,6 +133,37 @@ namespace MarCom.Repository
             {
                 result.Success = false;
                 result.Message = ex.Message;
+            }
+            return result;
+        }
+
+        public static PromotionViewModel GetById(int id)
+        {
+            PromotionViewModel result = new PromotionViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from pr in db.T_Promotion
+                          join ev in db.T_Event on pr.T_Event_Id equals ev.Id
+                          join de in db.T_Design on pr.T_Design_Id equals de.Id
+                          join e in db.M_Employee on pr.Request_By equals e.Id
+                          where pr.Id == id
+                          select new PromotionViewModel
+                          {
+                              Id = pr.Id,
+                              Code = pr.Code,
+
+                              T_Event_Id = pr.T_Event_Id,
+                              EventCode = ev.Code,
+                              T_Design_Id = pr.T_Design_Id,
+                              DesignCode = de.Code,
+                              Request_By = pr.Request_By,
+                              RequestBy = e.First_Name + " " + e.Last_Name,
+
+                              Status = pr.Status,
+                              Request_Date = pr.Request_Date,
+                              Note = pr.Note
+
+                          }).FirstOrDefault();
             }
             return result;
         }
