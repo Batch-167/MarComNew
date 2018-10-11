@@ -40,6 +40,8 @@ namespace MarCom.Repository
             return result;
         }
 
+
+
         public static ResultResponse Update(PromotionViewModel entity)
         {
             ResultResponse result = new ResultResponse();

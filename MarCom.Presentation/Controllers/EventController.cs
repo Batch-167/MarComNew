@@ -11,6 +11,7 @@ using MarCom.DataModel;
 
 namespace MarCom.Presentation.Controllers
 {
+    [Authorize]
     public class EventController : Controller
     {
         // GET: Event
