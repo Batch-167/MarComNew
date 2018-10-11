@@ -135,7 +135,7 @@
                     $('#modal-input').modal('show');
                 },
                 error: function (err) {
-                    $("#table-list").tml(err);
+                    $("#table-list").html(err);
                 }
             });
         }
@@ -144,14 +144,19 @@
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
-            var vData = $(this).serialize();
+            var vData = { Code: $(this).find("#Code").val(), T_Event_Id: $(this).find("#T_Event_Id").val(), Request_By: $(this).find("#Request_By").val(), Request_Date: $(this).find("#Request_Date").val(), Request_Due_Date: $(this).find("#Request_Due_Date").val(), Note : $(this).find("#Note").val() };
+            var vItems = [];
+            $("#item-body").find('tr').each(function (index) {
+                var vItem = { M_Souvenir_Id: $(this).find("#M_Souvenir_Id").val(), Qty: $(this).find("#Qty").val(), Note: $(this).find("#Note").val() };
+                vItems.push(vItem);
+            });
             $.ajax({
                 url: vUrl,
                 type: vMethod,
-                data: vData,
+                data: {model : vData, item : vItems},
                 success: function (result) {
                     if (result.success) {
-                        alert(name + " " + result.entity.Code + " " + name2);
+                        alert("Data Saved !");
                         $("#modal-input").modal("hide");
                         GetList();
                     } else {
