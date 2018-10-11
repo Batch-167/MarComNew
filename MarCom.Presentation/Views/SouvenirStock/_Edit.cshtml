@@ -9,31 +9,31 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-5">
                 @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
                 @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Received_By, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.Received_By, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-5">
                 @Html.DropDownListFor(model => model.Received_By, (IEnumerable<SelectListItem>)ViewBag.Employee, "- Select Employee -", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Received_By, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Received_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.Received_Date, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-5">
                 @Html.EditorFor(model => model.Received_Date, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Received_Date, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-5">
                 @Html.TextAreaFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
             </div>
