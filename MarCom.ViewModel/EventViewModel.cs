@@ -60,7 +60,7 @@ namespace MarCom.ViewModel
                 }
                 else if (Status == 2)
                 {
-                    return "On Progress";
+                    return "In Progress";
                 }
                 else if (Status == 3)
                 {

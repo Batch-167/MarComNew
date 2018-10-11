@@ -18,13 +18,19 @@
         <div class="form-group">
             <div class="col-md-10">
                 <span>Select From Design</span> 
-                <label for="yesCheck">Yes</label> <input type="radio" onclick="yesnoCheck();" name="yesno" id="yesCheck" />
-                <label for="noCheck">No</label> <input type="radio" onclick="yesnoCheck();" name="yesno" id="noCheck`" />
+               
+                <select>
+                    <option onclick="yesnoCheck();" name="yesno" id="yesCheck" for="yesCheck" value="yes">Yes</option> 
+                    <option onclick="yesnoCheck();" name="yesno" id="noCheck" for="noCheck" value="no">No</option> 
+                    
+                </select> 
+                
+                 @*<label for="yesCheck">Yes</label> <input type="radio" onclick="yesnoCheck();" name="yesno" id="yesCheck" />
+                <label for="noCheck">No</label> <input type="radio" onclick="yesnoCheck();" name="yesno" id="noCheck`" />*@
                 <div id="ifYes" style="visibility:hidden">
                     @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.T_Design_Id, (IEnumerable<SelectListItem>)ViewBag.EventCode, "Select Event Code", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.T_Design_Id, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(model => model.T_Design_Id, (IEnumerable<SelectListItem>)ViewBag.EventCode, "Select Event Code", new { @class = "form-control",@id="item" })
                     </div>
                 </div>
             </div>

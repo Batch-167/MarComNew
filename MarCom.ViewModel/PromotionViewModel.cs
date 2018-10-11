@@ -10,6 +10,39 @@ namespace MarCom.ViewModel
 {
     public class PromotionViewModel
     {
+        public PromotionViewModel()
+        {
+            Is_Delete = false;
+            Request_Date = DateTime.Now;
+            Status = 1;
+            Flag_Design = "No";
+        }
+        public string StatusCondt
+        {
+            get
+            {
+                if (Status==0)
+                {
+                    return "Rejected";
+                }
+                else if (Status==1)
+                {
+                    return "Submitted";
+                }
+                else if (Status==2)
+                {
+                    return "In Progress";
+                }
+                else if (Status==3)
+                {
+                    return "Done";
+                }
+                else
+                {
+                    return "Rejected";
+                }
+            }
+        }
         public string RequestBy { get; set; }
         public string DesignCode { get; set; }
 
@@ -70,5 +103,9 @@ namespace MarCom.ViewModel
 
         [DisplayName("Create Date")]
         public DateTime Create_Date { get; set; }
+
+        public string Update_By { get; set; }
+
+        public DateTime? Update_Date { get; set; }
     }
 }

@@ -1201,6 +1201,7 @@
     <Content Include="Views\SouvenirRequest\_Edit.cshtml" />
     <Content Include="Views\DesignRequest\_ProductList.cshtml" />
     <Content Include="Views\SouvenirRequest\_ListItem.cshtml" />
+    <Content Include="Views\Promotion\_AddItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
