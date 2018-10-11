@@ -1,0 +1,26 @@
+﻿@model IEnumerable<MarCom.ViewModel.SouvenirItemViewModel>
+
+@foreach (var item in Model){
+    <tr>@Html.HiddenFor(model => item.Id, new { @Id = "Id" })
+        <td>
+            @Html.DropDownListFor(model => item.M_Souvenir_Id, (IEnumerable<SelectListItem>)
+                   ViewBag.Souvenir, "Select Souvenir", new { @class = "form-control", @Id = "M_Souvenir_Id", @disabled = "true" })
+            @Html.ValidationMessageFor(model => item.M_Souvenir_Id, "", new { @class = "text-danger" })
+        </td>
+
+        <td>
+            @Html.EditorFor(model => item.Qty, new { htmlAttributes = new { @class = "form-control", @Id = "Qty", @disabled = "true" } })
+            @Html.ValidationMessageFor(model => item.Qty, "", new { @class = "text-danger" })
+        </td>
+
+        <td>
+            @Html.EditorFor(model => item.Note, new { htmlAttributes = new { @class = "form-control", @Id = "Note", @disabled = "true" } })
+            @Html.ValidationMessageFor(model => item.Note, "", new { @class = "text-danger" })
+        </td>
+
+        <td>
+            <button type="button" class="btn btn-edit" title="Edit" onclick="Disable(this)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+            <button type="button" class="btn btn-delete" title="Delete" onclick="RemoveRow(this)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+        <td>
+    </tr>
+}

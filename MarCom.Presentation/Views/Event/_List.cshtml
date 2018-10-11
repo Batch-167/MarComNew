@@ -19,6 +19,20 @@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
+        <tr>
+            <th> No </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Request_By)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NameRequest)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
 
             <th>
                 @Html.DisplayNameFor(model => model.Create_By)
@@ -47,7 +61,7 @@
                     @Html.DisplayFor(modelItem => item.Request_Date)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StatusName)
+                    @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Create_By)
@@ -65,8 +79,12 @@
                     <button type="button" class="btn btn-default btn-approve" data-id="@item.Id" title="Approve" onclick="action('approve', @item.Id)">
                         <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
                     </button>  
+                    <button type="button" class="btn btn-default btn-approve" data-id="@item.Id" title="Approve" onclick="action('approve', @item.Id)">
+                        <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                    </button>
                 </td>
             </tr>
+
         }
     </tbody>
 
