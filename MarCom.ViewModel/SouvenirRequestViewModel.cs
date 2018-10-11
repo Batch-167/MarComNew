@@ -28,6 +28,8 @@ namespace MarCom.ViewModel
         [DisplayName("Event")]
         public int? T_Event_Id { get; set; }
 
+        public string CodeEvent { get; set; }
+
         [DisplayName("Request By")]
         public int? Request_By { get; set; }
 
@@ -70,6 +72,8 @@ namespace MarCom.ViewModel
 
         [DisplayName("Create Date")]
         public DateTime Create_Date { get; set; }
+
+        public string Update_By { get; set; }
 
         public string Name { get; set; }
 

@@ -35,6 +35,28 @@ namespace MarCom.Repository
             return result;
         }
 
+        public static List<SouvenirItemViewModel> GetItem(int id)
+        {
+            List<SouvenirItemViewModel> result = new List<SouvenirItemViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from si in db.T_Souvenir_Item
+                          join ts in db.T_Souvenir on si.T_Souvenir_Id equals ts.Id
+                          join s in db.M_Souvenir on si.M_Souvenir_Id equals s.Id
+                          where si.T_Souvenir_Id == id
+                          select new SouvenirItemViewModel
+                          {
+                              Id = si.Id,
+                              T_Souvenir_Id = si.T_Souvenir_Id,
+                              M_Souvenir_Id = si.M_Souvenir_Id,
+                              SouvenirName = s.Name,
+                              Qty = si.Qty,
+                              Note = si.Note,
+                          }).ToList();
+            }
+            return result;
+        }
+
         public static ResultResponse Update(SouvenirRequestViewModel entity, List<SouvenirItemViewModel> entityitem)
         {
             ResultResponse result = new ResultResponse();
@@ -45,11 +67,11 @@ namespace MarCom.Repository
                     if (entity.Id == 0)
                     {
                         T_Souvenir t_Souv = new T_Souvenir();
-                        t_Souv.Code = GetNewCode();
+                        t_Souv.Code = entity.Code;
                         t_Souv.Type = "Additional";
                         t_Souv.T_Event_Id = entity.T_Event_Id;
                         t_Souv.Request_By = entity.Request_By;
-                        t_Souv.Request_Date = DateTime.Now;
+                        t_Souv.Request_Date = entity.Request_Date;
                         t_Souv.Request_Due_Date = entity.Request_Due_Date;
                         t_Souv.Note = entity.Note;
                         t_Souv.Status = 1;
@@ -75,6 +97,57 @@ namespace MarCom.Repository
                         }
                         db.SaveChanges();
                     }
+                    else
+                    {
+                        T_Souvenir t_Souv = db.T_Souvenir.Where(ts => ts.Id == entity.Id).FirstOrDefault();
+                        if (t_Souv != null)
+                        {
+                            t_Souv.Code = entity.Code;
+                            t_Souv.T_Event_Id = entity.T_Event_Id;
+                            t_Souv.Request_By = entity.Request_By;
+                            t_Souv.Request_Date = entity.Request_Date;
+                            t_Souv.Request_Due_Date = entity.Request_Due_Date;
+                            t_Souv.Note = entity.Note;
+                            t_Souv.Status = 1;
+
+                            t_Souv.Update_By = entity.Update_By;
+                            t_Souv.Update_Date = DateTime.Now;
+
+                            foreach (var item in entityitem)
+                            {
+                                if (item.Id == 0)
+                                {
+                                    T_Souvenir_Item t_SouvItem = new T_Souvenir_Item();
+                                    t_SouvItem.T_Souvenir_Id = entity.Id;
+                                    t_SouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
+                                    t_SouvItem.Qty = item.Qty;
+                                    t_SouvItem.Note = item.Note;
+                                    t_SouvItem.Is_Delete = item.Is_Delete;
+
+                                    t_SouvItem.Create_By = entity.Update_By;
+                                    t_SouvItem.Create_Date = DateTime.Now;
+
+                                    db.T_Souvenir_Item.Add(t_SouvItem);
+                                }
+                                else
+                                {
+                                    T_Souvenir_Item t_SouvItem = db.T_Souvenir_Item.Where(si => si.Id == item.Id).FirstOrDefault();
+                                    if (t_SouvItem != null)
+                                    {
+                                        t_SouvItem.T_Souvenir_Id = entity.Id;
+                                        t_SouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
+                                        t_SouvItem.Qty = item.Qty;
+                                        t_SouvItem.Note = item.Note;
+                                        t_SouvItem.Is_Delete = item.Is_Delete;
+
+                                        t_SouvItem.Update_By = entity.Update_By;
+                                        t_SouvItem.Update_Date = DateTime.Now;
+                                    }
+                                }                                
+                            }
+                            db.SaveChanges();
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -99,11 +172,11 @@ namespace MarCom.Repository
                 if (result != null)
                 {
                     string[] oldRef = result.code.Split('-');
-                    newRef += (int.Parse(oldRef[1]) + 1).ToString("D4");
+                    newRef += (int.Parse(oldRef[1]) + 1).ToString("D5");
                 }
                 else
                 {
-                    newRef += "0001";
+                    newRef += "00001";
                 }
             }
             return newRef;
@@ -124,6 +197,32 @@ namespace MarCom.Repository
                               Password = u.PasswordHash,
                               M_Employee_Id = u.M_Employee_Id,
                               Fullname = e.First_Name + " " + e.Last_Name
+                          }).FirstOrDefault();
+            }
+            return result;
+        }
+
+        public static SouvenirRequestViewModel GetById(int id)
+        {
+            SouvenirRequestViewModel result = new SouvenirRequestViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from s in db.T_Souvenir
+                          join e in db.T_Event on s.T_Event_Id equals e.Id
+                          join em in db.M_Employee on s.Request_By equals em.Id
+                          where id == s.Id
+                          select new SouvenirRequestViewModel
+                          {
+                              Id = s.Id,
+                              Code = s.Code,
+                              T_Event_Id = s.T_Event_Id,
+                              CodeEvent = e.Code,
+                              Status = s.Status,
+                              Request_By = s.Request_By,
+                              Name = em.First_Name + " " + em.Last_Name,
+                              Request_Date = s.Request_Date,
+                              Request_Due_Date = s.Request_Due_Date,
+                              Note = s.Note,
                           }).FirstOrDefault();
             }
             return result;

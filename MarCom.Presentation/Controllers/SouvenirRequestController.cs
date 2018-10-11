@@ -31,6 +31,8 @@ namespace MarCom.Presentation.Controllers
             ViewBag.Event = new SelectList(EventRepo.Get(), "Id", "Code");
             model.Request_By = result.M_Employee_Id;
             model.Name = result.Fullname;
+            model.Code = SouvenirRequestRepo.GetNewCode();
+            model.Request_Date = DateTime.Now;
             return PartialView("_Add", model);
         }
 
@@ -52,6 +54,32 @@ namespace MarCom.Presentation.Controllers
             ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
             SouvenirItemViewModel model = new SouvenirItemViewModel();
             return PartialView("_AddItem", model);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
+            return PartialView("_Edit", model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(SouvenirRequestViewModel model, List<SouvenirItemViewModel> item)
+        {
+            model.Update_By = User.Identity.Name;
+            ResultResponse result = SouvenirRequestRepo.Update(model, item);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ListItem(int id)
+        {
+            ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
+            List<SouvenirItemViewModel> model = SouvenirRequestRepo.GetItem(id);
+            return PartialView("_ListItem", model);
         }
     }
 }
