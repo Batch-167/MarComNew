@@ -131,7 +131,9 @@
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
                     $('#modal-input').modal('show');
-                    GetItemList(id);
+                    if (act == "Approve") {
+                        GetItemList(id);
+                    };
                 },
                 error: function (err) {
                     $("#table-list").tml(err);
@@ -162,13 +164,15 @@
             return false;
         });
 
-        function Approve(stats) {
+        var value;
+        function Approve(value) {
             var data = {
                 assign_to: $('#assignto').val(),
-                status: stats,
+                status: value,
                 reject_reason: $('#reject-reason').val(),
                 id: $('#request-id').val(),
             };
+            debugger
             $.ajax({
                 url: '@Url.Action("Approve","DesignRequest")',
                 type: 'post',

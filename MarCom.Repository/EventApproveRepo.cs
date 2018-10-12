@@ -20,7 +20,15 @@ namespace MarCom.Repository
                     T_Event ev = db.T_Event.Where(e => e.Id == entity.Id).FirstOrDefault();
                     if (ev != null)
                     {
+                        ev.Reject_Reason = entity.Reject_Reason;
+                        ev.Status = entity.Status;
                         ev.Assign_To = entity.Assign_To;
+
+                        if (entity.Status == 2)
+                        {
+                            ev.Approved_Date = DateTime.Now;
+                            ev.Approved_By = entity.Approved_By;
+                        }
 
                         db.SaveChanges();
                     }
@@ -40,6 +48,8 @@ namespace MarCom.Repository
             using (var db = new MarComContext())
             {
                 result = (from e in db.T_Event
+                          join em in db.M_Employee
+                          on e.Request_By equals em.Id
                           where e.Id == id
                           select new EventApproveViewModel
                           {
@@ -51,6 +61,7 @@ namespace MarCom.Repository
                               End_Date = e.End_Date,
                               Budget = e.Budget,
                               Request_By = e.Request_By,
+                              NameRequest = em.First_Name + " " + em.Last_Name,
                               Request_Date = e.Request_Date,
                               Note = e.Note,
                               Status = e.Status

@@ -1191,7 +1191,6 @@
     <Content Include="Views\MenuAccess\_Delete.cshtml" />
     <Content Include="Views\Role\_Delete.cshtml" />
     <Content Include="Views\Event\_Approve.cshtml" />
-    <Content Include="Views\SouvenirStock\_AddItem.cshtml" />
     <Content Include="Views\Event\_Edit.cshtml" />
     <Content Include="Views\Event\_Details.cshtml" />
     <Content Include="Views\SouvenirRequest\_List.cshtml" />
@@ -1203,9 +1202,14 @@
     <Content Include="Views\Promotion\_Create2.cshtml" />
     <Content Include="Views\Promotion\_Create3.cshtml" />
     <Content Include="Views\SouvenirSettlementRequest\Index.cshtml" />
+    <Content Include="Views\SouvenirStock\_AddItem.cshtml" />
+    <Content Include="Views\SouvenirRequest\_Edit.cshtml" />
+    <Content Include="Views\DesignRequest\_ProductList.cshtml" />
+    <Content Include="Views\SouvenirRequest\_ListItem.cshtml" />
     <Content Include="Views\Promotion\_AddItem.cshtml" />
     <Content Include="Views\Promotion\_DesignReq.cshtml" />
     <Content Include="Views\Promotion\_DesignReqItem.cshtml" />
+    <Content Include="Views\SouvenirRequest\_Received.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdminLTE\dist\PromotionFile\" />
