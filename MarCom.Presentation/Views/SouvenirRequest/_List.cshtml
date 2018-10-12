@@ -41,6 +41,7 @@
             @Html.DisplayFor(modelItem => item.Request_Due_Date)
         </td>
         <td>
+            @Html.HiddenFor(modelItem => item.Status, new { @id ="status-id" })
             @Html.DisplayFor(modelItem => item.StatusName)
         </td>
         <td>
@@ -58,6 +59,9 @@
             </button>
             <button type="button" class="btn btn-danger btn-approve" data-id="@item.Id" title="Approve" onclick="action('Approve', @item.Id)">
                 <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-danger btn-received" data-id="@item.Id" title="Received" onclick="action('Received', @item.Id)">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
             </button>
         </td>
     </tr>

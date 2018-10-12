@@ -168,5 +168,28 @@
             });
             return false;
         });
+
+        function Approve(stat) {
+            var data = {
+                assign_to: $('#assign-to').val(),
+                status: stat,
+                reject_reason: $('#reject-reason').val(),
+                id: $('#event-id').val(),
+            };
+            $.ajax({
+                url: '@Url.Action("Approve","Event")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    if (result.success) {
+                        $("#reason-input").modal("hide");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error")
+                    }
+                }
+            });
+        };
     </script>
 }

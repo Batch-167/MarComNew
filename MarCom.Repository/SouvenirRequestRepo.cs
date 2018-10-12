@@ -227,5 +227,17 @@ namespace MarCom.Repository
             }
             return result;
         }
+
+        public static void DeleteItem()
+        {
+            using (var db = new MarComContext())
+            {
+                foreach (var item in db.T_Souvenir_Item)
+                {
+                    db.T_Souvenir_Item.Remove(item);
+                }
+            }
+        }
+
     }
 }

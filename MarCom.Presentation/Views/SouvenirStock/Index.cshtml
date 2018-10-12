@@ -1,10 +1,7 @@
-﻿@model MarCom.ViewModel.SouvenirStockViewModel
-@using MarCom.Repository
-
-@Styles.Render("~/AdminLTE/plugins/datatables/css")
+﻿@Styles.Render("~/AdminLTE/plugins/datatables/css")
 
 @{
-    ViewBag.Title = "SouvenirStock";
+    ViewBag.Title = "Souvenir Stock";
 }
 
 <div class="panel panel-primary">
@@ -69,10 +66,9 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            @*<div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">@ViewBag.title</h4>
-            </div>*@
+            <div class="modal-header bg-blue">
+                <h4 class="text-bold">@ViewBag.title<button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button></h4>
+            </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
             </div>
@@ -113,9 +109,18 @@
             });
         });
 
-        function Additem() {
-            $("#item-body").append();
-        };
+        function AddItem() { 
+            $.ajax({
+                url: '@Url.Action("AddItem", "SouvenirStock")',
+                type: 'get',
+                success: function (result) {
+                    $('#item-body').append(result);
+                },
+                error: function (err) {
+                    $("#item-body").html(err);
+                }
+            });
+        }
 
         function RemoveRow(obj) {
             $(obj).closest('tr').remove();
@@ -140,11 +145,16 @@
         $('#modal-input').on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
-            var vData = $(this).serialize();
+            var vData = { Code: $(this).find('#Code').val(), Received_By: $(this).find('#Received_By').val(), Received_Date: $(this).find('#Received_Date').val(), Note: $(this).find('#Note').val() };
+            var vItems = [];
+            $('#item-body').find('tr').each(function (index) {
+                var vItem = { M_Souvenir_Id: $(this).find('#M_Souvenir_Id').val(), Qty: $(this).find('#Qty').val(), Note: $(this).find('#Note').val() };
+                vItems.push(vItem);
+            });
             $.ajax({
                 url: vUrl,
                 type: vMethod,
-                data: vData,
+                data: { model: vData, item: vItems },
                 success: function (result) {
                     if (result.success) {
                         alert("Data code : " + result.entity.Code + " has been saved");

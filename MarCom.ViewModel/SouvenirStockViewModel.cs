@@ -53,7 +53,9 @@ namespace MarCom.ViewModel
 
         public DateTime? Update_Date { get; set; }
 
-        public int M_Souvenir_Id { get; set; }
+        public int Status { get; set; }
+
+        public int Request_By { get; set; }
 
         public int? Qty { get; set; }
 
