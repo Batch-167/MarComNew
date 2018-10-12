@@ -21,7 +21,6 @@ namespace MarCom.Repository
                           select new EventViewModel
                           {
                               Id = e.Id,
-                              Id=e.Id,
                               Code = e.Code,
                               Event_Name = e.Event_Name,
                               Request_By = e.Request_By,

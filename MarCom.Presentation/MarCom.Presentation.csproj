@@ -1197,13 +1197,12 @@
     <Content Include="Views\SouvenirRequest\_List.cshtml" />
     <Content Include="Views\SouvenirRequest\_Add.cshtml" />
     <Content Include="Views\SouvenirRequest\_AddItem.cshtml" />
-    <Content Include="Views\DesignRequest\_ProductList.cshtml" />
     <Content Include="Views\DesignRequest\_AddItem.cshtml" />
     <Content Include="Views\SouvenirStock\_AddItem.cshtml" />
     <Content Include="Views\SouvenirRequest\_Edit.cshtml" />
-    <Content Include="Views\DesignRequest\_ProductList.cshtml" />
     <Content Include="Views\SouvenirRequest\_ListItem.cshtml" />
     <Content Include="Views\Promotion\_AddItem.cshtml" />
+    <Content Include="Views\DesignRequest\_Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,17 +1,18 @@
 ﻿@model MarCom.ViewModel.DesignRequestViewModel
 
-@using (Html.BeginForm("Create", "DesignRequest", FormMethod.Post, new { @id = "input-form" }))
+
+@using (Html.BeginForm("Edit", "DesignRequest", FormMethod.Post, new { @id = "input-form" } ))
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 @Html.HiddenFor(model => model.Id)
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-4"})
+                    @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @value = "Auto Generated" } })
+                        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -29,11 +30,19 @@
                         @Html.ValidationMessageFor(model => model.Title_Header, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Request_By, htmlAttributes: new { @class = "control-label col-md-4" })
+                    @Html.LabelFor(model => model.Request_By, htmlAttributes: new { @class = "control -label col-md-4" })
                     <div class="col-md-8">
                         @Html.HiddenFor(model => model.Request_By)
                         @Html.EditorFor(model => model.NameRequest, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
@@ -58,9 +67,9 @@
         </div>
 
         <div class="row">
-           <div class="col-lg-3">
-               <input type="button" value="Add Item" class="btn btn-primary" onclick="AddItem()"/>
-           </div>
+            <div class="col-lg-3">
+                <input type="button" value="Add Item" class="btn btn-primary" onclick="AddItem()" />
+            </div>
             <div class="panel-body">
                 <table class="table">
                     <thead>
@@ -76,19 +85,18 @@
                             <td></td>
                         </tr>
                     </thead>
-                    <tbody id="item-body">
-
-                    </tbody>
+                    <tbody id="item-body"></tbody>
                 </table>
             </div>
         </div>
     </div>
-    
-            <div class="form-group">
-                <div class="col-md-offset-9 col-md-3">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                    <input type="button" value="Cancel" class="btn btn-warning" data-dismiss="modal" />
-                </div>
-            </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-9 col-md-3">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <input type="button" value="Cancel" class="btn btn-warning" data-dismiss="modal" />
+        </div>
+    </div>
 
 }
+

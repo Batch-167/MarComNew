@@ -58,11 +58,12 @@
 </div>
 
 
-
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"  id="modal-input">
+    <div class="modal-dialog modal-lg" style="width:1250px" role="document">
         <div class="modal-content">
             <div class="modal-header bg-blue">
-                <h4 class="text-bold">Add Design Request<button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button></h4>
-                <h4 class="text-bold">@ViewBag.Panel<button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button></h4>
+                @*<h4 class="text-bold">Add Design Request<button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button></h4>*@
+                <h4 class="text-bold" id="title-panel"><button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button></h4>
             </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
@@ -85,6 +86,7 @@
                 success: function (result) {
                     $(".modal-body").html(result);
                     $(".modal").modal("show");
+                    $("#title-panel").html("Add Design Request")
                 }
             });
         });
@@ -141,6 +143,7 @@
                 dataType: 'html',
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
+                    $("title-panel").html(act + "Design Request");
                     $('#modal-input').modal('show');
                     if (act == "Approve") {
                         GetItemList(id);
@@ -155,16 +158,16 @@
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
-            var vData = { Code: $(this).find("#Code").val(), T_Event_Id: $(this).find("#T_Event_Id").val(), Title_Header: $(this).find("#Title_Header").val(), Request_By: $(this).find("#Request_By").val(), Request_Date: $(this).find("#Request_Date").val(), Note: $(this).find("#Note").val() };
-            var vItem = [];
+            var vData = {  Id : $(this).find("#Id").val(), Code: $(this).find("#Code").val(), T_Event_Id: $(this).find("#T_Event_Id").val(), Title_Header: $(this).find("#Title_Header").val(), Request_By: $(this).find("#Request_By").val(), Request_Date: $(this).find("#Request_Date").val(), Note: $(this).find("#Note").val() };
+            var vItems = [];
             $("#item-body").find('tr').each(function (index) {
-                var vItem = { M_Product_Id: $(this).find("#M_Product_Id").val(), Description: $(this).find("#Description").val(), Title_Item: $(this).find("#Title_Item").val(), Request_Pic: $(this).find("#Request_Pic").val(), Request_Due_Date: $(this).find("#Request_Due_Date").val(), Start_Date: $(this).find("#Start_Date").val(), End_Date: $(this).find("#End_Date").val(), Note: $(this).find("#Note").val() };
+                var vItem = { Id : $(this).find("#Id").val(), M_Product_Id: $(this).find("#M_Product_Id").val(), Title_Item: $(this).find("#Title_Item").val(), Request_Due_Date: $(this).find("#Request_Due_Date").val(), Start_Date: $(this).find("#Start_Date").val(), End_Date: $(this).find("#End_Date").val(), Note: $(this).find("#Note").val() };
                 vItems.push(vItem);
             })
             $.ajax({
                 url: vUrl,
                 type: vMethod,
-                data: vData,
+                data: {model: vData, item: vItems},
                 success: function (result) {
                     if (result.success) {
                         alert("Sukses");

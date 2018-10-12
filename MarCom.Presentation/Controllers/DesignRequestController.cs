@@ -49,12 +49,12 @@ namespace MarCom.Presentation.Controllers
         //GET : New Product
         public ActionResult Create()
         {
+           
             UserViewModel result = DesignRequestRepo.GetIdByName(User.Identity.Name);
             DesignRequestViewModel model = new DesignRequestViewModel();
+            model.Request_By = result.M_Employee_Id;
             model.NameRequest = result.Fullname;
             model.Code = DesignRequestRepo.GetNewCode();
-           // model.NameRequest = model2.Fullname;
-            //model.NameRequest = model2.Fullname;
             ViewBag.DesignRequest = new SelectList(EventRepo.Get(), "Id", "Code");
             return PartialView("_Create", model);
         }
@@ -62,10 +62,7 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Create(DesignRequestViewModel model, List<DesignItemViewModel> item)
         {
-            UserViewModel result1 = DesignRequestRepo.GetIdByName(User.Identity.Name);
-            DesignRequestViewModel model1 = new DesignRequestViewModel();
-            model1.Request_By = result1.M_Employee_Id;
-            model1.Create_By = User.Identity.Name;
+            model.Create_By = User.Identity.Name;
             ResultResponse result = DesignRequestRepo.Update(model, item);
             return Json(new
             {
@@ -79,9 +76,19 @@ namespace MarCom.Presentation.Controllers
         public ActionResult AddItem()
         {
             ViewBag.Product = new SelectList(ProductRepo.Get(), "Id", "Name");
-            //ViewBag.Description = new SelectList(ProductRepo.Get(), "Id", "Description");
+            ViewBag.Description = new SelectList(ProductRepo.Get(), "Id", "Description");
             DesignItemViewModel model = new DesignItemViewModel();
             return PartialView("_AddItem", model);
+        }
+
+
+
+        //EDIT
+        public ActionResult Edit(int id)
+        {
+            DesignRequestViewModel model = DesignRequestRepo.GetById(id);
+            ViewBag.DesignRequest = new SelectList(EventRepo.Get(), "Id", "Code");
+            return PartialView("_Edit", model);
         }
 
         public ActionResult ProductList (int id)

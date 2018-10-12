@@ -32,7 +32,7 @@ namespace MarCom.Repository
                               Is_Delete = dr.Is_Delete,
 
                               Create_Date = dr.Create_Date,
-                              Create_By = "Administrator"
+                              Create_By = dr.Create_By
                           })//.Where(p => p.Is_Delete == all ? p.Is_Delete : true)
                             .ToList();
             }
@@ -49,11 +49,11 @@ namespace MarCom.Repository
                     if (entity.Id == 0)
                     {
                         T_Design design = new T_Design();
-                        design.Code = entity.Code;
+                        design.Code = GetNewCode();
                         design.Title_Header = entity.Title_Header;
                         design.T_Event_Id = entity.T_Event_Id;
                         design.Request_By = entity.Request_By;
-                        design.Request_Date = entity.Request_Date;
+                        design.Request_Date = DateTime.Now;
                         design.Note = entity.Note;
                         design.Status = 1;
 
@@ -68,7 +68,7 @@ namespace MarCom.Repository
                             designItem.T_Design_Id = entity.Id;
                             designItem.M_Product_Id = item.M_Product_Id;
                             designItem.Title_Item = item.Title_Item;
-                            designItem.Request_Pic = item.Request_Pic;
+                            designItem.Request_Pic = 1;
                             designItem.Start_Date = item.Start_Date;
                             designItem.End_Date = item.End_Date;
                             designItem.Note = item.Note;
@@ -138,15 +138,44 @@ namespace MarCom.Repository
             return result;
         }
 
-        //public static List<DesignItemViewModel> GetRole()
+        public static DesignRequestViewModel GetById(int id)
+        {
+            DesignRequestViewModel result = new DesignRequestViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from d in db.T_Design
+                          join e in db.T_Event
+                          on d.T_Event_Id equals e.Id
+                          join em in db.M_Employee
+                          on d.Request_By equals em.Id
+                          where id == d.Id
+                          select new DesignRequestViewModel
+                          {
+                              Id = d.Id,
+                              Code = d.Code,
+                              T_Event_Id = d.T_Event_Id,
+                              EventCode = e.Code,
+                              Title_Header = d.Title_Header,
+                              Status =d.Status,
+                              Request_By = d.Request_By,
+                              NameRequest = em.First_Name + " " + em.Last_Name,
+                              Request_Date = d.Request_Date,
+                              Note = d.Note
+
+                          }).FirstOrDefault();
+                          
+            }
+            return result;
+        }
+
+        //public static List<UserViewModel> GetRole()
         //{
-        //    List<DesignItemViewModel> result = new List<DesignItemViewModel>();
+        //    List<UserViewModel> result = new List<UserViewModel>();
         //    using (var db = new MarComContext())
         //    {
-        //        result = (from di in db.T_Design_Item
-        //                  join e in db.M_Employee on
-        //                  di.Request_Pic equals e.Id
-        //                  select new DesignRequestViewModel
+        //        result = (from u in db.M_User
+        //                  where name == "Requester"
+        //                  select new UserViewModel
         //                  {
         //                      Id = di.Id,
         //                      T_Event_Id = dr.T_Event_Id,
