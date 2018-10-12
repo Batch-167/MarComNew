@@ -41,7 +41,7 @@ namespace MarCom.Presentation.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Add(RegisterViewModel model)
-        {
+            {
 
             if (ModelState.IsValid)
             {

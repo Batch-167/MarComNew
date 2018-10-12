@@ -13,7 +13,6 @@ namespace MarCom.ViewModel
         public DesignRequestViewModel()
         {
             Is_Delete = false;
-            Request_By = 1;
             Request_Date = DateTime.Now;
             Create_Date = DateTime.Now;
         }

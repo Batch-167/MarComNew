@@ -1,5 +1,4 @@
-﻿@model MarCom.ViewModel.DesignRequestViewModel
-@{
+﻿@{
     ViewBag.Title = "List Design Request";
 }
 
@@ -60,13 +59,11 @@
 
 
 
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" id="modal-input">
-    <div class="modal-dialog modal-lg" role="document">
 <div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-blue">
-                <h4 class="text-bold">Approval Design Request<button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button></h4>
+                <h4 class="text-bold">Add Design Request<button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button></h4>
             </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
@@ -106,15 +103,28 @@
             });
         }
 
-        function addAction(){
-                 $('#item-body').append("<br>Yeay Bisa<br>");
-             };
+        function AddItem() {
+            $.ajax({
+                url: '@Url.Action("AddItem", "DesignRequest")',
+                type: 'get',
+                success: function (result) {
+                    $("#item-body").append(result);
+                },
+                error: function (err) {
+                    $("#item-body").html(err);
+                },
+            });
+        }
+
+        function RemoveRow(obj) {
+            $(obj).closest('tr').remove();
+        }
 
         function GetItemList(id) {
             $.ajax({
                 url: '@Url.Action("ProductList","DesignRequest")',
                 type: 'get',
-                data: {id: id},
+                data: { id: id },
                 success: function (result) {
                     $("#productitem-list").html(result);
                 },
@@ -144,9 +154,12 @@
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
-            var vData = $(this).serialize();
-            //var name = $(this).attr('name');
-            //var name2 = $(this).attr('name2');
+            var vData = { Code: $(this).find("#Code").val(), T_Event_Id: $(this).find("#T_Event_Id").val(), Title_Header: $(this).find("#Title_Header").val(), Request_By: $(this).find("#Request_By").val(), Request_Date: $(this).find("#Request_Date").val(), Note: $(this).find("#Note").val() };
+            var vItem = [];
+            $("#item-body").find('tr').each(function (index) {
+                var vItem = { M_Product_Id: $(this).find("#M_Product_Id").val(), Description: $(this).find("#Description").val(), Title_Item: $(this).find("#Title_Item").val(), Request_Pic: $(this).find("#Request_Pic").val(), Request_Due_Date: $(this).find("#Request_Due_Date").val(), Start_Date: $(this).find("#Start_Date").val(), End_Date: $(this).find("#End_Date").val(), Note: $(this).find("#Note").val() };
+                vItems.push(vItem);
+            })
             $.ajax({
                 url: vUrl,
                 type: vMethod,
