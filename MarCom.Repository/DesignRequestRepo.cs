@@ -13,28 +13,35 @@ namespace MarCom.Repository
         public static List<DesignRequestViewModel> Get()
         {
             List<DesignRequestViewModel> result = new List<DesignRequestViewModel>();
-            using (var db = new MarComContext())
+            try
             {
-                result = (from dr in db.T_Design
-                          join e in db.T_Event on
-                          dr.T_Event_Id equals e.Id
-                          select new DesignRequestViewModel
-                          {
-                              Id = dr.Id,
-                              Code = dr.Code,
-                              T_Event_Id = dr.T_Event_Id,
-                              EventCode = e.Code,
-                              Request_By = dr.Request_By,
-                              Request_Date =dr.Request_Date,
-                              Assign_To = dr.Assign_To,
-                              Status = dr.Status,
+                using (var db = new MarComContext())
+                {
+                    result = (from dr in db.T_Design
+                              join e in db.T_Event on
+                              dr.T_Event_Id equals e.Id
+                              select new DesignRequestViewModel
+                              {
+                                  Id = dr.Id,
+                                  Code = dr.Code,
+                                  T_Event_Id = dr.T_Event_Id,
+                                  EventCode = e.Code,
+                                  Request_By = dr.Request_By,
+                                  Request_Date = dr.Request_Date,
+                                  Assign_To = dr.Assign_To,
+                                  Status = dr.Status,
 
-                              Is_Delete = dr.Is_Delete,
+                                  Is_Delete = dr.Is_Delete,
 
-                              Create_Date = dr.Create_Date,
-                              Create_By = "Administrator"
-                          })//.Where(p => p.Is_Delete == all ? p.Is_Delete : true)
-                            .ToList();
+                                  Create_Date = dr.Create_Date,
+                                  Create_By = "Administrator"
+                              }).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
             return result;
         }
@@ -96,7 +103,7 @@ namespace MarCom.Repository
             string yearMonth = DateTime.Now.ToString("dd") +
                 DateTime.Now.Month.ToString("D2") +
                 DateTime.Now.ToString("yy");
-            string newRef = "TRWODS"+ yearMonth + "0";
+            string newRef = "TRWODS" + yearMonth + "0";
             using (var db = new MarComContext())
             {
                 var result = (from dr in db.T_Design
