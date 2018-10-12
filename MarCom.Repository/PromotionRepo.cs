@@ -153,7 +153,7 @@ namespace MarCom.Repository
                           {
                               Id = pr.Id,
                               Code = pr.Code,
-
+                              Title = pr.Title,
                               T_Event_Id = pr.T_Event_Id,
                               EventCode = ev.Code,
                               T_Design_Id = pr.T_Design_Id,
@@ -169,5 +169,38 @@ namespace MarCom.Repository
             }
             return result;
         }
+
+        public static DesignRequestViewModel GetId(int id)
+        {
+            DesignRequestViewModel result = new DesignRequestViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from dr in db.T_Design
+                          join pr in db.T_Promotion
+                          on dr.Id equals pr.T_Design_Id
+                          join em in db.M_Employee 
+                          on dr.Request_By equals em.Id
+                          join di in db.T_Design_Item
+                          on dr.Id equals di.T_Design_Id
+                          where pr.Id == id
+                          select new DesignRequestViewModel
+                          {
+                              Id = dr.Id,
+                              Code = dr.Code,
+                              Title_Header = dr.Title_Header,
+                              Request_By = dr.Request_By,
+                              NameRequest = em.First_Name +""+em.Last_Name,
+                              Request_Date = dr.Request_Date,
+                              Note = dr.Note
+
+                          }).FirstOrDefault();
+
+            }
+            return result;
+
+        }
+
+        }
+
     }
-}
+

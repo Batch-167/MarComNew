@@ -70,6 +70,21 @@ namespace MarCom.Presentation.Controllers
             return result;
         }
 
+        public ActionResult Approve(int id)
+        {
+            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "FullName");
+            return PartialView("_Approve", PromotionRepo.GetById(id));
+        }
 
+        public ActionResult ViewDesign(int id)
+        {
+            return PartialView("_ViewDesign", PromotionRepo.GetId(id));
+        }
+
+        public ActionResult ViewDesignItem(int id)
+        {
+            return PartialView("_ViewDesignItem", PromotionRepo.GetId(id));
+        }
+    
     }
 }
