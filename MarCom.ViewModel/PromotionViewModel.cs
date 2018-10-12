@@ -15,8 +15,28 @@ namespace MarCom.ViewModel
             Is_Delete = false;
             Request_Date = DateTime.Now;
             Status = 1;
-            Flag_Design = "No";
+            Flag_Design = "0";
         }
+
+        public string FlagDesign
+        {
+            get
+            {
+                if (Flag_Design=="1")
+                {
+                    return "Yes";
+                }
+                else if (Flag_Design=="0")
+                {
+                    return "No";
+                }
+                else
+                {
+                    return "N/A";
+                }
+            }
+        }
+
         public string StatusCondt
         {
             get
@@ -56,6 +76,7 @@ namespace MarCom.ViewModel
         [StringLength(50)]
         public string Code { get; set; }
 
+        [DisplayName("Select From Design")]
         [Required]
         [StringLength(1)]
         public string Flag_Design { get; set; }
@@ -107,5 +128,17 @@ namespace MarCom.ViewModel
         public string Update_By { get; set; }
 
         public DateTime? Update_Date { get; set; }
+
+        //prop untuk List Design Request
+        [DisplayName("Design Code")]
+        public string CodeDesign { get; set; }
+        [DisplayName("Title Header")]
+        public string TitleHeader { get; set; }
+        [DisplayName("Request By")]
+        public int? ReqBy { get; set; }
+        [DisplayName("Request Date")]
+        public DateTime? ReqDate { get; set; }
+        [DisplayName("Note")]
+        public string Notess { get; set; }
     }
 }
