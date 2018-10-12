@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -8,33 +7,34 @@ using System.Threading.Tasks;
 
 namespace MarCom.ViewModel
 {
-    public class DesignItemViewModel
+    public class PromotionItemFileViewModel
     {
+        public PromotionItemFileViewModel()
+        {
+            Is_Delete = false;
+        }
         public int Id { get; set; }
 
-        public int T_Design_Id { get; set; }
+        public int T_Promotion_id { get; set; }
 
-        public int M_Product_Id { get; set; }
+        [StringLength(100)]
+        public string Filename { get; set; }
 
-        [DisplayName("Product Name")]
-        public string ProductName { get; set; }
+        [StringLength(11)]
+        public string Size { get; set; }
 
-        public string Description { get; set; }
-        
-        [StringLength(255), Required]
-        public string Title_Item { get; set; }
+        [StringLength(11)]
+        public string Extention { get; set; }
 
-        [DisplayName("Request Pic")]
-        public int Request_Pic { get; set; }
-
-        [DisplayName("Start Date")]
         public DateTime? Start_Date { get; set; }
 
-        [DisplayName("End Date")]
         public DateTime? End_Date { get; set; }
 
-        [DisplayName("Due Date")]
         public DateTime? Request_Due_Date { get; set; }
+
+        public int? Qty { get; set; }
+
+        public int Todo { get; set; }
 
         [StringLength(255)]
         public string Note { get; set; }
