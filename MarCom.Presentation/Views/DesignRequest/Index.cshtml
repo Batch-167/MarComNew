@@ -164,10 +164,11 @@
             return false;
         });
 
-        function Approve(stats) {
+        var value;
+        function Approve(value) {
             var data = {
                 assign_to: $('#assignto').val(),
-                status: stats,
+                status: value,
                 reject_reason: $('#reject-reason').val(),
                 id: $('#request-id').val(),
             };

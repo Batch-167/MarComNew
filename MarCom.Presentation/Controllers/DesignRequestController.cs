@@ -30,7 +30,8 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Approve(DesignApproveViewModel model)
         {
-            model.Create_By = User.Identity.Name;
+            UserViewModel model2 = DesignApproveRepo.GetIdByName(User.Identity.Name);
+            model.Approved_By = model2.M_Employee_Id;
             ResultResponse result = DesignApproveRepo.Approve(model);
             return Json(new
             {
@@ -73,26 +74,6 @@ namespace MarCom.Presentation.Controllers
             }, JsonRequestBehavior.AllowGet);
 
         }
-
-        //public static UserViewModel GetIdByName(string name)
-        //{
-        //    UserViewModel result = new UserViewModel();
-        //    using (var db = new MarComContext())
-        //    {
-        //        result = (from u in db.M_User
-        //                  join e in db.M_Employee
-        //                  on u.M_Employee_Id equals e.Id
-        //                  where name == u.UserName
-        //                  select new UserViewModel
-        //                  {
-        //                      Id = u.Id,
-        //                      Password = u.PasswordHash,
-        //                      M_Employee_Id = u.M_Employee_Id,
-        //                      Fullname = e.First_Name + " " + e.Last_Name
-        //                  }).FirstOrDefault();
-        //    }
-        //return result;
-        //}
 
         public ActionResult ProductList (int id)
         {
