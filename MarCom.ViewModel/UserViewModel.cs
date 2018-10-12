@@ -50,6 +50,7 @@ namespace MarCom.ViewModel
         public string Create_By { get; set; }
 
         [Display(Name = "Create Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Create_Date { get; set; }
     }
 }

@@ -2,27 +2,27 @@
 
 <table class="table">
     <tr>
-        <th>
+        <td class="col-md-offset-2">
             @Html.DisplayNameFor(model => model.Code)
-        </th>
-        <th>
+        </td>
+        <td class="col-md-offset-2">
             @Html.DisplayNameFor(model => model.Request_By)
-        </th>
-        <th>
+        </td>
+        <td class="col-md-offset-2">
             @Html.DisplayNameFor(model => model.Request_Date)
-        </th>
-        <th>
+        </td>
+        <td class="col-md-offset-2">
             @Html.DisplayNameFor(model => model.Request_Due_Date)
-        </th>
-        <th>
+        </td>
+        <td class="col-md-offset-2">
             @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th>
+        </td>
+        <td class="col-md-offset-1">
             @Html.DisplayNameFor(model => model.Create_By)
-        </th>
-        <th>
+        </td>
+        <td class="col-md-offset-2">
             @Html.DisplayNameFor(model => model.Create_Date)
-        </th>
+        </td>
         <th>Action</th>
     </tr>
 
@@ -32,7 +32,7 @@
             @Html.DisplayFor(modelItem => item.Code)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Request_By)
+            @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Request_Date)
@@ -41,7 +41,7 @@
             @Html.DisplayFor(modelItem => item.Request_Due_Date)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Status)
+            @Html.DisplayFor(modelItem => item.StatusName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Create_By)
@@ -50,13 +50,13 @@
             @Html.DisplayFor(modelItem => item.Create_Date)
         </td>
         <td>
-            <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="View" onclick="action('view', @item.Id)">
+            <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="View" onclick="action('Details', @item.Id)">
                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" onclick="action('edit', @item.Id)">
+            <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" onclick="action('Edit', @item.Id)">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-danger btn-approve" data-id="@item.Id" title="Approve" onclick="action('approve', @item.Id)">
+            <button type="button" class="btn btn-danger btn-approve" data-id="@item.Id" title="Approve" onclick="action('Approve', @item.Id)">
                 <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
             </button>
         </td>

@@ -1,0 +1,67 @@
+﻿@model MarCom.ViewModel.PromotionViewModel
+
+
+@using (Html.BeginForm("Create", "Promotion", FormMethod.Post, new { id = "input-form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EventCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.T_Event_Id, (IEnumerable<SelectListItem>)ViewBag.EventCode, "Select Design Code", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.T_Event_Id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span>Select From Design</span> 
+               
+                <select>
+                    <option onclick="yesnoCheck();" name="yesno" id="yesCheck" for="yesCheck" value="yes">Yes</option> 
+                    <option onclick="yesnoCheck();" name="yesno" id="noCheck" for="noCheck" value="no">No</option> 
+                    
+                </select> 
+                
+                 @*<label for="yesCheck">Yes</label> <input type="radio" onclick="yesnoCheck();" name="yesno" id="yesCheck" />
+                <label for="noCheck">No</label> <input type="radio" onclick="yesnoCheck();" name="yesno" id="noCheck`" />*@
+                <div id="ifYes" style="visibility:hidden">
+                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.T_Design_Id, (IEnumerable<SelectListItem>)ViewBag.EventCode, "Select Event Code", new { @class = "form-control",@id="item" })
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" value="Cancel" class="btn btn-warning" data-dismiss="modal" />
+                <input type="submit" value="Next" class="btn btn-primary" id="btn-next" />
+            </div>
+        </div>
+    </div>
+}
+    <script type="text/javascript">
+
+        function yesnoCheck() {
+            if (document.getElementById('yesCheck').checked) {
+                document.getElementById('ifYes').style.visibility = 'visible';
+            }
+            else document.getElementById('ifYes').style.visibility = 'hidden';
+        }
+
+             $("#btn-next").click(function () {
+                 $(".modal-title").html("Add Data");
+                 $.ajax({
+                     url: '@Url.Action("Awal","Promotion")',
+                     type: 'get',
+                     success: function (result) {
+                         $(".modal-body").html(result);
+                         $(".modal").modal("show");
+                     }
+                 });
+             });
+    </script>

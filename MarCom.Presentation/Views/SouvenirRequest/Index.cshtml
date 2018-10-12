@@ -17,35 +17,35 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="col-lg-2">
+                        <td class="col-md-offset-2">
                             <input name="Code" type="text" class="form-control text-box single-line" placeholder="Transaction Code" />
                         </td>
-                        <td class="col-lg-2">
+                        <td class="col-md-offset-2">
                             <input name="Request_By" type="text" class="form-control text-box single-line" placeholder="Request By" />
                         </td>
-                        <td class="col-lg-2">
-                            <div class="input-group">
-                                <input class="form-control datepicker" placeholder="Request Date" type="date"  />
+                        <td class="col-md-offset-2">
+                            <div class="input-group class="col-md-offset-2"">
+                                <input class="form-control datepicker" placeholder="Request Date" type="date" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
                         </td>
-                        <td class="col-lg-2">
-                            <div class="input-group">
-                                <input class="form-control datepicker" placeholder="Due Date" type="date"  />
+                        <td class="col-md-offset-2">
+                            <div class="input-group class="col-md-offset-2"">
+                                <input class="form-control datepicker" placeholder="Due Date" type="date" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
                         </td>
-                        <td class="col-lg-2">
+                        <td class="col-md-offset-2">
                             <input name="Status" type="text" class="form-control text-box single-line" placeholder="Status" />
                         </td>
-                        <td class="col-lg-1">
-                            <div class="input-group">
+                        <td class="col-md-offset-2">
+                            <input name="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
+                        </td>
+                        <td class="col-md-offset-2">
+                            <div class="input-group class="col-md-offset-2"">
                                 <input class="form-control datepicker" placeholder="Created" type="date" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
-                        </td>
-                        <td class="col-lg-1">
-                            <input name="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
                         </td>
                         <td>
                             <button type="button" id="btn-search" class="btn btn-warning btn-sm" title="Search">Search</button>
@@ -67,7 +67,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-blue">
-                    <h4 class="text-bold">Add Souvenir Request <button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button></h4>
+                <h4 class="text-bold" id="title-panel"><button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button></h4>
             </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
@@ -90,6 +90,7 @@
                 success: function (result) {
                     $(".modal-body").html(result);
                     $(".modal").modal("show");
+                    $("#title-panel").html("Add Souvenir Request")
                 }
             });
         });
@@ -102,7 +103,21 @@
                     $("#table-list").html(result);
                 },
                 error: function (err) {
-                    $("#table-list").tml(err);
+                    $("#table-list").html(err);
+                }
+            });
+        }
+
+        function GetListItem(id) {
+            $.ajax({
+                url: '@Url.Action("ListItem", "SouvenirRequest")',
+                type: 'get',
+                data: {id : id},
+                success: function (result) {
+                    $('#item-body').append(result);
+                },
+                error: function (err) {
+                    $('#item-body').html(err);
                 }
             });
         }
@@ -124,6 +139,23 @@
             $(obj).closest('tr').remove();
         }
 
+        @*function RemoveRow(obj, id) {
+            $.ajax({
+                url: '@Url.Action("DeleteItem","SouvenirRequest")',
+                type: 'post',
+                data: { id: id },
+                success: function (result) {
+                    $(obj).closest('tr').remove();
+                },
+            });
+        }*@
+
+        function Disable(obj) {
+            var tr = $(obj).closest('tr');
+            $(tr).find('Select[disabled]').prop('disabled',false);
+            $(tr).find('Input[disabled]').prop('disabled', false);
+        }
+
         function action(act, id) {
             $.ajax({
                 url: '/SouvenirRequest/' + act,
@@ -132,10 +164,12 @@
                 dataType: 'html',
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
+                    $("#title-panel").html(act + " Souvenir Request");
                     $('#modal-input').modal('show');
+                    GetListItem(id);
                 },
                 error: function (err) {
-                    $("#table-list").tml(err);
+                    $("#table-list").html(err);
                 }
             });
         }
@@ -144,14 +178,19 @@
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
-            var vData = $(this).serialize();
+            var vData = { Id : $(this).find("#Id").val(), Code: $(this).find("#Code").val(), T_Event_Id: $(this).find("#T_Event_Id").val(), Request_By: $(this).find("#Request_By").val(), Request_Date: $(this).find("#Request_Date").val(), Request_Due_Date: $(this).find("#Request_Due_Date").val(), Note: $(this).find("#Note").val() };
+            var vItems = [];
+            $("#item-body").find('tr').each(function (index) {
+                var vItem = { Id : $(this).find("#Id").val(), M_Souvenir_Id: $(this).find("#M_Souvenir_Id").val(), Qty: $(this).find("#Qty").val(), Note: $(this).find("#Note").val() };
+                vItems.push(vItem);
+            });
             $.ajax({
                 url: vUrl,
                 type: vMethod,
-                data: vData,
+                data: { model: vData, item: vItems },
                 success: function (result) {
                     if (result.success) {
-                        alert(name + " " + result.entity.Code + " " + name2);
+                        alert("Data Saved !");
                         $("#modal-input").modal("hide");
                         GetList();
                     } else {

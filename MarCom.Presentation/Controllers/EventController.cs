@@ -11,6 +11,7 @@ using MarCom.DataModel;
 
 namespace MarCom.Presentation.Controllers
 {
+    [Authorize]
     public class EventController : Controller
     {
         // GET: Event
@@ -29,6 +30,8 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Approve(EventApproveViewModel model)
         {
+            UserViewModel model3 = GetIdByName(User.Identity.Name);
+            model.Approved_By = model3.M_Employee_Id;
             ResultResponse result = EventApproveRepo.Approve(model);
             return Json(new
             {
@@ -89,6 +92,47 @@ namespace MarCom.Presentation.Controllers
                          ).FirstOrDefault();
             }
             return result;
+        }
+
+        public static EmployeeViewModel GetIdByNames(string name)
+        {
+            EmployeeViewModel result = new EmployeeViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from e in db.M_Employee
+                          where name == e.First_Name+" "+e.Last_Name
+                          select new EmployeeViewModel
+                          {
+                              Id = e.Id,
+                           }
+                         ).FirstOrDefault();
+            }
+            return result;
+        }
+
+        public ActionResult Edit (int id)
+        {
+            return PartialView("_Edit", EventRepo.GetById(id));
+        }
+
+        [HttpPost]
+        public ActionResult Edit(EventViewModel model)
+        {
+            EmployeeViewModel model2 = GetIdByNames(model.NameRequest);
+            model.Request_By = model2.Id;
+            model.Update_By = User.Identity.Name;
+            ResultResponse result = EventRepo.Update(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Details(int id)
+        {
+            return PartialView("_Details", EventRepo.GetById(id));
         }
     }
 }

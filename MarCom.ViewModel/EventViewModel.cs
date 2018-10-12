@@ -14,6 +14,7 @@ namespace MarCom.ViewModel
         {
             Is_Delete = false;
             Request_Date = DateTime.Now;
+            Status = 1;
         }
         public int Id { get; set; }
 
@@ -27,23 +28,53 @@ namespace MarCom.ViewModel
         public string Event_Name { get; set; }
 
         [DisplayName("Start Date")]
-        [DataType(DataType.Date)]
+        [Required]
+       // [DataType(DataType.Date)]
         public DateTime? Start_Date { get; set; }
 
         [DisplayName("End Date")]
-        [DataType(DataType.Date)]
+        [Required]
         public DateTime? End_Date { get; set; }
 
         [StringLength(255)]
+        [Required]
         public string Place { get; set; }
 
+        [Required]
         public decimal? Budget { get; set; }
 
         public int Request_By { get; set; }
 
         public string NameRequest { get; set; }
 
-        [DataType(DataType.Date)]
+        public string StatusName {
+            get
+            {
+                if (Status==0)
+                {
+                    return "Rejected";
+                }
+                else if (Status==1)
+                {
+                    return "Submitted";
+                }
+                else if (Status == 2)
+                {
+                    return "In Progress";
+                }
+                else if (Status == 3)
+                {
+                    return "Done";
+                }
+                else
+                {
+                    return "Nothing Happen";
+                }
+            }
+                
+                }
+
+        [DisplayName("Request Date")]
         public DateTime Request_Date { get; set; }
 
         public int? Approved_By { get; set; }

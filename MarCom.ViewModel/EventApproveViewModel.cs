@@ -12,7 +12,7 @@ namespace MarCom.ViewModel
     {
         public EventApproveViewModel()
         {
-            Status = 1;
+            Is_Delete = false;
         }
         public int Id { get; set; }
 
@@ -23,12 +23,15 @@ namespace MarCom.ViewModel
 
         [Required]
         [StringLength(255)]
+        [DisplayName("Event Name")]
         public string Event_Name { get; set; }
 
         [DisplayName("Start Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? Start_Date { get; set; }
 
         [DisplayName("End Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? End_Date { get; set; }
 
         [StringLength(255)]
@@ -36,16 +39,20 @@ namespace MarCom.ViewModel
 
         public decimal? Budget { get; set; }
 
+        [DisplayName("Request By")]
         public int Request_By { get; set; }
 
         public string NameRequest { get; set; }
 
+        [DisplayName("Request Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Request_Date { get; set; }
 
         public int? Approved_By { get; set; }
 
         public DateTime? Approved_Date { get; set; }
 
+        [DisplayName("Asign To")]
         public int? Assign_To { get; set; }
 
         public DateTime? Closed_Date { get; set; }
@@ -55,7 +62,37 @@ namespace MarCom.ViewModel
 
         public int? Status { get; set; }
 
+        [DisplayName("Status")]
+        public string StatusName
+        {
+            get
+            {
+                if (Status == 0)
+                {
+                    return "Rejected";
+                }
+                else if (Status == 1)
+                {
+                    return "Submitted";
+                }
+                else if (Status == 2)
+                {
+                    return "In Progress";
+                }
+                else if (Status == 3)
+                {
+                    return "Done";
+                }
+                else
+                {
+                    return "N/A";
+                }
+            }
+        }
+
         [StringLength(255)]
         public string Reject_Reason { get; set; }
+
+        public bool? Is_Delete { get; set; }
     }
 }

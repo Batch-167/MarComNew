@@ -26,7 +26,7 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Add()
         {
-            UserViewModel result = GetIdByName(User.Identity.Name);
+            UserViewModel result = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             SouvenirRequestViewModel model = new SouvenirRequestViewModel();
             ViewBag.Event = new SelectList(EventRepo.Get(), "Id", "Code");
             model.Request_By = result.M_Employee_Id;
@@ -37,10 +37,10 @@ namespace MarCom.Presentation.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(SouvenirRequestViewModel model)
+        public ActionResult Add(SouvenirRequestViewModel model, List<SouvenirItemViewModel> item)
         {
             model.Create_By = User.Identity.Name;
-            ResultResponse result = SouvenirRequestRepo.Update(model);
+            ResultResponse result = SouvenirRequestRepo.Update(model,item);
             return Json(new
             {
                 success = result.Success,
@@ -56,25 +56,30 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_AddItem", model);
         }
 
-
-        public static UserViewModel GetIdByName(string name)
+        public ActionResult Edit(int id)
         {
-            UserViewModel result = new UserViewModel();
-            using (var db = new MarComContext())
+            SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
+            return PartialView("_Edit", model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(SouvenirRequestViewModel model, List<SouvenirItemViewModel> item)
+        {
+            model.Update_By = User.Identity.Name;
+            ResultResponse result = SouvenirRequestRepo.Update(model, item);
+            return Json(new
             {
-                result = (from u in db.M_User
-                          join e in db.M_Employee
-                          on u.M_Employee_Id equals e.Id
-                          where name == u.UserName
-                          select new UserViewModel
-                          {
-                              Id = u.Id,
-                              Password = u.PasswordHash,
-                              M_Employee_Id = u.M_Employee_Id,
-                              Fullname = e.First_Name + " " + e.Last_Name
-                          }).FirstOrDefault();
-            }
-            return result;
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ListItem(int id)
+        {
+            ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
+            List<SouvenirItemViewModel> model = SouvenirRequestRepo.GetItem(id);
+            return PartialView("_ListItem", model);
         }
     }
 }

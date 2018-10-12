@@ -28,6 +28,8 @@ namespace MarCom.ViewModel
         [DisplayName("Event")]
         public int? T_Event_Id { get; set; }
 
+        public string CodeEvent { get; set; }
+
         [DisplayName("Request By")]
         public int? Request_By { get; set; }
 
@@ -71,6 +73,47 @@ namespace MarCom.ViewModel
         [DisplayName("Create Date")]
         public DateTime Create_Date { get; set; }
 
+        public string Update_By { get; set; }
+
         public string Name { get; set; }
+
+        public string StatusName
+        {
+            get
+            {
+                if (Status == 1)
+                {
+                    return "Submitted";
+                }
+                else if (Status == 2)
+                {
+                    return "In Progress";
+                }
+                else if (Status == 3)
+                {
+                    return "Received By Requester";
+                }
+                else if (Status == 4)
+                {
+                    return "Settlement";
+                }
+                else if (Status == 5)
+                {
+                    return "Approved Settelemt";
+                }
+                else if (Status == 6)
+                {
+                    return "Close Request";
+                }
+                else if (Status == 0)
+                {
+                    return "Rejected";
+                }
+                else
+                {
+                    return "N/A";
+                }
+            }
+        }
     }
 }

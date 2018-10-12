@@ -1,17 +1,18 @@
 ﻿@model MarCom.ViewModel.EventApproveViewModel
 
-@using (Html.BeginForm("Approve", "EventRequest", FormMethod.Post, new { @id = "input-form" }))
+@using (Html.BeginForm("Approve", "Event", FormMethod.Post, new { @id = "input-form" }))
 {
     @Html.AntiForgeryToken()   
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
-        <table>
+        <input type="hidden" id="event-id" value="@Model.Id" />
+        <table class="col-lg-12">
             <tr>
                 <td>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
                             @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
                             @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                         </div>
@@ -19,9 +20,9 @@
                 </td>
                 <td>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Request_By, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Request_By, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.LabelFor(model => model.Request_By, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.NameRequest, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.Request_By, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -30,8 +31,8 @@
             <tr>
                 <td>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Event_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        @Html.LabelFor(model => model.Event_Name, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
                             @Html.EditorFor(model => model.Event_Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.Event_Name, "", new { @class = "text-danger" })
                         </div>
@@ -40,8 +41,8 @@
                 </td>
                 <td>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Request_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        @Html.LabelFor(model => model.Request_Date, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
                             @Html.EditorFor(model => model.Request_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.Request_Date, "", new { @class = "text-danger" })
                         </div>
@@ -51,8 +52,8 @@
             <tr>
                 <td>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Place, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        @Html.LabelFor(model => model.Place, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
                             @Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.Place, "", new { @class = "text-danger" })
                         </div>
@@ -61,9 +62,9 @@
                 </td>
                 <td>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.TextAreaFor(model => model.Note, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @rows = "5", @cols="30", @class = "form-control", @readonly= "readonly" } })
                             @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -73,8 +74,8 @@
             <tr>
                 <td>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Start_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        @Html.LabelFor(model => model.Start_Date, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
                             @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.Start_Date, "", new { @class = "text-danger" })
                         </div>
@@ -84,8 +85,8 @@
             <tr>
                 <td>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.End_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        @Html.LabelFor(model => model.End_Date, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
                             @Html.EditorFor(model => model.End_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.End_Date, "", new { @class = "text-danger" })
                         </div>
@@ -95,8 +96,8 @@
             <tr>
                 <td>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Budget, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        @Html.LabelFor(model => model.Budget, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
                             @Html.EditorFor(model => model.Budget, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.Budget, "", new { @class = "text-danger" })
                         </div>
@@ -104,9 +105,9 @@
                 </td>
                 <td>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.StatusName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -115,9 +116,9 @@
             <tr>
                 <td>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Assign_To, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownListFor(model => model.Assign_To, (IEnumerable<SelectListItem>)ViewBag.Employee, "Select Employee", new { @class = "form-control" })
+                        @Html.LabelFor(model => model.Assign_To, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.DropDownListFor(model => model.Assign_To, (IEnumerable<SelectListItem>)ViewBag.Employee, "Select Employee", new { @class = "form-control", @id="assign-to" })
                             @Html.ValidationMessageFor(model => model.Assign_To, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -126,11 +127,30 @@
         </table>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Approve" class="btn btn-primary" />
-                <input type="submit" value="Reject" class="btn btn-danger" />
+                <input type="submit" value="Approve" class="btn btn-primary" onclick="Approve(2)" />
+                <input type="button" value="Reject" class="btn btn-danger" data-toggle="modal" data-target="#reason-input"/>
                 <input type="button" value="Cancel" class="btn btn-default" data-dismiss="modal" />
             </div>
         </div>
     </div>
 }
+
+<div class="modal fade" tabindex="-1" role="dialog" id="reason-input">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="midtext text-bold text-red">Reason Reject</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <textarea cols="30" rows="5" id="reject-reason"></textarea>
+                    <input type="submit" value="Reject" class="btn btn-danger" onclick="Approve(0)" />
+                    <input type="button" value="Cancel" class="btn btn-default" data-dismiss="modal" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 

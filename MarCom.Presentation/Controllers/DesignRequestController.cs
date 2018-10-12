@@ -21,6 +21,7 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Approve(int id)
         {
+            ViewBag.Panel = "Approval Design Request";
             ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
             DesignApproveViewModel model = DesignApproveRepo.GetById(id);
             return PartialView("_Approve", model);
@@ -52,6 +53,8 @@ namespace MarCom.Presentation.Controllers
             DesignRequestViewModel model = new DesignRequestViewModel();
             model.NameRequest = result.Fullname;
             model.Code = DesignRequestRepo.GetNewCode();
+           // model.NameRequest = model2.Fullname;
+            //model.NameRequest = model2.Fullname;
             ViewBag.DesignRequest = new SelectList(EventRepo.Get(), "Id", "Code");
             return PartialView("_Create", model);
         }

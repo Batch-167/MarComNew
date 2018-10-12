@@ -22,17 +22,33 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_List", SouvenirStockRepo.Get());
         }
 
+        //public ActionResult ListItem()
+        //{
+        //    ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
+        //    List<SouvenirItemViewModel> model = new List<SouvenirItemViewModel>();
+        //    return PartialView("_ListItem", model);
+        //}
+
+        public ActionResult AddItem()
+        {
+            ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
+            SouvenirItemViewModel model = new SouvenirItemViewModel();
+            return PartialView("_AddItem", model);
+        }
+
         public ActionResult Add()
         {
             ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
-            return PartialView("_Add", new SouvenirStockViewModel());
+            SouvenirStockViewModel model = new SouvenirStockViewModel();
+            model.Code = SouvenirStockRepo.GetNewCode();
+            return PartialView("_Add", model);
         }
 
         [HttpPost]
-        public ActionResult Add(SouvenirStockViewModel model)
+        public ActionResult Add(SouvenirStockViewModel model, List<SouvenirItemViewModel> item)
         {
             model.Create_By = User.Identity.Name;
-            ResultResponse result = SouvenirStockRepo.Update(model);
+            ResultResponse result = SouvenirStockRepo.Update(model, item);
             return Json(new
             {
                 success = result.Success,
@@ -49,10 +65,10 @@ namespace MarCom.Presentation.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(SouvenirStockViewModel model)
+        public ActionResult Edit(SouvenirStockViewModel model, List<SouvenirItemViewModel> item)
         {
             model.Update_By = User.Identity.Name;
-            ResultResponse result = SouvenirStockRepo.Update(model);
+            ResultResponse result = SouvenirStockRepo.Update(model,item);
             return Json(new
             {
                 success = result.Success,

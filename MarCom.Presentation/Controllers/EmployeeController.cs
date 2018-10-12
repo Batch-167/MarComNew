@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity;
 
 namespace MarCom.Presentation.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class EmployeeController : Controller
     {
         // GET: Employee

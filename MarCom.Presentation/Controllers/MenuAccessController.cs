@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 
 namespace MarCom.Presentation.Controllers
 {
+    [Authorize]
     public class MenuAccessController : Controller
     {
         // GET: MenuAccess

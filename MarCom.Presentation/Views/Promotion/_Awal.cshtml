@@ -1,0 +1,101 @@
+﻿@model MarCom.ViewModel.PromotionViewModel
+
+@using MarCom.Repository
+
+@{
+    string code = PromotionRepo.GetTransactionCode();
+    string date = DateTime.Now.ToString("dd-MM-yyyy");
+}
+
+@using (Html.BeginForm("Awal", "Promotion", FormMethod.Post, new { id = "input-form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EventCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.T_Event_Id, (IEnumerable<SelectListItem>)ViewBag.EventCode, "Select Code Event", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EventCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Request_By, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.RequestBy, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Request_By, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Request_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => date, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Request_Date, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3">
+                <button type="button" id="btn-add" class="btn btn-primary" onclick="itemadd">Add</button>
+            </div>
+            <div class="pnael-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td><b>Filename</b></td>
+                            <td><b>Title</b></td>
+                            <td><b>Qty</b></td>
+                            <td><b>To Do</b></td>
+                            <td><b>Due Date</b></td>
+                            <td><b>Start Date</b></td>
+                            <td><b>End Date</b></td>
+                            <td><b>Note</b></td>
+                        </tr>
+                    </thead>
+                    <tbody id="item-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" value="Cancel" class="btn btn-warning" data-dismiss="modal" />
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}

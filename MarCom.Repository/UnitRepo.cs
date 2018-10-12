@@ -24,7 +24,7 @@ namespace MarCom.Repository
                               Name = u.Name,
 
                               Create_By = u.Create_By,
-                              Create_Date = DateTime.Now
+                              Create_Date = u.Create_Date
                           }).ToList();
             }
             return result;

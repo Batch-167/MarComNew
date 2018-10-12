@@ -57,9 +57,9 @@
 
 
 <div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-blue">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Modal title</h4>
             </div>
@@ -93,7 +93,7 @@
                 }
 
             });
-        });
+        }); 
 
         $("#btn-search").click(function Search() {
             var data = {
@@ -168,5 +168,28 @@
             });
             return false;
         });
+
+        function Approve(stat) {
+            var data = {
+                assign_to: $('#assign-to').val(),
+                status: stat,
+                reject_reason: $('#reject-reason').val(),
+                id: $('#event-id').val(),
+            };
+            $.ajax({
+                url: '@Url.Action("Approve","Event")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    if (result.success) {
+                        $("#reason-input").modal("hide");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error")
+                    }
+                }
+            });
+        };
     </script>
 }

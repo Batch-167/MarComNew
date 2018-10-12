@@ -13,11 +13,14 @@ namespace MarCom.ViewModel
         {
             Is_Delete = false;
         }
+
         public int Id { get; set; }
 
         public int T_Souvenir_Id { get; set; }
 
         public int M_Souvenir_Id { get; set; }
+
+        public string SouvenirName { get; set; }
 
         public int? Qty { get; set; }
 
