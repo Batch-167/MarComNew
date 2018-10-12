@@ -156,6 +156,10 @@
             $(tr).find('Input[disabled]').prop('disabled', false);
         }
 
+        function RemoveAdditem() {
+            $('#additem-button').find('button').remove();
+        }
+
         function action(act, id) {
             $.ajax({
                 url: '/SouvenirRequest/' + act,
@@ -167,6 +171,9 @@
                     $("#title-panel").html(act + " Souvenir Request");
                     $('#modal-input').modal('show');
                     GetListItem(id);
+                    if (act=="Received") {
+                        RemoveAdditem();
+                    }
                 },
                 error: function (err) {
                     $("#table-list").html(err);
@@ -200,5 +207,22 @@
             });
             return false;
         });
+
+        function Received() {
+            debugger
+            $.ajax({
+                url: '@Url.Action("Received","SouvenirRequest")',
+                type: 'post',
+                success: function (result) {
+                    if (result.success) {
+                        $("#reason-input").modal("hide");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error")
+                    }
+                }
+            });
+        };
     </script>
 }
