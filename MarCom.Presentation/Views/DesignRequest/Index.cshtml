@@ -92,6 +92,7 @@
         });
 
         function GetList() {
+            console.log('masuk');
             $.ajax({
                 url: '@Url.Action("List", "DesignRequest")',
                 type: 'get',
@@ -187,15 +188,16 @@
             return false;
         });
 
-        var value;
+        //var value;
         function Approve(value) {
+            console.log('Approve');
             var data = {
                 assign_to: $('#assignto').val(),
                 status: value,
                 reject_reason: $('#reject-reason').val(),
                 id: $('#request-id').val(),
             };
-            debugger
+            //debugger;
             $.ajax({
                 url: '@Url.Action("Approve","DesignRequest")',
                 type: 'post',

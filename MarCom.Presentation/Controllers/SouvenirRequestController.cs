@@ -66,7 +66,7 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Edit(SouvenirRequestViewModel model, List<SouvenirItemViewModel> item)
         {
             model.Update_By = User.Identity.Name;
-            SouvenirRequestRepo.DeleteItem();
+            SouvenirRequestRepo.DeleteItem(model.Id);
             ResultResponse result = SouvenirRequestRepo.Update(model, item);
             return Json(new
             {
