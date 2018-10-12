@@ -61,8 +61,8 @@
                     @Html.DisplayFor(modelItem => item.Create_By)
                 </td>
                 <td>
-                    <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="View" onclick="action('View', @item.Id)">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="Close" onclick="action('View', @item.Id)">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                     <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" onclick="action('Edit', @item.Id)">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>

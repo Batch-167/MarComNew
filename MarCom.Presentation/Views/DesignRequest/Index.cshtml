@@ -117,6 +117,12 @@
             });
         }
 
+        function Disable(obj) {
+            var tr = $(obj).closest('tr');
+            $(tr).find('Select[disabled]').prop('disabled', false);
+            $(tr).find('Input[disabled]').prop('disabled', false);
+        }
+
         function RemoveRow(obj) {
             $(obj).closest('tr').remove();
         }
