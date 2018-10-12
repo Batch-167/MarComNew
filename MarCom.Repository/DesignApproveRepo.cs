@@ -12,6 +12,7 @@ namespace MarCom.Repository
     {
         public static ResultResponse Approve(DesignApproveViewModel entity)
         {
+            int? stat = entity.Status;
             ResultResponse result = new ResultResponse();
             try
             {
@@ -21,13 +22,13 @@ namespace MarCom.Repository
                     if (design != null)
                     {
                         design.Reject_Reason = entity.Reject_Reason;
-                        design.Status = entity.Status;
                         design.Assign_To = entity.Assign_To;
+                        design.Status = stat;
 
                         if (entity.Status == 2)
                         {
                             design.Approved_Date = DateTime.Now;
-                            design.Approved_By = 1;
+                            design.Approved_By = entity.Approved_By;
                         }
                         db.SaveChanges();
                     }
@@ -89,6 +90,26 @@ namespace MarCom.Repository
                           }).ToList();
             }
          return result;
+        }
+
+        public static UserViewModel GetIdByName(string name)
+        {
+            UserViewModel result = new UserViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from u in db.M_User
+                          join e in db.M_Employee
+                          on u.M_Employee_Id equals e.Id
+                          where name == u.UserName
+                          select new UserViewModel
+                          {
+                              Id = u.Id,
+                              Password = u.PasswordHash,
+                              M_Employee_Id = u.M_Employee_Id,
+                              Fullname = e.First_Name + " " + e.Last_Name
+                          }).FirstOrDefault();
+            }
+            return result;
         }
     }
 }

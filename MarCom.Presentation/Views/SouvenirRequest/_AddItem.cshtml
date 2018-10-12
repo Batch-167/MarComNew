@@ -1,24 +1,23 @@
 ﻿@model MarCom.ViewModel.SouvenirItemViewModel
 
-    <tr>
-        <td>
-            @Html.DropDownListFor(model => model.M_Souvenir_Id, (IEnumerable<SelectListItem>)
+<tr>
+    <td>
+        @Html.DropDownListFor(model => model.M_Souvenir_Id, (IEnumerable<SelectListItem>)
                    ViewBag.Souvenir, "Select Souvenir", new { @class = "form-control", @disabled = "true" })
-            @Html.ValidationMessageFor(model => model.M_Souvenir_Id, "", new { @class = "text-danger" })
-        </td>
+        @Html.ValidationMessageFor(model => model.M_Souvenir_Id, "", new { @class = "text-danger" })
+    </td>
 
-        <td>
-            @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
-            @Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })
-        </td>
+    <td>
+        @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
+        @Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })
+    </td>
 
-        <td>
-            @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
-            @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
-        </td>
-
-        <td>
+    <td>
+        @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
+        @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+    </td>
+        <td id="additem-button">
             <button type="button" class="btn btn-edit" title="Edit" onclick="Disable(this)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
             <button type="button" class="btn btn-delete" title="Delete" onclick="RemoveRow(this)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
         <td>
-    </tr>
+</tr>

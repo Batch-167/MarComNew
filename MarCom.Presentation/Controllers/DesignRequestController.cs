@@ -30,7 +30,8 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Approve(DesignApproveViewModel model)
         {
-            model.Create_By = User.Identity.Name;
+            UserViewModel model2 = DesignApproveRepo.GetIdByName(User.Identity.Name);
+            model.Approved_By = model2.M_Employee_Id;
             ResultResponse result = DesignApproveRepo.Approve(model);
             return Json(new
             {
