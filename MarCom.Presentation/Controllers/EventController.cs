@@ -30,6 +30,8 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Approve(EventApproveViewModel model)
         {
+            UserViewModel model3 = GetIdByName(User.Identity.Name);
+            model.Approved_By = model3.M_Employee_Id;
             ResultResponse result = EventApproveRepo.Approve(model);
             return Json(new
             {

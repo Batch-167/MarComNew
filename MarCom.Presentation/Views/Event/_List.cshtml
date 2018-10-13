@@ -21,6 +21,12 @@
             </th>
 
             <th>
+                @Html.DisplayNameFor(model => model.Request_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Create_By)
             </th>
             <th>
@@ -64,10 +70,9 @@
                     </button>
                     <button type="button" class="btn btn-default btn-approve" data-id="@item.Id" title="Approve" onclick="action('approve', @item.Id)">
                         <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-                    </button>
+                    </button>  
                 </td>
             </tr>
-
         }
     </tbody>
 

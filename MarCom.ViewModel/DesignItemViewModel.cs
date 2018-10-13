@@ -20,8 +20,7 @@ namespace MarCom.ViewModel
         public string ProductName { get; set; }
 
         public string Description { get; set; }
-
-        [DisplayName("Title")]
+        
         [StringLength(255), Required]
         public string Title_Item { get; set; }
 

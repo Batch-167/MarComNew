@@ -18,21 +18,23 @@ namespace MarCom.Repository
                 result = (from ts in db.T_Souvenir
                           join em in db.M_Employee on
                           ts.Received_By equals em.Id
+                          where ts.Status == null
                           select new SouvenirStockViewModel
                           {
                               Id = ts.Id,
                               Code = ts.Code,
+                              Received_By = em.Id,
                               R_Name = em.First_Name + " " + em.Last_Name,
                               Received_Date = ts.Received_Date,
 
                               Create_By = ts.Create_By,
-                              Create_Date = DateTime.Now
+                              Create_Date = ts.Create_Date
                           }).ToList();
             }
             return result;
         }
 
-        public static ResultResponse Update(SouvenirStockViewModel entity)
+        public static ResultResponse Update(SouvenirStockViewModel entity, List<SouvenirItemViewModel> entityitem)
         {
             ResultResponse result = new ResultResponse();
             try
@@ -43,6 +45,8 @@ namespace MarCom.Repository
                     {
                         T_Souvenir tsouv = new T_Souvenir();
                         tsouv.Code = entity.Code;
+                        tsouv.Type = "Additional";
+                        //tsouv.Request_By = entity.Request_By;
                         tsouv.Received_By = entity.Received_By;
                         tsouv.Received_Date = entity.Received_Date;
                         tsouv.Note = entity.Note;
@@ -51,22 +55,22 @@ namespace MarCom.Repository
                         tsouv.Create_Date = DateTime.Now;
 
                         db.T_Souvenir.Add(tsouv);
-                        db.SaveChanges();
-                    }
-                    else
-                    {
-                        T_Souvenir tsouv = db.T_Souvenir.Where(ts => ts.Id == entity.Id).FirstOrDefault();
-                        if (tsouv != null)
-                        {
-                            tsouv.Code = entity.Code;
-                            tsouv.Received_By = entity.Received_By;
-                            tsouv.Received_Date = entity.Received_Date;
-                            tsouv.Note = entity.Note;
 
-                            tsouv.Update_By = entity.Update_By;
-                            tsouv.Update_Date = DateTime.Now;
-                            db.SaveChanges();
+                        foreach (var item in entityitem)
+                        {
+                            T_Souvenir_Item tsouvItem = new T_Souvenir_Item();
+                            tsouvItem.T_Souvenir_Id = entity.Id;
+                            tsouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
+                            tsouvItem.Qty = item.Qty;
+                            tsouvItem.Note = item.Note;
+                            tsouvItem.Is_Delete = item.Is_Delete;
+
+                            tsouvItem.Create_By = entity.Create_By;
+                            tsouvItem.Create_Date = DateTime.Now;
+
+                            db.T_Souvenir_Item.Add(tsouvItem);
                         }
+                        db.SaveChanges();
                     }
                 }
             }
@@ -96,6 +100,24 @@ namespace MarCom.Repository
                               Received_Date = ts.Received_Date,
                               Note = ts.Note
                           }).FirstOrDefault();
+            }
+            return result;
+        }
+
+        public static List<SouvenirItemViewModel> GetItem(int id)
+        {
+            List<SouvenirItemViewModel> result = new List<SouvenirItemViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from i in db.T_Souvenir_Item
+                          where i.Id == id
+                          select new SouvenirItemViewModel
+                          {
+                              Id = i.Id,
+                              M_Souvenir_Id = i.M_Souvenir_Id,
+                              Qty = i.Qty,
+                              Note = i.Note
+                          }).ToList();
             }
             return result;
         }

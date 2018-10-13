@@ -40,6 +40,9 @@
                 @(row += 1)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Request_By)
             </td>
             <td>
@@ -49,7 +52,7 @@
                 @Html.DisplayFor(modelItem => item.Assign_To)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                @Html.DisplayFor(modelItem => item.StatusCondt)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Create_By)

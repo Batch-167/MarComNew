@@ -1,0 +1,72 @@
+﻿@model IEnumerable<MarCom.ViewModel.PromotionItemViewModel>
+
+<h5><span style="font-family:Arial;color:goldenrod"><b>DESIGN ITEM INFORMATION </b></span></h5>
+<hr />
+
+<table class="table">
+    <tr>
+        <th class="col-md-2">
+            <span><b>Product Name</b></span>
+        </th>
+        <th  class="col-md-3">
+            <span><b>Product Description</b></span>
+        <th>
+            <span><b>Title</b></span>
+        </th>
+        <th>
+            <span><b>Qty</b></span>
+        </th>
+        <th>
+            <span><b>Todo</b></span>
+        <th class="col-md-3">
+            <span><b>Request Due Date</b></span>
+        </th>
+        <th>
+            <span><b>Start Date</b></span>
+        </th>
+        <th>
+            <span><b>End Date</b></span>
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TodoName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Request_Due_Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Start_Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.End_Date)
+            </td>
+
+            <td>
+
+                <button type="button" class="btn btn-github btn-approve" title="download" style="width:40px">
+                    <span class="glyphicon glyphicon-arrow-down"></span>
+                </button>
+
+            </td>
+        </tr>
+    }
+
+</table>

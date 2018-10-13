@@ -26,19 +26,9 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult AddItem()
         {
-            ViewBag.Promotion = new SelectList(PromotionRepo.Get(), "Id", "Name");
-            PromotionViewModel model = new PromotionViewModel();
-            return PartialView("_AddItem");
-        }
-
-        public ActionResult Awal()
-        {
-            ViewBag.EventCode = new SelectList(EventRepo.Get(), "id", "Code");
-            ViewBag.DesignCode = new SelectList(DesignRequestRepo.Get(), "id", "Code");
-            UserViewModel model2 = GetIdByName(User.Identity.Name);
-            PromotionViewModel model = new PromotionViewModel();
-            model.RequestBy = model2.Fullname;
-            return PartialView("_Awal", model);
+            //ViewBag.Promotion = new SelectList(PromotionRepo.Get(), "Id", "Name");
+            PromotionItemFileViewModel model = new PromotionItemFileViewModel();
+            return PartialView("_AddItem", model);
         }
 
         public ActionResult Create()
@@ -49,42 +39,89 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_Create", model);
         }
 
-
-
-        public static UserViewModel GetIdByName(string name)
+        public ActionResult Create2()
         {
-            UserViewModel result = new UserViewModel();
-            using (var db = new MarComContext())
-            {
-                result = (from u in db.M_User
-                          join e in db.M_Employee on u.M_Employee_Id equals e.Id
-                          where name == u.UserName
-                          select new UserViewModel
-                          {
-                              Id = u.Id,
-                              Password = u.PasswordHash,
-                              M_Employee_Id = u.M_Employee_Id,
-                              Fullname = e.First_Name + " " + e.Last_Name
-                          }).FirstOrDefault();
-            }
-            return result;
+            ViewBag.EventCode = new SelectList(EventRepo.Get(), "id", "Code");
+            ViewBag.DesignCode = new SelectList(DesignRequestRepo.Get(), "id", "Code");
+            UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
+            PromotionViewModel model = new PromotionViewModel();
+            model.RequestBy = model2.Fullname;
+            return PartialView("_Create2", model);
         }
 
+        [HttpPost]
+        public ActionResult Create2(PromotionViewModel model, List<PromotionItemViewModel> itemModel, List<PromotionItemFileViewModel> fileModel)
+        {
+            model.Create_By = User.Identity.Name;
+            ResultResponse result = PromotionRepo.Update(model, itemModel, fileModel);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Create3()
+        {
+            ViewBag.EventCode = new SelectList(EventRepo.Get(), "id", "Code");
+            UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
+            PromotionViewModel model = new PromotionViewModel();
+            model.RequestBy = model2.Fullname;
+            return PartialView("_Create3", model);
+        }
+
+        //untuk view design request
+        public ActionResult DesignReq(int id)
+        {
+            DesignRequestViewModel model = PromotionRepo.GetDesReq(id);
+            return PartialView("_DesignReq", model);
+        }
+
+        //untuk view design request item
+        public ActionResult DesignReqItem(int id)
+        {
+            List<PromotionItemViewModel> model = PromotionRepo.GetDesReqItem(id);
+            return PartialView("_DesignReqItem", model);
+        }
+
+        //View Approve
         public ActionResult Approve(int id)
         {
+
             ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "FullName");
             return PartialView("_Approve", PromotionRepo.GetById(id));
         }
 
+        [HttpPost]
+        public ActionResult Approve(PromotionViewModel model)
+        {
+            UserViewModel model1 = PromotionRepo.GetIdByName(User.Identity.Name);
+            model.Approved_By = model1.M_Employee_Id;
+            ResultResponse result = PromotionRepo.Approve(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        //View Design 
         public ActionResult ViewDesign(int id)
         {
             return PartialView("_ViewDesign", PromotionRepo.GetId(id));
         }
 
+        //View Design Item
         public ActionResult ViewDesignItem(int id)
         {
-            return PartialView("_ViewDesignItem", PromotionRepo.GetId(id));
+            return PartialView("_ViewDesignItem", PromotionRepo.GetItemId(id));
         }
-    
+
+        //View Promotion Item File
+        public ActionResult ViewPromotionItemFile(int id)
+        {
+            return PartialView("_ViewPromotionItemFile", PromotionRepo.GetIdFile(id));
+        }
     }
 }
