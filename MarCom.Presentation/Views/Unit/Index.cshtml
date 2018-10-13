@@ -60,9 +60,8 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">@ViewBag.title</h4>
+            <div class="modal-header bg-blue">
+                <h4 class="text-bold" id="title-panel"></h4>
             </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
@@ -110,7 +109,7 @@
         });
 
         $("#btn-new").click(function () {
-            $(".modal-title").html("Add new Unit");
+            $("#title-panel").html("Add new Unit");
             $.ajax({
                 url: '@Url.Action("Add", "Unit")',
                 type: 'get',
@@ -121,7 +120,7 @@
             });
         });
 
-        function action(act, id) {
+        function action(act, id, code) {
             $.ajax({
                 url: '/Unit/' + act,
                 type: 'get',
@@ -129,6 +128,7 @@
                 dataType: 'html',
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
+                    $("#title-panel").html(act + " Unit " +code);
                     $('#modal-input').modal('show');
                 },
                 error: function (err) {

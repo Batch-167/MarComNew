@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
@@ -33,14 +34,21 @@ namespace MarCom.Presentation.Controllers
             model.Name = result.Fullname;
             model.Code = SouvenirRequestRepo.GetNewCode();
             model.Request_Date = DateTime.Now;
-            return PartialView("_Add", model);
+            if (result.Role == "Staff")
+            {
+                return PartialView("_Add", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         [HttpPost]
         public ActionResult Add(SouvenirRequestViewModel model, List<SouvenirItemViewModel> item)
         {
             model.Create_By = User.Identity.Name;
-            ResultResponse result = SouvenirRequestRepo.Update(model,item);
+            ResultResponse result = SouvenirRequestRepo.Update(model, item);
             return Json(new
             {
                 success = result.Success,
@@ -49,7 +57,7 @@ namespace MarCom.Presentation.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult AddItem ()
+        public ActionResult AddItem()
         {
             ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
             SouvenirItemViewModel model = new SouvenirItemViewModel();
@@ -58,8 +66,16 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Edit(int id)
         {
+            UserViewModel result = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
-            return PartialView("_Edit", model);
+            if (result.Role == "Staff")
+            {
+                return PartialView("_Edit", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         [HttpPost]
@@ -85,8 +101,16 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Received(int id)
         {
+            UserViewModel result = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
-            return PartialView("_Received", model);
+            if (result.Role == "Staff")
+            {
+                return PartialView("_Received", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
     }
 }

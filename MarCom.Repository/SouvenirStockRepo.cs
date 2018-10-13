@@ -46,7 +46,6 @@ namespace MarCom.Repository
                         T_Souvenir tsouv = new T_Souvenir();
                         tsouv.Code = entity.Code;
                         tsouv.Type = "Additional";
-                        //tsouv.Request_By = entity.Request_By;
                         tsouv.Received_By = entity.Received_By;
                         tsouv.Received_Date = entity.Received_Date;
                         tsouv.Note = entity.Note;
@@ -72,6 +71,55 @@ namespace MarCom.Repository
                         }
                         db.SaveChanges();
                     }
+                    else
+                    {
+                        T_Souvenir tsouv = db.T_Souvenir.Where(ts => ts.Id == entity.Id).FirstOrDefault();
+                        if (tsouv != null)
+                        {
+                            tsouv.Code = entity.Code;
+                            tsouv.Type = "Additional";
+                            tsouv.Received_By = entity.Received_By;
+                            tsouv.Received_Date = entity.Received_Date;
+                            tsouv.Note = entity.Note;
+
+                            tsouv.Update_By = entity.Update_By;
+                            tsouv.Update_Date = DateTime.Now;
+
+                            foreach (var item in entityitem)
+                            {
+                                if (item.Id == 0)
+                                {
+                                    T_Souvenir_Item tsouvItem = new T_Souvenir_Item();
+                                    tsouvItem.T_Souvenir_Id = entity.Id;
+                                    tsouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
+                                    tsouvItem.Qty = item.Qty;
+                                    tsouvItem.Note = item.Note;
+                                    tsouvItem.Is_Delete = item.Is_Delete;
+
+                                    tsouvItem.Create_By = entity.Create_By;
+                                    tsouvItem.Create_Date = DateTime.Now;
+
+                                    db.T_Souvenir_Item.Add(tsouvItem);
+                                }
+                                else
+                                {
+                                    T_Souvenir_Item tsouvItem = db.T_Souvenir_Item.Where(ti => ti.Id == item.Id).FirstOrDefault();
+                                    if (tsouvItem != null)
+                                    {
+                                        tsouvItem.T_Souvenir_Id = entity.Id;
+                                        tsouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
+                                        tsouvItem.Qty = item.Qty;
+                                        tsouvItem.Note = item.Note;
+                                        tsouvItem.Is_Delete = item.Is_Delete;
+
+                                        tsouvItem.Update_By = entity.Update_By;
+                                        tsouvItem.Update_Date = DateTime.Now;
+                                    }
+                                }
+                            }
+                            db.SaveChanges();
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -96,7 +144,7 @@ namespace MarCom.Repository
                               Id = ts.Id,
                               Code = ts.Code,
                               Received_By = em.Id,
-                              R_Name = em.First_Name+ " " + em.Last_Name,
+                              R_Name = em.First_Name + " " + em.Last_Name,
                               Received_Date = ts.Received_Date,
                               Note = ts.Note
                           }).FirstOrDefault();
@@ -110,11 +158,13 @@ namespace MarCom.Repository
             using (var db = new MarComContext())
             {
                 result = (from i in db.T_Souvenir_Item
-                          where i.Id == id
+                          join s in db.M_Souvenir on
+                          i.M_Souvenir_Id equals s.Id
+                          where i.T_Souvenir_Id == id
                           select new SouvenirItemViewModel
                           {
                               Id = i.Id,
-                              M_Souvenir_Id = i.M_Souvenir_Id,
+                              M_Souvenir_Id = s.Id,
                               Qty = i.Qty,
                               Note = i.Note
                           }).ToList();
@@ -130,7 +180,7 @@ namespace MarCom.Repository
             {
                 var result = (from ts in db.T_Souvenir
                               where ts.Code.Contains(newRef)
-                              select new { reference = ts.Code})
+                              select new { reference = ts.Code })
                               .OrderByDescending(ts => ts.reference).FirstOrDefault();
                 if (result != null)
                 {

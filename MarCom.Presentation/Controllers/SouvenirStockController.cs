@@ -22,12 +22,12 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_List", SouvenirStockRepo.Get());
         }
 
-        //public ActionResult ListItem()
-        //{
-        //    ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
-        //    List<SouvenirItemViewModel> model = new List<SouvenirItemViewModel>();
-        //    return PartialView("_ListItem", model);
-        //}
+        public ActionResult ListItem(int id)
+        {
+            ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
+            List<SouvenirItemViewModel> model = SouvenirStockRepo.GetItem(id);
+            return PartialView("_ListItem", model);
+        }
 
         public ActionResult AddItem()
         {
@@ -68,7 +68,7 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Edit(SouvenirStockViewModel model, List<SouvenirItemViewModel> item)
         {
             model.Update_By = User.Identity.Name;
-            ResultResponse result = SouvenirStockRepo.Update(model,item);
+            ResultResponse result = SouvenirStockRepo.Update(model, item);
             return Json(new
             {
                 success = result.Success,
