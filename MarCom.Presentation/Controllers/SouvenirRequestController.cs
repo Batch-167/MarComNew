@@ -66,7 +66,7 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Edit(SouvenirRequestViewModel model, List<SouvenirItemViewModel> item)
         {
             model.Update_By = User.Identity.Name;
-            SouvenirRequestRepo.DeleteItem();
+            SouvenirRequestRepo.DeleteItem(model.Id);
             ResultResponse result = SouvenirRequestRepo.Update(model, item);
             return Json(new
             {
@@ -87,6 +87,16 @@ namespace MarCom.Presentation.Controllers
         {
             SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
             return PartialView("_Received", model);
+        }
+
+        public ActionResult SouSettApproved(int id)
+        {
+            return PartialView("_SouSettApproved", SouvenirRequestRepo.GetById(id));
+        }
+
+        public ActionResult SouSettItemApproved(int id)
+        {
+            return PartialView("_SouSettItemApproved", SouvenirRequestRepo.GetItem(id));
         }
     }
 }

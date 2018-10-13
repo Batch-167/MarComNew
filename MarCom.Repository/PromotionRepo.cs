@@ -52,9 +52,23 @@ namespace MarCom.Repository
                           {
                               Id = pr.Id,
                               Code = pr.Code,
+                              Id = pr.Id,
+                              Code = pr.Code,
+                              Request_By = pr.Request_By,
+                              RequestBy = e.First_Name + " " + e.Last_Name,
+                              Request_Date = pr.Request_Date,
+                              Assign_To = pr.Assign_To,
+                              Flag_Design = pr.Flag_Design,
+                              Status = pr.Status,
 
                               T_Event_Id = pr.T_Event_Id,
                               EventCode = ev.Code,
+
+                              Title = pr.Title,
+                              T_Event_Id = pr.T_Event_Id,
+                              EventCode = ev.Code,
+                              T_Design_Id = pr.T_Design_Id,
+                              DesignCode = de.Code,
 
                               T_Design_Id = pr.T_Design_Id,
                               DesignCode = de.Code,
@@ -66,9 +80,15 @@ namespace MarCom.Repository
                               Request_Date = pr.Request_Date,
                               Note = pr.Note
                           }).FirstOrDefault();
+                              Create_By = pr.Create_By,
+                              Create_Date = pr.Create_Date
+                          }).ToList();
             }
             return result;
         }
+
+
+
 
         //bikin list untuk view design request
         public static DesignRequestViewModel GetDesReq(int id)
@@ -80,6 +100,7 @@ namespace MarCom.Repository
                           join ev in db.T_Event on de.T_Event_Id equals ev.Id
                           join em in db.M_Employee on de.Request_By equals em.Id
                           where id == de.Id
+                          where de.Id == id
                           select new DesignRequestViewModel
                           {
                               Id = de.Id,
@@ -326,6 +347,66 @@ namespace MarCom.Repository
             return result;
         }
 
+        public static PromotionViewModel GetById(int id)
+        {
+            PromotionViewModel result = new PromotionViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from pr in db.T_Promotion
+                          join ev in db.T_Event on pr.T_Event_Id equals ev.Id
+                          join de in db.T_Design on pr.T_Design_Id equals de.Id
+                          join e in db.M_Employee on pr.Request_By equals e.Id
+                          where pr.Id == id
+                          select new PromotionViewModel
+                          {
+                              Id = pr.Id,
+                              Code = pr.Code,
+                              Title = pr.Title,
+                              T_Event_Id = pr.T_Event_Id,
+                              EventCode = ev.Code,
+                              T_Design_Id = pr.T_Design_Id,
+                              DesignCode = de.Code,
+                              Request_By = pr.Request_By,
+                              RequestBy = e.First_Name + " " + e.Last_Name,
+
+                              Status = pr.Status,
+                              Request_Date = pr.Request_Date,
+                              Note = pr.Note
+
+                          }).FirstOrDefault();
+            }
+            return result;
+        }
+
+        public static DesignRequestViewModel GetId(int id)
+        {
+            DesignRequestViewModel result = new DesignRequestViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from dr in db.T_Design
+                          join pr in db.T_Promotion
+                          on dr.Id equals pr.T_Design_Id
+                          join em in db.M_Employee
+                          on dr.Request_By equals em.Id
+                          join di in db.T_Design_Item
+                          on dr.Id equals di.T_Design_Id
+                          where pr.Id == id
+                          select new DesignRequestViewModel
+                          {
+                              Id = dr.Id,
+                              Code = dr.Code,
+                              Title_Header = dr.Title_Header,
+                              Request_By = dr.Request_By,
+                              NameRequest = em.First_Name + "" + em.Last_Name,
+                              Request_Date = dr.Request_Date,
+                              Note = dr.Note
+
+                          }).FirstOrDefault();
+
+            }
+            return result;
+
+        }
         public static UserViewModel GetIdByName(string name)
         {
             UserViewModel result = new UserViewModel();
@@ -344,6 +425,102 @@ namespace MarCom.Repository
             }
             return result;
         }
+
+        public static List<PromotionItemViewModel> GetItemId(int id)
+        {
+             
+            List<PromotionItemViewModel> result = new List<PromotionItemViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from pi in db.T_Promotion_Item
+                          join p in db.T_Promotion
+                          on pi.T_Promotion_Id equals p.Id
+                          join di in db.T_Design_Item
+                          on pi.T_Design_Item_Id equals di.Id
+                          join pr in db.M_Product
+                          on pi.M_Product_Id equals pr.Id
+                          where id == p.Id
+                          select new PromotionItemViewModel
+                          {
+                              Id =pi.Id,
+                              Title = pi.Title,
+                              ProductName=pr.Name,
+                              ProductDescription=pr.Description,
+                              Qty = pi.Qty,
+                              Todo = pi.Todo,
+                              Request_Due_Date = pi.Request_Due_Date,
+                              Start_Date = pi.Start_Date,
+                              End_Date = pi.End_Date,
+                              Note = pi.Note
+
+                          }).ToList();
+            }
+            return result;
+        }
+
+        //Untuk Mengambil Data berdasarkan Id untuk PromotionItemFile
+        public static List<PromotionItemFileViewModel> GetIdFile(int id)
+        {
+            List<PromotionItemFileViewModel> result = new List<PromotionItemFileViewModel>();
+
+            using (var db = new MarComContext())
+            {
+
+                result = (from it in db.T_Promotion_Item_File
+                          join p in db.T_Promotion
+                          on it.T_Promotion_id equals p.Id
+                          where id == p.Id
+                          select new PromotionItemFileViewModel
+                          {
+                              Id = it.Id,
+                              Filename = it.Filename,
+                              Qty = it.Qty,
+                              Todo = it.Todo,
+                              Request_Due_Date = it.Request_Due_Date,
+                              Start_Date = it.Start_Date,
+                              End_Date = it.End_Date,
+                              Note = it.Note
+                          }
+                          ).ToList();
+            }
+            return result; 
+
+        }
+
+        //Ambil Id untuk Ubah status saat Approval
+        public static ResultResponse Approve(PromotionViewModel entity)
+        {
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new MarComContext())
+                {
+                    T_Promotion pr = db.T_Promotion.Where(p => p.Id == entity.Id).FirstOrDefault();
+                    if (pr !=null)
+                    {
+                        pr.Reject_Reason = entity.Reject_Reason;
+                        pr.Status = entity.Status;
+                        pr.Assign_To = entity.Assign_To;
+                        if (entity.Status==2)
+                        {
+                            pr.Approved_By = entity.Approved_By;
+                            pr.Approved_Date = DateTime.Now;
+                        }
+
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+
     }
+
 }
 

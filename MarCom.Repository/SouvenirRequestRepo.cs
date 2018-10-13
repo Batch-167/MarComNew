@@ -228,14 +228,18 @@ namespace MarCom.Repository
             return result;
         }
 
-        public static void DeleteItem()
+        public static void DeleteItem(int id)
         {
             using (var db = new MarComContext())
             {
                 foreach (var item in db.T_Souvenir_Item)
                 {
-                    db.T_Souvenir_Item.Remove(item);
+                    if (item.T_Souvenir_Id == id)
+                    {
+                        db.T_Souvenir_Item.Remove(item);
+                    }                
                 }
+                db.SaveChanges();
             }
         }
 

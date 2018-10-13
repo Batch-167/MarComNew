@@ -13,7 +13,6 @@ namespace MarCom.ViewModel
         public DesignRequestViewModel()
         {
             Is_Delete = false;
-            Request_By = 1;
             Request_Date = DateTime.Now;
             Create_Date = DateTime.Now;
         }
@@ -55,6 +54,33 @@ namespace MarCom.ViewModel
         public string Note { get; set; }
 
         public int? Status { get; set; }
+        [DisplayName("Status")]
+        public string StatusName
+        {
+            get
+            {
+                if (Status == 0)
+                {
+                    return "Rejected";
+                }
+                else if (Status == 1)
+                {
+                    return "Submitted";
+                }
+                else if (Status == 2)
+                {
+                    return "In Progress";
+                }
+                else if (Status == 3)
+                {
+                    return "Done";
+                }
+                else
+                {
+                    return "N/A";
+                }
+            }
+        }
 
         [StringLength(255)]
         public string Reject_Reason { get; set; }

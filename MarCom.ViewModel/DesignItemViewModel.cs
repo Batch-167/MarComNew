@@ -10,6 +10,10 @@ namespace MarCom.ViewModel
 {
     public class DesignItemViewModel
     {
+        public DesignItemViewModel()
+        {
+            Create_Date = DateTime.Now;
+        }
         public int Id { get; set; }
 
         public int T_Design_Id { get; set; }

@@ -10,7 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace MarCom.Presentation.Controllers
 {
-    //[Authorize]
+    
     public class CompanyController : Controller
     {
         // GET: Company

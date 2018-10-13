@@ -31,6 +31,8 @@ namespace MarCom.ViewModel
         [StringLength(50)]
         public string Last_Name { get; set; }
 
+        public string Full_Name { get; set; }
+
         [DisplayName("Employee Name")]
         public string FullName
         {

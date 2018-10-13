@@ -171,6 +171,7 @@
                     $("#title-panel").html(act + " Souvenir Request");
                     $('#modal-input').modal('show');
                     GetListItem(id);
+                    SouSettItemApproved(id);
                     if (act=="Received") {
                         RemoveAdditem();
                     }
@@ -224,5 +225,19 @@
                 }
             });
         };
+
+        function SouSettItemApproved(id) {
+            $.ajax({
+                url: '@Url.Action("SouSettItemApproved", "SouvenirRequest")',
+                type: 'get',
+                data: { id: id },
+                success: function (result) {
+                    $('#settlement-approved').append(result);
+                },
+                error: function (err) {
+                    $('#settlement-approved').html(err);
+                }
+            });
+        }
     </script>
 }
