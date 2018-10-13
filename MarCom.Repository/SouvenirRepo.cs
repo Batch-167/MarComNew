@@ -135,7 +135,7 @@ namespace MarCom.Repository
                 }
             }
             catch (Exception)
-            {SouvenirRepo.GetNewCode();
+            {
                 return false;
             }
             return result;

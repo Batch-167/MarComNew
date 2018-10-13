@@ -16,6 +16,9 @@ namespace MarCom.Presentation.Controllers
         // GET: Souvenir
         public ActionResult Index()
         {
+            ViewBag.Souv1 = new SelectList(SouvenirRepo.Get(), "Code", "Code");
+            ViewBag.Souv2 = new SelectList(SouvenirRepo.Get(), "Name", "Name");
+            ViewBag.Souv3 = new SelectList(SouvenirRepo.Get(), "M_Unit_Id", "Unit");
             return View();
         }
 
