@@ -82,7 +82,7 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Edit(SouvenirRequestViewModel model, List<SouvenirItemViewModel> item)
         {
             model.Update_By = User.Identity.Name;
-            SouvenirRequestRepo.DeleteItem();
+            SouvenirRequestRepo.DeleteItem(model.Id);
             ResultResponse result = SouvenirRequestRepo.Update(model, item);
             return Json(new
             {
@@ -111,6 +111,16 @@ namespace MarCom.Presentation.Controllers
             {
                 return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
             }
+        }
+
+        public ActionResult SouSettApproved(int id)
+        {
+            return PartialView("_SouSettApproved", SouvenirRequestRepo.GetById(id));
+        }
+
+        public ActionResult SouSettItemApproved(int id)
+        {
+            return PartialView("_SouSettItemApproved", SouvenirRequestRepo.GetItem(id));
         }
     }
 }

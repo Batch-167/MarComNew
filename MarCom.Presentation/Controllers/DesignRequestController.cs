@@ -30,7 +30,8 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Approve(DesignApproveViewModel model)
         {
-            model.Create_By = User.Identity.Name;
+            UserViewModel model2 = DesignApproveRepo.GetIdByName(User.Identity.Name);
+            model.Approved_By = model2.M_Employee_Id;
             ResultResponse result = DesignApproveRepo.Approve(model);
             return Json(new
             {
@@ -49,22 +50,21 @@ namespace MarCom.Presentation.Controllers
         //GET : New Product
         public ActionResult Create()
         {
-            //UserViewModel model2 = GetIdByName(User.Identity.Name);
-            //DesignRequestViewModel model = new DesignRequestViewModel();
-            //model.NameRequest = model2.Fullname;
-           // model.NameRequest = model2.Fullname;
-            //model.NameRequest = model2.Fullname;
+           
+            UserViewModel result = DesignRequestRepo.GetIdByName(User.Identity.Name);
+            DesignRequestViewModel model = new DesignRequestViewModel();
+            model.Request_By = result.M_Employee_Id;
+            model.NameRequest = result.Fullname;
+            model.Code = DesignRequestRepo.GetNewCode();
             ViewBag.DesignRequest = new SelectList(EventRepo.Get(), "Id", "Code");
-            return PartialView("_Create", new DesignRequestViewModel());
+            return PartialView("_Create", model);
         }
 
         [HttpPost]
-        public ActionResult Create(DesignRequestViewModel model)
+        public ActionResult Create(DesignRequestViewModel model, List<DesignItemViewModel> item)
         {
-            //UserViewModel model2 = GetIdByName(User.Identity.Name);
-            //model.Request_By = model2.M_Employee_Id;
-            //model.Create_By = User.Identity.Name;
-            ResultResponse result = DesignRequestRepo.Update(model);
+            model.Create_By = User.Identity.Name;
+            ResultResponse result = DesignRequestRepo.Update(model, item);
             return Json(new
             {
                 success = result.Success,
@@ -74,25 +74,23 @@ namespace MarCom.Presentation.Controllers
 
         }
 
-        //public static UserViewModel GetIdByName(string name)
-        //{
-        //    UserViewModel result = new UserViewModel();
-        //    using (var db = new MarComContext())
-        //    {
-        //        result = (from u in db.M_User
-        //                  join e in db.M_Employee
-        //                  on u.M_Employee_Id equals e.Id
-        //                  where name == u.UserName
-        //                  select new UserViewModel
-        //                  {
-        //                      Id = u.Id,
-        //                      Password = u.PasswordHash,
-        //                      M_Employee_Id = u.M_Employee_Id,
-        //                      Fullname = e.First_Name + " " + e.Last_Name
-        //                  }).FirstOrDefault();
-        //    }
-        //return result;
-        //}
+        public ActionResult AddItem()
+        {
+            ViewBag.Product = new SelectList(ProductRepo.Get(), "Id", "Name");
+            ViewBag.Description = new SelectList(ProductRepo.Get(), "Id", "Description");
+            DesignItemViewModel model = new DesignItemViewModel();
+            return PartialView("_AddItem", model);
+        }
+
+
+
+        //EDIT
+        public ActionResult Edit(int id)
+        {
+            DesignRequestViewModel model = DesignRequestRepo.GetById(id);
+            ViewBag.DesignRequest = new SelectList(EventRepo.Get(), "Id", "Code");
+            return PartialView("_Edit", model);
+        }
 
         public ActionResult ProductList (int id)
         {

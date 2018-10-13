@@ -213,6 +213,7 @@
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SouvenirController.cs" />
     <Compile Include="Controllers\SouvenirRequestController.cs" />
+    <Compile Include="Controllers\SouvenirSettlementRequestController.cs" />
     <Compile Include="Controllers\SouvenirStockController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -1189,8 +1190,6 @@
     <Content Include="Views\Employee\_Create.cshtml" />
     <Content Include="Views\MenuAccess\_Edit.cshtml" />
     <Content Include="Views\MenuAccess\_Delete.cshtml" />
-    <Content Include="Views\Promotion\_Create.cshtml" />
-    <Content Include="Views\Promotion\_Awal.cshtml" />
     <Content Include="Views\Role\_Delete.cshtml" />
     <Content Include="Views\Event\_Approve.cshtml" />
     <Content Include="Views\Event\_Edit.cshtml" />
@@ -1198,16 +1197,33 @@
     <Content Include="Views\SouvenirRequest\_List.cshtml" />
     <Content Include="Views\SouvenirRequest\_Add.cshtml" />
     <Content Include="Views\SouvenirRequest\_AddItem.cshtml" />
+    <Content Include="Views\DesignRequest\_ProductList.cshtml" />
+    <Content Include="Views\Event\_ApproveCp.cshtml" />
+    <Content Include="Views\Promotion\_Create.cshtml" />
+    <Content Include="Views\Promotion\_Create2.cshtml" />
+    <Content Include="Views\Promotion\_Create3.cshtml" />
+    <Content Include="Views\SouvenirSettlementRequest\Index.cshtml" />
+    <Content Include="Views\DesignRequest\_AddItem.cshtml" />
     <Content Include="Views\SouvenirStock\_AddItem.cshtml" />
     <Content Include="Views\SouvenirRequest\_Edit.cshtml" />
-    <Content Include="Views\DesignRequest\_ProductList.cshtml" />
     <Content Include="Views\SouvenirRequest\_ListItem.cshtml" />
     <Content Include="Views\Promotion\_AddItem.cshtml" />
+    <Content Include="Views\DesignRequest\_ProductList.cshtml" />
+    <Content Include="Views\Promotion\_Approve.cshtml" />
+    <Content Include="Views\Promotion\_ViewDesign.cshtml" />
+    <Content Include="Views\DesignRequest\_Edit.cshtml" />
+    <Content Include="Views\Promotion\_DesignReq.cshtml" />
+    <Content Include="Views\Promotion\_DesignReqItem.cshtml" />
     <Content Include="Views\SouvenirRequest\_Received.cshtml" />
     <Content Include="Views\SouvenirStock\_ListItem.cshtml" />
     <Content Include="Views\AccessDenied\Index.cshtml" />
+    <Content Include="Views\Promotion\_ViewDesignItem.cshtml" />
+    <Content Include="Views\Promotion\_ViewPromotionItemFile.cshtml" />
+    <Content Include="Views\SouvenirRequest\_SouSettApproved.cshtml" />
+    <Content Include="Views\SouvenirRequest\_SouSettItemApproved.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AdminLTE\dist\PromotionFile\" />
     <Folder Include="App_Data\" />
     <Folder Include="Security\" />
     <Folder Include="Views\Ajax\" />

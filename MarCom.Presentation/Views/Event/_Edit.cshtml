@@ -33,7 +33,7 @@
                     @Html.EditorFor(model => model.Event_Name, new { htmlAttributes = new { @class = "form-control" } })
                 </td>
                 <td class="col-lg-1"></td>
-                <td align="left">
+                <td >
                     <span>Request Date</span>
                 </td>
                 <td>
@@ -62,7 +62,7 @@
                     <span>Event Start Date</span>
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @class = "form-control datepicker" } })
                     @Html.ValidationMessageFor(model => model.Start_Date)
                 </td>
                 <td class="col-lg-1"></td>

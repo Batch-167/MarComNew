@@ -10,6 +10,10 @@ namespace MarCom.ViewModel
 {
     public class DesignItemViewModel
     {
+        public DesignItemViewModel()
+        {
+            Create_Date = DateTime.Now;
+        }
         public int Id { get; set; }
 
         public int T_Design_Id { get; set; }
@@ -20,8 +24,7 @@ namespace MarCom.ViewModel
         public string ProductName { get; set; }
 
         public string Description { get; set; }
-
-        [DisplayName("Title")]
+        
         [StringLength(255), Required]
         public string Title_Item { get; set; }
 
