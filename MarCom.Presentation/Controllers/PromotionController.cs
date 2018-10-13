@@ -39,21 +39,26 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_Create", model);
         }
 
-        public ActionResult Create2()
+        public ActionResult Create2(int designid)
         {
             ViewBag.EventCode = new SelectList(EventRepo.Get(), "id", "Code");
             ViewBag.DesignCode = new SelectList(DesignRequestRepo.Get(), "id", "Code");
             UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
             PromotionViewModel model = new PromotionViewModel();
             model.RequestBy = model2.Fullname;
+            
+            model.T_Design_Id = designid;
             return PartialView("_Create2", model);
         }
 
         [HttpPost]
         public ActionResult Create2(PromotionViewModel model, List<PromotionItemViewModel> itemModel, List<PromotionItemFileViewModel> fileModel)
         {
+            UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
             model.Create_By = User.Identity.Name;
-            ResultResponse result = PromotionRepo.Update(model, itemModel,fileModel);            
+            model.Request_By = model2.M_Employee_Id;
+            ResultResponse result = PromotionRepo.Update(model, itemModel);
+            ResultResponse result2 = PromotionRepo.UpdateFile(fileModel, model.Id);            
             return Json(new
             {
                 success = result.Success,
@@ -84,5 +89,26 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_DesignReqItem", model);
         }
         
+        //GET: View Edit
+        public ActionResult Edit(int id)
+        {
+            PromotionViewModel model = PromotionRepo.GetById(id);
+            return PartialView("_Edit");
+        }
+
+        //POST: Edit
+        [HttpPost]
+        public ActionResult Edit(PromotionViewModel model, List<PromotionItemViewModel> itemModel, List<PromotionItemFileViewModel> fileModel)
+        {
+            model.Update_By = User.Identity.Name;
+            ResultResponse result = PromotionRepo.Update(model, itemModel);
+            ResultResponse result2 = PromotionRepo.UpdateFile(fileModel, model.Id);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -1210,6 +1210,7 @@
     <Content Include="Views\Promotion\_DesignReq.cshtml" />
     <Content Include="Views\Promotion\_DesignReqItem.cshtml" />
     <Content Include="Views\SouvenirRequest\_Received.cshtml" />
+    <Content Include="Views\Promotion\_Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdminLTE\dist\PromotionFile\" />

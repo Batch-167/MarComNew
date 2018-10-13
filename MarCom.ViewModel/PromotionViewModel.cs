@@ -14,9 +14,12 @@ namespace MarCom.ViewModel
         {
             Is_Delete = false;
             Request_Date = DateTime.Now;
-            Status = 1;
             Flag_Design = "0";
+           // AssignName = "-";
+            Assign_To = 1;
         }
+
+       // public string AssignName { get; set; }
 
         public string FlagDesign
         {

@@ -17,15 +17,15 @@
         @Html.ValidationMessageFor(model => model.Todo, "", new { @class = "text-danger" })
     </td>
     <td>
-        @Html.EditorFor(model => model.Request_Due_Date, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.Request_Due_Date, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
         @Html.ValidationMessageFor(model => model.Request_Due_Date, "", new { @class = "text-danger" })
     </td>
     <td>
-        @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
         @Html.ValidationMessageFor(model => model.Start_Date, "", new { @class = "text-danger" })
     </td>
     <td>
-        @Html.EditorFor(model => model.End_Date, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.End_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         @Html.ValidationMessageFor(model => model.End_Date, "", new { @class = "text-danger" })
     </td>
     <td>

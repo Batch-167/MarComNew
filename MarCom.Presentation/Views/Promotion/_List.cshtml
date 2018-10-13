@@ -40,7 +40,10 @@
                 @(row += 1)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Request_By)
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestBy)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Request_Date)
@@ -62,7 +65,7 @@
                     <button type="button" class="btn btn-warning btn-view" data-id="@item.Id" title="View" onclick="action('view',@item.Id)">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" onclick="action('edit',@item.Id)">
+                    <button type="button" class="btn btn-success btn-edit" data-id="@item.Id" title="Edit" onclick="action('edit',@item.Id)">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </button>
                     <button type="button" class="btn btn-danger btn-delete" data-id="@item.Id" title="Delete" onclick="action('delete',@item.Id)">
@@ -72,5 +75,4 @@
             </td>
         </tr>
     }
-
 </table>

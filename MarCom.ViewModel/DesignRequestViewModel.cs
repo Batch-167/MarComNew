@@ -69,5 +69,8 @@ namespace MarCom.ViewModel
         [DisplayName("Created Date")]
         public DateTime Create_Date { get; set; }
 
+        //buat view di promotion
+        [DisplayName("Design Code")]
+        public string DesignCode { get; set; }
     }
 }

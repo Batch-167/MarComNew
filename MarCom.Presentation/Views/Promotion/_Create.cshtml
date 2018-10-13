@@ -3,29 +3,28 @@
 <div class="form-horizontal">
 
     <div class="form-group">
-        @Html.LabelFor(model => model.EventCode, htmlAttributes: new { @class = "control-label col-md-4" })
-        <div class="col-md-8">
+        @Html.LabelFor(model => model.EventCode, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
             @Html.DropDownListFor(model => model.T_Event_Id, (IEnumerable<SelectListItem>)ViewBag.EventCode, "Select Event Code", new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.T_Event_Id, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        <span class="col-md-4">Select From Design</span>
+        <span class="col-md-3">Select From Design</span>
 
-        <div class="col-md-8">
+        <div class="col-md-9">
             <label for="yesCheck">Yes</label> <input type="radio" onclick="yesnoCheck();" name="yesno" id="yesCheck" />
             <label for="noCheck">No</label> <input type="radio" onclick="yesnoCheck();" name="yesno" id="noCheck`" />
-
-            <div id="ifYes" style="visibility:hidden">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.DesignCode, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.DropDownListFor(model => model.T_Design_Id, (IEnumerable<SelectListItem>)ViewBag.DesignCode, "Select Design Code", new { @class = "form-control" })
-                    </div>
-                </div>
+        </div>
+        <div id="ifYes" style="visibility:hidden" class="form-group">
+            @Html.LabelFor(model => model.DesignCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.T_Design_Id, (IEnumerable<SelectListItem>)ViewBag.DesignCode, "Select Design Code", new { @class = "form-control" })
             </div>
         </div>
+
+
     </div>
 
 
