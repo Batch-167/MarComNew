@@ -12,6 +12,7 @@ namespace MarCom.ViewModel
     {
         public DesignItemViewModel()
         {
+            Is_Delete = false;
             Create_Date = DateTime.Now;
         }
         public int Id { get; set; }

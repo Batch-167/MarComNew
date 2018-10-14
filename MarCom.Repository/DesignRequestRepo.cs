@@ -49,7 +49,7 @@ namespace MarCom.Repository
                     if (entity.Id == 0)
                     {
                         T_Design design = new T_Design();
-                        design.Code = GetNewCode();
+                        design.Code = entity.Code;
                         design.Title_Header = entity.Title_Header;
                         design.T_Event_Id = entity.T_Event_Id;
                         design.Request_By = entity.Request_By;
@@ -69,8 +69,6 @@ namespace MarCom.Repository
                             designItem.M_Product_Id = item.M_Product_Id;
                             designItem.Title_Item = item.Title_Item;
                             designItem.Request_Pic = 1;
-                            designItem.Start_Date = item.Start_Date;
-                            designItem.End_Date = item.End_Date;
                             designItem.Note = item.Note;
                             designItem.Is_Delete = item.Is_Delete;
 
@@ -81,7 +79,61 @@ namespace MarCom.Repository
 
                         }
                         db.SaveChanges();
+                    }
+                    else
+                    {
+                        T_Design design = db.T_Design.Where(td => td.Id == entity.Id).FirstOrDefault();
+                        if(design != null)
+                        {
+                            design.Code = entity.Code;
+                            design.T_Event_Id = entity.T_Event_Id;
+                            design.Title_Header = entity.Title_Header;
+                            design.Request_By = entity.Request_By;
+                            design.Request_Date = DateTime.Now;
+                            design.Note = entity.Note;
+                            design.Status = 1;
 
+                            design.Update_Date = DateTime.Now;
+                            design.Update_By = entity.Update_By;
+                           
+                            foreach(var item in entityitem)
+                            {
+                                if (item.Id == 0)
+                                {
+                                    T_Design_Item designItem = new T_Design_Item();
+                                    designItem.T_Design_Id = entity.Id;
+                                    designItem.M_Product_Id = item.M_Product_Id;
+                                    designItem.Title_Item = item.Title_Item;
+                                    designItem.Request_Pic = 1;
+                                    designItem.Note = item.Note;
+                                    designItem.Is_Delete = item.Is_Delete;
+
+                                    designItem.Create_By = entity.Create_By;
+                                    designItem.Create_Date = DateTime.Now;
+
+                                    db.T_Design_Item.Add(designItem);
+                                }
+                                else
+                                {
+                                    T_Design_Item designItem = db.T_Design_Item.Where(di => di.Id == item.Id).FirstOrDefault();
+                                    if (designItem != null)
+                                    {
+                                       designItem.T_Design_Id = entity.Id;
+                                        designItem.M_Product_Id = item.M_Product_Id;
+                                        designItem.Title_Item = item.Title_Item;
+                                        designItem.Request_Pic = 1;
+                                        designItem.Note = item.Note;
+                                        designItem.Is_Delete = item.Is_Delete;
+
+                                        designItem.Update_By = entity.Create_By;
+                                        designItem.Update_Date = DateTime.Now;
+
+                                        db.T_Design_Item.Add(designItem);
+                                    }
+                                }
+                            }
+                            db.SaveChanges();
+                        }
                     }
                 }
             }
@@ -97,7 +149,7 @@ namespace MarCom.Repository
             string yearMonth = DateTime.Now.ToString("dd") +
                 DateTime.Now.Month.ToString("D2") +
                 DateTime.Now.ToString("yy");
-            string newRef = "TRWODS" + yearMonth + "0";
+            string newRef = "TRWODS" + yearMonth + "-";
             using (var db = new MarComContext())
             {
                 var result = (from dr in db.T_Design
@@ -107,12 +159,12 @@ namespace MarCom.Repository
                               .FirstOrDefault();
                 if (result != null)
                 {
-                    string[] oldRef = result.code.Split('0');
-                    newRef += (int.Parse(oldRef[1]) + 1).ToString("D4");
+                    string[] oldRef = result.code.Split('-');
+                    newRef += (int.Parse(oldRef[1]) + 1).ToString("D5");
                 }
                 else
                 {
-                    newRef += "0001";
+                    newRef += "00001";
                 }
             }
             return newRef;
@@ -168,31 +220,46 @@ namespace MarCom.Repository
             return result;
         }
 
-        //public static List<UserViewModel> GetRole()
-        //{
-        //    List<UserViewModel> result = new List<UserViewModel>();
-        //    using (var db = new MarComContext())
-        //    {
-        //        result = (from u in db.M_User
-        //                  where name == "Requester"
-        //                  select new UserViewModel
-        //                  {
-        //                      Id = di.Id,
-        //                      T_Event_Id = dr.T_Event_Id,
-        //                      EventCode = e.Code,
-        //                      Request_By = dr.Request_By,
-        //                      Request_Date = dr.Request_Date,
-        //                      Assign_To = dr.Assign_To,
-        //                      Status = dr.Status,
+        public static List<DesignItemViewModel> GetItem(int id)
+        {
+            List<DesignItemViewModel> result = new List<DesignItemViewModel>();
+            using (var db =  new MarComContext())
+            {
+                result = (from di in db.T_Design_Item
+                          join td in db.T_Design on di.T_Design_Id equals td.Id
+                          join p in db.M_Product on di.M_Product_Id equals p.Id
+                          where di.T_Design_Id == id
+                          select new DesignItemViewModel
+                          {
+                              Id = di.Id,
+                              T_Design_Id = di.T_Design_Id,
+                              M_Product_Id = di.M_Product_Id,
+                              ProductName = p.Name,
+                              Description = p.Description,
+                              Title_Item = di.Title_Item,
+                              Request_Pic = di.Request_Pic,
+                              Request_Due_Date = di.Request_Due_Date,
+                              Start_Date = di.Start_Date,
+                              End_Date = di.End_Date,
+                              Note = di.Note
+                          }).ToList();
+            }
+            return result;
+        }
 
-        //                      Is_Delete = dr.Is_Delete,
-
-        //                      Create_Date = dr.Create_Date,
-        //                      Create_By = "Administrator"
-        //                  })//.Where(p => p.Is_Delete == all ? p.Is_Delete : true)
-        //                    .ToList();
-        //    }
-        //    return result;
-        //}
+        public static void DeleteItem(int id)
+        {
+            using (var db = new MarComContext())
+            {
+                foreach (var item in db.T_Design_Item)
+                {
+                    if (item.T_Design_Id == id)
+                    {
+                        db.T_Design_Item.Remove(item);
+                    }
+                }
+                db.SaveChanges();
+            }
+        }
     }
 }

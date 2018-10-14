@@ -92,6 +92,31 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_Edit", model);
         }
 
+        //EDIT POST
+        [HttpPost]
+        public ActionResult Edit(DesignRequestViewModel model, List<DesignItemViewModel> item)
+        {
+            model.Create_By = User.Identity.Name;
+            model.Update_By = User.Identity.Name;
+            DesignRequestRepo.DeleteItem(model.Id);
+            ResultResponse result = DesignRequestRepo.Update(model, item);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult EditList(int id)
+        {
+            ViewBag.Product = new SelectList(ProductRepo.Get(), "Id", "Name");
+            ViewBag.Description = new SelectList(ProductRepo.Get(), "Id", "Description");
+            List<DesignItemViewModel> model = DesignRequestRepo.GetItem(id);
+            return PartialView("_EditList", DesignApproveRepo.Get(id));
+        }
+
         public ActionResult ProductList (int id)
         {
             return PartialView("_ProductList", DesignApproveRepo.Get(id));
