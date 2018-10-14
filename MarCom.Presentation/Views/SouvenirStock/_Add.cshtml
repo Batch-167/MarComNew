@@ -10,7 +10,7 @@
         @using (Html.BeginForm("Add", "SouvenirStock", FormMethod.Post, new { @id = "input-form" }))
         {
             @Html.AntiForgeryToken()
-
+            @Html.HiddenFor(model => model.Id)
             <div class="form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
@@ -75,7 +75,7 @@
                     </table>
                 </div>
             </div>
-            <div class="form-group">
+            <div align="right" class="form-group">
                 <div class="col-md-12 breadcrumb">
                     <input type="submit" value="Save" class="btn btn-primary" />
                     <input type="button" value="Cancel" class="btn btn-warning" data-dismiss="modal" />

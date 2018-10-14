@@ -14,7 +14,6 @@ namespace MarCom.ViewModel
         {
             Is_Delete = false;
             Request_Date = DateTime.Now;
-            Status = 1;
             Flag_Design = "0";
         }
 

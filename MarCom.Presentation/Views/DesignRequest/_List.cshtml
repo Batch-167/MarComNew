@@ -61,6 +61,29 @@
                     @Html.DisplayFor(modelItem => item.Create_By)
                 </td>
                 <td>
+                    <div class="btn-group" >
+                        @{ 
+                            string editStyle = "";
+                            string approveStyle = "";
+                            if (item.Status == 2)
+                            {
+                                editStyle = "disabled";
+                            }
+                            else if (item.Status == 0)
+                            {
+                                approveStyle = "disabled";
+                            }
+                        }
+                        <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="View" onclick="action('View', @item.Id)">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-warning btn-edit" @editStyle data-id="@item.Id" title="Edit" id="design-edit" onclick="action('Edit', @item.Id)">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-approve" @approveStyle data-id="@item.Id" title="Approve" onclick="action('Approve', @item.Id)">
+                            <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                        </button>
+                    </div>
                     <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="Close" onclick="action('View', @item.Id)">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>

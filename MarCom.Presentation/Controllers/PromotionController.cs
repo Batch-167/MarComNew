@@ -53,7 +53,7 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Create2(PromotionViewModel model, List<PromotionItemViewModel> itemModel, List<PromotionItemFileViewModel> fileModel)
         {
             model.Create_By = User.Identity.Name;
-            ResultResponse result = PromotionRepo.Update(model, itemModel,fileModel);            
+            ResultResponse result = PromotionRepo.Update(model, itemModel, fileModel);
             return Json(new
             {
                 success = result.Success,
@@ -83,6 +83,45 @@ namespace MarCom.Presentation.Controllers
             List<PromotionItemViewModel> model = PromotionRepo.GetDesReqItem(id);
             return PartialView("_DesignReqItem", model);
         }
-        
+
+        //View Approve
+        public ActionResult Approve(int id)
+        {
+
+            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "FullName");
+            return PartialView("_Approve", PromotionRepo.GetById(id));
+        }
+
+        [HttpPost]
+        public ActionResult Approve(PromotionViewModel model)
+        {
+            UserViewModel model1 = PromotionRepo.GetIdByName(User.Identity.Name);
+            model.Approved_By = model1.M_Employee_Id;
+            ResultResponse result = PromotionRepo.Approve(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        //View Design 
+        public ActionResult ViewDesign(int id)
+        {
+            return PartialView("_ViewDesign", PromotionRepo.GetId(id));
+        }
+
+        //View Design Item
+        public ActionResult ViewDesignItem(int id)
+        {
+            return PartialView("_ViewDesignItem", PromotionRepo.GetItemId(id));
+        }
+
+        //View Promotion Item File
+        public ActionResult ViewPromotionItemFile(int id)
+        {
+            return PartialView("_ViewPromotionItemFile", PromotionRepo.GetIdFile(id));
+        }
     }
 }

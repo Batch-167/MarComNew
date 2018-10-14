@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
@@ -30,13 +31,21 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult List()
         {
-            return PartialView("_List",SouvenirRepo.Get());
+            return PartialView("_List", SouvenirRepo.Get());
         }
 
         public ActionResult Create()
         {
-            ViewBag.Souvenir = new SelectList(UnitRepo.Get(), "Id", "Name");            
-            return PartialView("_Create", new SouvenirViewModel());
+            UserViewModel model = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
+            ViewBag.Souvenir = new SelectList(UnitRepo.Get(), "Id", "Name");
+            if (model.Role == "Staff")
+            {
+                return PartialView("_Create", new SouvenirViewModel());
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         //POS        
@@ -56,9 +65,17 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Edit(int id)
         {
+            UserViewModel model2 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             ViewBag.Unit = new SelectList(UnitRepo.Get(), "Id", "Name");
             SouvenirViewModel model = SouvenirRepo.GetById(id);
-            return PartialView("_Edit", model);
+            if (model2.Role == "Staff")
+            {
+                return PartialView("_Edit", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         //POST        
@@ -80,11 +97,11 @@ namespace MarCom.Presentation.Controllers
             SouvenirViewModel model = SouvenirRepo.GetById(id);
             return PartialView("_Show", model);
         }
-        
+
 
         public ActionResult Delete(int id)
         {
-            
+
             //ViewBag.Unit = new SelectList(SouvenirRepo.Get(), "Id", "Name");
             SouvenirViewModel model = SouvenirRepo.GetById(id);
             return PartialView("_Delete", model);
@@ -97,7 +114,7 @@ namespace MarCom.Presentation.Controllers
 
             return RedirectToAction("index");
         }
-   
+
         [HttpPost]
         public ActionResult DeleteConfirm(int id)
         {

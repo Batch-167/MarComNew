@@ -51,10 +51,10 @@
                     @Html.DisplayFor(modelItem => item.Create_Date)
                 </td>
                 <td>
-                    <button type="button" class="btn btn-details" data-id="@item.Id" title="Details" onclick="action('details', @item.Id)">
+                    <button type="button" class="btn btn-details" data-id="@item.Id" title="Details" onclick="action('Details', @item.Id, '@item.Code')">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-edit" data-id="@item.Id" title="Edit" onclick="action('edit', @item.Id)">
+                    <button type="button" class="btn btn-edit" data-id="@item.Id" title="Edit" onclick="action('Edit', @item.Id, '@item.Code')">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </button>
                 </td>

@@ -10,6 +10,11 @@ namespace MarCom.ViewModel
 {
     public class PromotionItemViewModel
     {
+        public PromotionItemViewModel()
+        {
+            Todo = 1;
+            Qty = 1;
+        }
         public int Id { get; set; }
 
         public int T_Promotion_Id { get; set; }
@@ -43,9 +48,41 @@ namespace MarCom.ViewModel
         public int? Qty { get; set; }
 
         public int Todo { get; set; }
+        public string TodoName
+        {
+            get
+            {
+                if (Todo==1)
+                {
+                    return "Print/Cetak";
+                }
+                else if (Todo==2)
+                {
+                    return "Post to Social Media";
+                }
+                else if (Todo==3)
+                {
+                    return "Post to Company Profile Website";
+                }
+                else if (Todo==4)
+                {
+                    return "Post to Xsis Academy Website";
+                }
+                else if (Todo==5)
+                {
+                    return "Other";
+                }
+                else
+                {
+                    return "Nothing to do";
+                }
+
+            }
+        }
 
         [StringLength(255)]
         public string Note { get; set; }
+
 
         public bool? Is_Delete { get; set; }
 

@@ -23,7 +23,7 @@ namespace MarCom.Repository
                               Code = sr.Code,
                               Request_By = sr.Request_By,
                               Request_Date = sr.Request_Date,
-                              Name = e.First_Name+ " "+e.Last_Name,
+                              Name = e.First_Name + " " + e.Last_Name,
                               Request_Due_Date = sr.Request_Due_Date,
                               Status = sr.Status,
                               Is_Delete = sr.Is_Delete,
@@ -143,7 +143,7 @@ namespace MarCom.Repository
                                         t_SouvItem.Update_By = entity.Update_By;
                                         t_SouvItem.Update_Date = DateTime.Now;
                                     }
-                                }                                
+                                }
                             }
                             db.SaveChanges();
                         }
@@ -190,13 +190,15 @@ namespace MarCom.Repository
                 result = (from u in db.M_User
                           join e in db.M_Employee
                           on u.M_Employee_Id equals e.Id
+                          join r in db.M_Role on u.M_Role_Id equals r.Id
                           where name == u.UserName
                           select new UserViewModel
                           {
                               Id = u.Id,
                               Password = u.PasswordHash,
                               M_Employee_Id = u.M_Employee_Id,
-                              Fullname = e.First_Name + " " + e.Last_Name
+                              Fullname = e.First_Name + " " + e.Last_Name,
+                              Role = r.Name
                           }).FirstOrDefault();
             }
             return result;
