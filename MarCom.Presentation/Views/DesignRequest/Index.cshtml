@@ -118,8 +118,18 @@
             });
         }
 
+        function Disable(obj) {
+            var tr = $(obj).closest('tr');
+            $(tr).find('Select[disabled]').prop('disabled', false);
+            $(tr).find('Input[disabled]').prop('disabled', false);
+        }
+
         function RemoveRow(obj) {
             $(obj).closest('tr').remove();
+        }
+
+        function RemoveAdditem() {
+            $('#additem-button').find('button').remove();
         }
 
         function GetItemList(id) {
@@ -136,6 +146,20 @@
             });
         }
 
+        function GetEditList(id) {
+            $.ajax({
+                url: '@Url.Action("EditList", "DesignRequest")',
+                type: 'get',
+                data: { id: id },
+                success: function (result) {
+                    $("#item-body").append(result);
+                },
+                error: function (err) {
+                    $("#item-body").html(result);
+                },
+            });
+        }
+
         function action(act, id) {
             $.ajax({
                 url: '/DesignRequest/' + act,
@@ -146,12 +170,15 @@
                     $('#modal-input').find('.modal-body').html(result);
                     $("title-panel").html(act + "Design Request");
                     $('#modal-input').modal('show');
+                    if (act == "Edit") {
+                        GetEditList(id);
+                    };
                     if (act == "Approve") {
                         GetItemList(id);
                     };
                 },
                 error: function (err) {
-                    $("#table-list").tml(err);
+                    $("#table-list").html(err);
                 }
             });
         }
@@ -162,7 +189,7 @@
             var vData = {  Id : $(this).find("#Id").val(), Code: $(this).find("#Code").val(), T_Event_Id: $(this).find("#T_Event_Id").val(), Title_Header: $(this).find("#Title_Header").val(), Request_By: $(this).find("#Request_By").val(), Request_Date: $(this).find("#Request_Date").val(), Note: $(this).find("#Note").val() };
             var vItems = [];
             $("#item-body").find('tr').each(function (index) {
-                var vItem = { Id : $(this).find("#Id").val(), M_Product_Id: $(this).find("#M_Product_Id").val(), Title_Item: $(this).find("#Title_Item").val(), Request_Due_Date: $(this).find("#Request_Due_Date").val(), Start_Date: $(this).find("#Start_Date").val(), End_Date: $(this).find("#End_Date").val(), Note: $(this).find("#Note").val() };
+                var vItem = { Id: $(this).find("#Id").val(), M_Product_Id: $(this).find("#M_Product_Id").val(), Title_Item: $(this).find("#Title_Item").val(), Request_Pic: $(this).find("#Request_Pic").val(), Request_Due_Date: $(this).find("#Request_Due_Date").val(), Note: $(this).find("#Note").val() };
                 vItems.push(vItem);
             })
             $.ajax({

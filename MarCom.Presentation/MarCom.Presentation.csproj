@@ -197,6 +197,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AccessDeniedController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -1194,7 +1195,6 @@
     <Content Include="Views\SouvenirRequest\_List.cshtml" />
     <Content Include="Views\SouvenirRequest\_Add.cshtml" />
     <Content Include="Views\SouvenirRequest\_AddItem.cshtml" />
-    <Content Include="Views\DesignRequest\_ProductList.cshtml" />
     <Content Include="Views\Event\_ApproveCp.cshtml" />
     <Content Include="Views\DesignRequest\_AddItem.cshtml" />
     <Content Include="Views\SouvenirStock\_AddItem.cshtml" />
@@ -1205,6 +1205,8 @@
     <Content Include="Views\Promotion\_ViewDesign.cshtml" />
     <Content Include="Views\DesignRequest\_Edit.cshtml" />
     <Content Include="Views\SouvenirRequest\_Received.cshtml" />
+    <Content Include="Views\SouvenirStock\_ListItem.cshtml" />
+    <Content Include="Views\AccessDenied\Index.cshtml" />
     <Content Include="Views\Promotion\_ViewDesignItem.cshtml" />
     <Content Include="Views\Promotion\_ViewPromotionItemFile.cshtml" />
     <Content Include="Views\SouvenirRequest\_SouSettApproved.cshtml" />
@@ -1220,10 +1222,13 @@
     <Content Include="Views\Promotion\_EditDesign.cshtml" />
     <Content Include="Views\Promotion\_EditDesignItem.cshtml" />
     <Content Include="Views\SouvenirRequest\_SouSettRequest.cshtml" />
+    <Content Include="Views\DesignRequest\_ProductList.cshtml" />
+    <Content Include="Views\DesignRequest\_EditList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdminLTE\dist\PromotionFile\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Security\" />
     <Folder Include="Views\Ajax\" />
   </ItemGroup>
   <ItemGroup>

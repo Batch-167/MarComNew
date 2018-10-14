@@ -26,26 +26,26 @@
                 </td>
             </tr>
             <tr>
-                <td class="col-lg-2">
-                    <input name="TransCode" type="text" class="form-control" placeholder="Transaction Code" />
+                <td class="col-lg-3">
+                    <input id="Code" type="text" class="form-control" placeholder="Transaction Code" />
                 </td>
                 <td class="col-lg-3">
-                    <input name="TransvName" type="text" class="form-control text-box single-line" placeholder="Received By" />
+                    <input id="Received" type="text" class="form-control text-box single-line" placeholder="Received By" />
                 </td>
                 <td class="col-lg-2">
                     <div class="input-group">
-                        <input class="form-control datepicker" placeholder="Received Date" type="date" value="ReceivedDate" />
+                        <input id="RDate" class="form-control datepicker" placeholder="Received Date" type="date" value="ReceivedDate" />
                         <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                     </div>
                 </td>
                 <td class="col-lg-2">
                     <div class="input-group">
-                        <input class="form-control datepicker" placeholder="Created" type="date" value="Created" />
+                        <input id="CDate" class="form-control datepicker" placeholder="Created" type="date" value="Created" />
                         <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                     </div>
                 </td>
-                <td class="col-lg-2">
-                    <input name="TransName" type="text" class="form-control text-box single-line" placeholder="Create By" />
+                <td class="col-lg-3">
+                    <input id="Created" type="text" class="form-control text-box single-line" placeholder="Create By" />
                 </td>
                 <td>
                     <button type="button" id="btn-new" class="btn btn-warning btn-sm">Search</button>
@@ -67,7 +67,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-blue">
-                <h4 class="text-bold">@ViewBag.title<button type="button" class="close glyphicon glyphicon-remove" data-dismiss="modal" aria-label="Close"></button></h4>
+                <h4 class="text-bold" id="title-panel"></h4>
             </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
@@ -97,8 +97,22 @@
             });
         }
 
+        function GetListItem(id) {
+            $.ajax({
+                url: '@Url.Action("ListItem", "SouvenirStock")',
+                type: 'get',
+                data: { id: id},
+                success: function (result) {
+                    $("#item-body").append(result);
+                },
+                error: function (err) {
+                    $("#item-body").html(err);
+                }
+            });
+        }
+
         $("#btn-new").click(function () {
-            $(".modal-title").html("Add Souvenir Stock");
+            $("#title-panel").html("Add Souvenir Stock");
             $.ajax({
                 url: '@Url.Action("Add", "SouvenirStock")',
                 type: 'get',
@@ -126,7 +140,13 @@
             $(obj).closest('tr').remove();
         }
 
-        function action(act, id) {
+        function Disable(obj) {
+            var tr = $(obj).closest('tr');
+            $(tr).find('Select[disabled]').prop('disabled', false);
+            $(tr).find('Input[disabled]').prop('disabled', false);
+        }
+
+        function action(act, id, code) {
             $.ajax({
                 url: '/SouvenirStock/' + act,
                 type: 'get',
@@ -134,10 +154,12 @@
                 dataType: 'html',
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
+                    $("#title-panel").html(act + " Souvenir Stock " + code);
                     $('#modal-input').modal('show');
+                    GetListItem(id);
                 },
                 error: function (err) {
-                    $('#table-list').tml(err);
+                    $('#table-list').html(err);
                 }
             });
         }
@@ -145,10 +167,10 @@
         $('#modal-input').on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
-            var vData = { Code: $(this).find('#Code').val(), Received_By: $(this).find('#Received_By').val(), Received_Date: $(this).find('#Received_Date').val(), Note: $(this).find('#Note').val() };
+            var vData = { Id: $(this).find('#Id').val(), Code: $(this).find('#Code').val(), Received_By: $(this).find('#Received_By').val(), Received_Date: $(this).find('#Received_Date').val(), Note: $(this).find('#Note').val() };
             var vItems = [];
             $('#item-body').find('tr').each(function (index) {
-                var vItem = { M_Souvenir_Id: $(this).find('#M_Souvenir_Id').val(), Qty: $(this).find('#Qty').val(), Note: $(this).find('#Note').val() };
+                var vItem = { Id: $(this).find('#Id').val(), M_Souvenir_Id: $(this).find('#M_Souvenir_Id').val(), Qty: $(this).find('#Qty').val(), Note: $(this).find('#Note').val() };
                 vItems.push(vItem);
             });
             $.ajax({
