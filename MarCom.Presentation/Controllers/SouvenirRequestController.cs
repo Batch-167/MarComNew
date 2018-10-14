@@ -89,6 +89,12 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_Received", model);
         }
 
+        public ActionResult SouSettRequest(int id)
+        {
+            SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
+            return PartialView("_SouSettRequest", model);
+        }
+
         public ActionResult SouSettApproved(int id)
         {
             return PartialView("_SouSettApproved", SouvenirRequestRepo.GetById(id));

@@ -24,72 +24,19 @@ namespace MarCom.Repository
                               Request_By = pr.Request_By,
                               RequestBy = e.First_Name + " " + e.Last_Name,
                               Request_Date = pr.Request_Date,
-                              Assign_To=pr.Assign_To,
+                              Assign_To = pr.Assign_To,
                               //AssignName = e.First_Name+" "+e.Last_Name,
                               Flag_Design = pr.Flag_Design,
                               Status = pr.Status,
 
                               Create_By = pr.Create_By,
                               Create_Date = pr.Create_Date,
-                              Is_Delete=pr.Is_Delete
-                              
+                              Is_Delete = pr.Is_Delete
+
                           }).ToList();
             }
             return result;
         }
-
-        public static PromotionViewModel GetById(int id)
-        {
-            PromotionViewModel result = new PromotionViewModel();
-            using (var db = new MarComContext())
-            {
-                result = (from pr in db.T_Promotion
-                          join ev in db.T_Event on pr.T_Event_Id equals ev.Id
-                          join de in db.T_Design on pr.T_Design_Id equals de.Id
-                          join e in db.M_Employee on pr.Request_By equals e.Id
-                          where id == pr.Id
-                          select new PromotionViewModel
-                          {
-                              Id = pr.Id,
-                              Code = pr.Code,
-                              Id = pr.Id,
-                              Code = pr.Code,
-                              Request_By = pr.Request_By,
-                              RequestBy = e.First_Name + " " + e.Last_Name,
-                              Request_Date = pr.Request_Date,
-                              Assign_To = pr.Assign_To,
-                              Flag_Design = pr.Flag_Design,
-                              Status = pr.Status,
-
-                              T_Event_Id = pr.T_Event_Id,
-                              EventCode = ev.Code,
-
-                              Title = pr.Title,
-                              T_Event_Id = pr.T_Event_Id,
-                              EventCode = ev.Code,
-                              T_Design_Id = pr.T_Design_Id,
-                              DesignCode = de.Code,
-
-                              T_Design_Id = pr.T_Design_Id,
-                              DesignCode = de.Code,
-
-                              Request_By = pr.Request_By,
-                              RequestBy = e.First_Name + " " + e.Last_Name,
-
-                              Status = pr.Status,
-                              Request_Date = pr.Request_Date,
-                              Note = pr.Note
-                          }).FirstOrDefault();
-                              Create_By = pr.Create_By,
-                              Create_Date = pr.Create_Date
-                          }).ToList();
-            }
-            return result;
-        }
-
-
-
-
         //bikin list untuk view design request
         public static DesignRequestViewModel GetDesReq(int id)
         {
@@ -99,7 +46,7 @@ namespace MarCom.Repository
                 result = (from de in db.T_Design
                           join ev in db.T_Event on de.T_Event_Id equals ev.Id
                           join em in db.M_Employee on de.Request_By equals em.Id
-                          where id == de.Id
+                          //where id == de.Id
                           where de.Id == id
                           select new DesignRequestViewModel
                           {
@@ -128,8 +75,9 @@ namespace MarCom.Repository
                           where dei.T_Design_Id == id
                           select new PromotionItemViewModel
                           {
-                              Id = dei.Id,
                               M_Product_Id = dei.M_Product_Id,
+                              Id = dei.Id,
+                              T_Design_Item_Id = dei.T_Design_Id,
                               ProductName = pr.Name,
                               ProductDescription = pr.Description,
                               Title = dei.Title_Item
@@ -199,7 +147,7 @@ namespace MarCom.Repository
 
                             foreach (var item in entityItem)
                             {
-                                if (item.Id==0)
+                                if (item.Id == 0)
                                 {
                                     T_Promotion_Item promotionItem = new T_Promotion_Item();
                                     promotionItem.M_Product_Id = item.M_Product_Id;
@@ -305,7 +253,7 @@ namespace MarCom.Repository
             string date = DateTime.Now.Day.ToString("D2");
             string month = DateTime.Now.Month.ToString("D2");
             string year = DateTime.Now.ToString("yy");
-            string newRef = "TRWOMP" + date + month + year + "0";
+            string newRef = "TRWOMP" + date + month + year + "-";
 
             using (var db = new MarComContext())
             {
@@ -316,8 +264,8 @@ namespace MarCom.Repository
                               .FirstOrDefault();
                 if (result != null)
                 {
-                    string[] oldRef = result.code.Split('0');
-                    newRef += (int.Parse(oldRef[1]) + 1).ToString("D2");
+                    string[] oldRef = result.code.Split('-');
+                    newRef += (int.Parse(oldRef[1]) + 1).ToString("D4");
                 }
                 else
                 {
@@ -405,7 +353,6 @@ namespace MarCom.Repository
 
             }
             return result;
-
         }
         public static UserViewModel GetIdByName(string name)
         {
@@ -428,7 +375,6 @@ namespace MarCom.Repository
 
         public static List<PromotionItemViewModel> GetItemId(int id)
         {
-             
             List<PromotionItemViewModel> result = new List<PromotionItemViewModel>();
             using (var db = new MarComContext())
             {
@@ -442,17 +388,16 @@ namespace MarCom.Repository
                           where id == p.Id
                           select new PromotionItemViewModel
                           {
-                              Id =pi.Id,
+                              Id = pi.Id,
                               Title = pi.Title,
-                              ProductName=pr.Name,
-                              ProductDescription=pr.Description,
+                              ProductName = pr.Name,
+                              ProductDescription = pr.Description,
                               Qty = pi.Qty,
                               Todo = pi.Todo,
                               Request_Due_Date = pi.Request_Due_Date,
                               Start_Date = pi.Start_Date,
                               End_Date = pi.End_Date,
                               Note = pi.Note
-
                           }).ToList();
             }
             return result;
@@ -483,7 +428,7 @@ namespace MarCom.Repository
                           }
                           ).ToList();
             }
-            return result; 
+            return result;
 
         }
 
@@ -496,12 +441,12 @@ namespace MarCom.Repository
                 using (var db = new MarComContext())
                 {
                     T_Promotion pr = db.T_Promotion.Where(p => p.Id == entity.Id).FirstOrDefault();
-                    if (pr !=null)
+                    if (pr != null)
                     {
                         pr.Reject_Reason = entity.Reject_Reason;
                         pr.Status = entity.Status;
                         pr.Assign_To = entity.Assign_To;
-                        if (entity.Status==2)
+                        if (entity.Status == 2)
                         {
                             pr.Approved_By = entity.Approved_By;
                             pr.Approved_Date = DateTime.Now;

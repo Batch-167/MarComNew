@@ -7,7 +7,7 @@
     string date = DateTime.Now.ToString("dd-MM-yyyy");
 }
 
-@using (Html.BeginForm("Create2", "Promotion", FormMethod.Post, new { @id = "input-form" }))
+@using (Html.BeginForm("Create2", "Promotion", FormMethod.Post, new { @id = "input-form", enctype }))
 {
     @Html.AntiForgeryToken()
 
@@ -16,10 +16,10 @@
             <div class="col-md-6">
 
                 <div class="form-group">
-                    @Html.HiddenFor(model=> model.T_Design_Id)
+                    @Html.HiddenFor(model => model.T_Design_Id)
                     @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id="Code" } })
+                        @Html.EditorFor(model => code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "Code" } })
                         @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Request_By, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.RequestBy, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id="Request_By" } })
+                        @Html.EditorFor(model => model.RequestBy, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "Request_By" } })
                         @Html.ValidationMessageFor(model => model.Request_By, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Request_Date, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => date, new { htmlAttributes = new { @class = "form-control", @id="Date", @readonly="readonly" } })
+                        @Html.EditorFor(model => date, new { htmlAttributes = new { @class = "form-control", @id = "Date", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.Request_Date, "", new { @class = "text-danger" })
                     </div>
                 </div>

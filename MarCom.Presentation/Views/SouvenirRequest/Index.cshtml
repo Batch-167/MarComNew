@@ -172,7 +172,7 @@
                     $('#modal-input').modal('show');
                     GetListItem(id);
                     SouSettItemApproved(id);
-                    if (act=="Received") {
+                    if (act=="Received" && act=="Settled") {
                         RemoveAdditem();
                     }
                 },
@@ -213,6 +213,22 @@
             debugger
             $.ajax({
                 url: '@Url.Action("Received","SouvenirRequest")',
+                type: 'post',
+                success: function (result) {
+                    if (result.success) {
+                        $("#reason-input").modal("hide");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error")
+                    }
+                }
+            });
+        };
+
+        function Settled() {
+            $.ajax({
+                url: '@Url.Action("SouSettRequest", "SouvenirRequest")',
                 type: 'post',
                 success: function (result) {
                     if (result.success) {

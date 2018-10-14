@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace MarCom.ViewModel
 {
@@ -86,5 +87,10 @@ namespace MarCom.ViewModel
         public string Create_By { get; set; }
 
         public DateTime Create_Date { get; set; }
+
+        //untuk UPLOAD IMAGE
+        public string ImagePath { get; set; }
+        //public HttpPostedFileBase ImageFile { get; set; }
+
     }
 }

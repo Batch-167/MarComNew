@@ -79,7 +79,6 @@
             GetList();
         });
 
-
         //button Add
         $("#btn-new").click(function () {
             $(".modal-title").html("Add Data");
@@ -201,6 +200,37 @@
             });
         }
 
+        //untuk edit design request
+        function getEditDesignReq(id) {
+            debugger
+            $.ajax({
+                url: '@Url.Action("EditDesign", "Promotion")',
+                type: 'get',
+                data: { id: id },
+                success: function (result) {
+                    $("#Editdesign-req").html(result);
+                },
+                error: function (err) {
+                    $("#Editdesign-req").html(result);
+                },
+            });
+        }
+
+        function getEditDesignItemReq(id) {
+            debugger
+            $.ajax({
+                url: '@Url.Action("EditDesignItem", "Promotion")',
+                type: 'get',
+                data: { id: id },
+                success: function (result) {
+                    $("#Editdesignitem-req").html(result);
+                },
+                error: function (err) {
+                    $("#Editdesignitem-req").html(result);
+                },
+            });
+        }
+
         function action(act, id) {
             $.ajax({
                 url: '/Promotion/' + act,
@@ -210,6 +240,9 @@
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
                     $('#modal-input').modal('show');
+                    getEditDesignReq(id);
+                    getEditDesignItemReq(id);
+
                     getDesignView(id); //agar view design dapat tampil ketika menekan button approve
                     getDesignItemView(id); //agar view design item dapat tampil ketika menekan button approve
                     getPromotionFile(id); //agar view promotion file dapat tampil ketika menekan button approve
@@ -224,18 +257,18 @@
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
-            var vData = { T_Design_Id: $(this).find('#T_Design_Id').val(), Code: $(this).find('#Code').val(), T_Event_Id: $(this).find('#T_Event_Id').val(), Title: $(this).find('#Title').val(), Request_By: $(this).find('#Request_By').val(), Date: $(this).find('#Date').val(), Note: $(this).find('#Note').val() };
-            var vData = { Code: $(this).find('#Code').val(), T_Event_Id: $(this).find('#T_Event_Id').val(), Title: $(this).find('#Title').val(), RequestBy: $(this).find('#RequestBy').val(), Date: $(this).find('#Date').val(), Note: $(this).fing('#Note').val() };
+
+            var vData = {Id : $(this).find("#Id").val(), T_Design_Id: $(this).find('#T_Design_Id').val(), Code: $(this).find('#Code').val(), T_Event_Id: $(this).find('#T_Event_Id').val(), Title: $(this).find('#Title').val(), Request_By: $(this).find('#Request_By').val(), Date: $(this).find('#Date').val(), Note: $(this).find('#Note').val() };
 
             var vItems = [];
             $('#designitem-req').find('tr').each(function (index) {
-                var vItem = { M_Product_Id: $(this).find('#M_Product_Id').val(), Title: $(this).find('#Title').val(), Qty: $(this).find('#Qty').val(), Todo: $(this).find('#Todo').val(), Request_Due_Date: $(this).find('#Request_Due_Date').val(), Note: $(this).find('#Note').val() };
+                var vItem = { Id : $(this).find("#Id").val(), T_Design_Item_Id: $(this).find('T_Design_Item_Id').val(), M_Product_Id: $(this).find('#M_Product_Id').val(), Title: $(this).find('#Title').val(), Qty: $(this).find('#Qty').val(), Todo: $(this).find('#Todo').val(), Request_Due_Date: $(this).find('#Request_Due_Date').val(), Note: $(this).find('#Note').val() };
                 vItems.push(vItem);
-            //});
+            });
 
             var vFiles = [];
             $('#promotion-file').find('tr').each(function (index) {
-                var vFile = { Qty: $(this).find('#Qty').val(), Todo: $(this).find('#Todo').val(), Request_Due_Date: $(this).find('#Request_Due_Date').val(), Note: $(this).find('#Note').val() };
+                var vFile = { Id : $(this).find("#Id").val(), Qty: $(this).find('#Qty').val(), Todo: $(this).find('#Todo').val(), Request_Due_Date: $(this).find('#Request_Due_Date').val(), Note: $(this).find('#Note').val() };
                 vFiles.push(vFile);
             });
             debugger
