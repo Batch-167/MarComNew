@@ -26,19 +26,19 @@
                 </td>
             </tr>
             <tr>
-                <td class="col-md-3">
-                    @Html.DropDownListFor(model => model.M_Employee_Id, (IEnumerable<SelectListItem>)ViewBag.Employee, "-Select Employee-", new { @id = "Employee", @class = "form-control" })
+                <td class="col-md-2">
+                    @Html.DropDownListFor(model => model.M_Employee_Id, (IEnumerable<SelectListItem>)ViewBag.Employee, "-Employee-", new { @id = "Employee", @class = "form-control" })
                 </td>
                 <td class="col-md-2">
-                    @Html.DropDownListFor(model => model.M_Role_Id, (IEnumerable<SelectListItem>)ViewBag.Role, "-Select Role-", new { @id = "Role", @class = "form-control" })
+                    @Html.DropDownListFor(model => model.M_Role_Id, (IEnumerable<SelectListItem>)ViewBag.Role, "-Role-", new { @id = "Role", @class = "form-control" })
                 </td>
-                <td class="col-md-3">
-                    @Html.DropDownListFor(model => model.Company, (IEnumerable<SelectListItem>)ViewBag.Company, "-Select Company-", new { @id = "Company", @class = "form-control" })
+                <td class="col-md-2">
+                    @Html.DropDownListFor(model => model.Company, (IEnumerable<SelectListItem>)ViewBag.Company, "-Company-", new { @id = "Company", @class = "form-control" })
                 </td>
                 <td class="col-md-2">
                     <input id="Username" name="Username" type="text" class="form-control text-box single-line" placeholder="Username" />
                 </td>
-                <td class="col-md-3">
+                <td class="col-md-2">
                     <div class="input-group">
                         <input id="Date" class="form-control datepicker" type="date" value="Created" />
                         <div class="input-group-addon"><i class="fa fa-calendar"></i></div>

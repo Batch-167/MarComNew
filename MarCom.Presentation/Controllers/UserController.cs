@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace MarCom.Presentation.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class UserController : Controller
     {
         private ApplicationUserManager _userManager;

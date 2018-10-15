@@ -114,6 +114,8 @@ namespace MarCom.Repository
 
                                         tsouvItem.Update_By = entity.Update_By;
                                         tsouvItem.Update_Date = DateTime.Now;
+
+                                        db.T_Souvenir_Item.Add(tsouvItem);
                                     }
                                 }
                             }
@@ -193,6 +195,21 @@ namespace MarCom.Repository
                 }
             }
             return newRef;
+        }
+
+        public static void DeleteItem(int id)
+        {
+            using (var db = new MarComContext())
+            {
+                foreach (var item in db.T_Souvenir_Item)
+                {
+                    if (item.T_Souvenir_Id == id)
+                    {
+                        db.T_Souvenir_Item.Remove(item);
+                    }
+                }
+                db.SaveChanges();
+            }
         }
     }
 }
