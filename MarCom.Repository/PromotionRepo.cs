@@ -16,8 +16,6 @@ namespace MarCom.Repository
             using (var db = new MarComContext())
             {
                 result = (from pr in db.T_Promotion
-                          join ev in db.T_Event on pr.T_Event_Id equals ev.Id
-                          join de in db.T_Design on pr.T_Design_Id equals de.Id
                           join e in db.M_Employee on pr.Request_By equals e.Id
                           select new PromotionViewModel
                           {
@@ -27,25 +25,18 @@ namespace MarCom.Repository
                               RequestBy = e.First_Name + " " + e.Last_Name,
                               Request_Date = pr.Request_Date,
                               Assign_To = pr.Assign_To,
+                              //AssignName = e.First_Name+" "+e.Last_Name,
                               Flag_Design = pr.Flag_Design,
                               Status = pr.Status,
 
-                              Title = pr.Title,
-                              T_Event_Id = pr.T_Event_Id,
-                              EventCode = ev.Code,
-                              T_Design_Id = pr.T_Design_Id,
-                              DesignCode = de.Code,
-
                               Create_By = pr.Create_By,
-                              Create_Date = pr.Create_Date
+                              Create_Date = pr.Create_Date,
+                              Is_Delete = pr.Is_Delete
+
                           }).ToList();
             }
             return result;
         }
-
-
-
-
         //bikin list untuk view design request
         public static DesignRequestViewModel GetDesReq(int id)
         {
@@ -55,6 +46,7 @@ namespace MarCom.Repository
                 result = (from de in db.T_Design
                           join ev in db.T_Event on de.T_Event_Id equals ev.Id
                           join em in db.M_Employee on de.Request_By equals em.Id
+                          //where id == de.Id
                           where de.Id == id
                           select new DesignRequestViewModel
                           {
@@ -83,8 +75,9 @@ namespace MarCom.Repository
                           where dei.T_Design_Id == id
                           select new PromotionItemViewModel
                           {
-                              Id = dei.Id,
                               M_Product_Id = dei.M_Product_Id,
+                              Id = dei.Id,
+                              T_Design_Item_Id = dei.T_Design_Id,
                               ProductName = pr.Name,
                               ProductDescription = pr.Description,
                               Title = dei.Title_Item
@@ -93,7 +86,7 @@ namespace MarCom.Repository
             return result;
         }
 
-        public static ResultResponse Update(PromotionViewModel entity, List<PromotionItemViewModel> entityItem, List<PromotionItemFileViewModel> entityFile)
+        public static ResultResponse Update(PromotionViewModel entity, List<PromotionItemViewModel> entityItem)
         {
             ResultResponse result = new ResultResponse();
             try
@@ -106,6 +99,9 @@ namespace MarCom.Repository
                         promotion.Code = entity.Code;
                         promotion.T_Event_Id = entity.T_Event_Id;
                         promotion.T_Design_Id = entity.T_Design_Id;
+                        promotion.Is_Delete = entity.Is_Delete;
+                        promotion.Flag_Design = "1";
+                        promotion.Status = 1;
                         promotion.Title = entity.Title;
                         promotion.Note = entity.Note;
                         promotion.Create_By = entity.Create_By;
@@ -131,23 +127,65 @@ namespace MarCom.Repository
 
                             db.T_Promotion_Item.Add(promotionItem);
                         }
-
-                        foreach (var item in entityFile)
-                        {
-                            T_Promotion_Item_File promotionFile = new T_Promotion_Item_File();
-                            promotionFile.T_Promotion_id = entity.Id;
-                            promotionFile.Filename = item.Filename;
-                            promotionFile.Qty = item.Qty;
-                            promotionFile.Todo = item.Todo;
-                            promotionFile.Request_Due_Date = item.Request_Due_Date;
-                            promotionFile.Note = item.Note;
-
-                            promotionFile.Create_By = entity.Create_By;
-                            promotionFile.Create_Date = DateTime.Now;
-
-                            db.T_Promotion_Item_File.Add(promotionFile);
-                        }
                         db.SaveChanges();
+                    }
+                    else
+                    {
+                        T_Promotion promotion = db.T_Promotion.Where(pr => pr.Id == entity.Id).FirstOrDefault();
+                        if (promotion != null)
+                        {
+                            promotion.Code = entity.Code;
+                            promotion.T_Event_Id = entity.T_Event_Id;
+                            promotion.T_Design_Id = entity.T_Design_Id;
+                            promotion.Flag_Design = "1";
+                            promotion.Title = entity.Title;
+                            promotion.Note = entity.Note;
+                            promotion.Status = 1;
+
+                            promotion.Update_By = entity.Update_By;
+                            promotion.Update_Date = DateTime.Now;
+
+                            foreach (var item in entityItem)
+                            {
+                                if (item.Id == 0)
+                                {
+                                    T_Promotion_Item promotionItem = new T_Promotion_Item();
+                                    promotionItem.M_Product_Id = item.M_Product_Id;
+                                    promotionItem.Title = item.Title;
+                                    promotionItem.Qty = item.Qty;
+                                    promotionItem.Todo = item.Todo;
+                                    promotionItem.Request_Due_Date = item.Request_Due_Date;
+                                    promotionItem.Note = item.Note;
+                                    promotionItem.T_Promotion_Id = entity.Id;
+                                    promotionItem.Request_Pic = 8;
+
+                                    promotionItem.Create_By = entity.Create_By;
+                                    promotionItem.Create_Date = DateTime.Now;
+
+                                    db.T_Promotion_Item.Add(promotionItem);
+                                }
+                                else
+                                {
+                                    T_Promotion_Item promotionItem = db.T_Promotion_Item.Where(pi => pi.Id == item.Id).FirstOrDefault();
+
+                                    if (promotionItem != null)
+                                    {
+                                        promotionItem.M_Product_Id = item.M_Product_Id;
+                                        promotionItem.Title = item.Title;
+                                        promotionItem.Qty = item.Qty;
+                                        promotionItem.Todo = item.Todo;
+                                        promotionItem.Request_Due_Date = item.Request_Due_Date;
+                                        promotionItem.Note = item.Note;
+                                        promotionItem.T_Promotion_Id = entity.Id;
+                                        promotionItem.Request_Pic = 8;
+
+                                        promotionItem.Update_By = entity.Update_By;
+                                        promotionItem.Update_Date = DateTime.Now;
+                                    }
+                                }
+                            }
+                            db.SaveChanges();
+                        }
                     }
                 }
             }
@@ -159,12 +197,115 @@ namespace MarCom.Repository
             return result;
         }
 
-        public static string GetTransactionCode()
+        public static ResultResponse UpdateFile(List<PromotionItemFileViewModel> entity, int id)
+        {
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new MarComContext())
+                {
+                    foreach (var item in entity)
+                    {
+                        if (item.Id == 0)
+                        {
+                            T_Promotion_Item_File promotionFile = new T_Promotion_Item_File();
+                            promotionFile.T_Promotion_id = id;
+                            promotionFile.Filename = item.Filename;
+                            promotionFile.Qty = item.Qty;
+                            promotionFile.Todo = item.Todo;
+                            promotionFile.Request_Due_Date = item.Request_Due_Date;
+                            promotionFile.Note = item.Note;
+
+                            promotionFile.Create_By = "Princess";
+                            promotionFile.Create_Date = DateTime.Now;
+
+                            db.T_Promotion_Item_File.Add(promotionFile);
+                        }
+                        else
+                        {
+                            T_Promotion_Item_File promotionFile = new T_Promotion_Item_File();
+                            if (promotionFile != null)
+                            {
+                                promotionFile.T_Promotion_id = id;
+                                promotionFile.Filename = item.Filename;
+                                promotionFile.Qty = item.Qty;
+                                promotionFile.Todo = item.Todo;
+                                promotionFile.Request_Due_Date = item.Request_Due_Date;
+                                promotionFile.Note = item.Note;
+
+                                promotionFile.Update_By = "Princess";
+                                promotionFile.Update_Date = DateTime.Now;
+                            }
+                        }
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                result.Success = true;
+            }
+            return result;
+        }
+
+        //untuk update Create 3
+
+        public static ResultResponse UpdateCreate3(PromotionViewModel entity, List<PromotionItemFileViewModel> entityFile, int id)
+        {
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new MarComContext())
+                {
+                    if (entity.Id==0)
+                    {
+                        T_Promotion promotion = new T_Promotion();
+                        promotion.Code = entity.Code;
+                        promotion.T_Event_Id = entity.T_Event_Id;
+                        promotion.T_Design_Id = entity.T_Design_Id;
+                        promotion.Is_Delete = entity.Is_Delete;
+                        promotion.Flag_Design = "1";
+                        promotion.Status = 1;
+                        promotion.Title = entity.Title;
+                        promotion.Note = entity.Note;
+                        promotion.Create_By = entity.Create_By;
+                        promotion.Create_Date = DateTime.Now;
+                        promotion.Request_By = entity.Request_By;
+                        promotion.Request_Date = DateTime.Now;
+
+                        db.T_Promotion.Add(promotion);
+
+                        foreach (var item in entityFile)
+                        {
+                            T_Promotion_Item_File promotionFile = new T_Promotion_Item_File();
+                            promotionFile.T_Promotion_id = id;
+                            promotionFile.Filename = item.Filename;
+                            promotionFile.Qty = item.Qty;
+                            promotionFile.Todo = item.Todo;
+                            promotionFile.Request_Due_Date = item.Request_Due_Date;
+                            promotionFile.Note = item.Note;
+
+                            promotionFile.Create_By = item.Create_By;
+                            promotionFile.Create_Date = DateTime.Now;
+
+                            db.T_Promotion_Item_File.Add(promotionFile);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = true;
+            }
+            return result;
+        }
+
+    public static string GetTransactionCode()
         {
             string date = DateTime.Now.Day.ToString("D2");
             string month = DateTime.Now.Month.ToString("D2");
             string year = DateTime.Now.ToString("yy");
-            string newRef = "TRWOMP" + date + month + year + "0";
+            string newRef = "TRWOMP" + date + month + year + "-";
 
             using (var db = new MarComContext())
             {
@@ -175,8 +316,8 @@ namespace MarCom.Repository
                               .FirstOrDefault();
                 if (result != null)
                 {
-                    string[] oldRef = result.code.Split('0');
-                    newRef += (int.Parse(oldRef[1]) + 1).ToString("D2");
+                    string[] oldRef = result.code.Split('-');
+                    newRef += (int.Parse(oldRef[1]) + 1).ToString("D4");
                 }
                 else
                 {
@@ -264,7 +405,6 @@ namespace MarCom.Repository
 
             }
             return result;
-
         }
         public static UserViewModel GetIdByName(string name)
         {
@@ -287,7 +427,6 @@ namespace MarCom.Repository
 
         public static List<PromotionItemViewModel> GetItemId(int id)
         {
-             
             List<PromotionItemViewModel> result = new List<PromotionItemViewModel>();
             using (var db = new MarComContext())
             {
@@ -301,17 +440,16 @@ namespace MarCom.Repository
                           where id == p.Id
                           select new PromotionItemViewModel
                           {
-                              Id =pi.Id,
+                              Id = pi.Id,
                               Title = pi.Title,
-                              ProductName=pr.Name,
-                              ProductDescription=pr.Description,
+                              ProductName = pr.Name,
+                              ProductDescription = pr.Description,
                               Qty = pi.Qty,
                               Todo = pi.Todo,
                               Request_Due_Date = pi.Request_Due_Date,
                               Start_Date = pi.Start_Date,
                               End_Date = pi.End_Date,
                               Note = pi.Note
-
                           }).ToList();
             }
             return result;
@@ -342,7 +480,7 @@ namespace MarCom.Repository
                           }
                           ).ToList();
             }
-            return result; 
+            return result;
 
         }
 
@@ -355,12 +493,12 @@ namespace MarCom.Repository
                 using (var db = new MarComContext())
                 {
                     T_Promotion pr = db.T_Promotion.Where(p => p.Id == entity.Id).FirstOrDefault();
-                    if (pr !=null)
+                    if (pr != null)
                     {
                         pr.Reject_Reason = entity.Reject_Reason;
                         pr.Status = entity.Status;
                         pr.Assign_To = entity.Assign_To;
-                        if (entity.Status==2)
+                        if (entity.Status == 2)
                         {
                             pr.Approved_By = entity.Approved_By;
                             pr.Approved_Date = DateTime.Now;

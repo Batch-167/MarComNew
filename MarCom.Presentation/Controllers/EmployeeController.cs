@@ -42,6 +42,7 @@ namespace MarCom.Presentation.Controllers
         // GET : Create
         public ActionResult Create()
         {
+            UserViewModel model = EmployeeRepo.GetIdByName(User.Identity.Name);
             ViewBag.Company = new SelectList(CompanyRepo.Get(), "id","Name");
             return PartialView("_Create", new EmployeeViewModel());
         }
@@ -50,7 +51,7 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Create(EmployeeViewModel model)
         {
-            //model.Create_By = User.Identity.Name;
+            model.Create_By = User.Identity.Name;
             ResultResponse result = EmployeeRepo.Update(model);
             return Json(new
             {
@@ -63,6 +64,7 @@ namespace MarCom.Presentation.Controllers
         //GET : Edit
         public ActionResult Edit(int id)
         {
+            //UserViewModel model2 = EmployeeRepo.GetIdByName(User.Identity.Name);
             ViewBag.Company = new SelectList(CompanyRepo.Get(), "id", "Name");
             EmployeeViewModel model = EmployeeRepo.GetById(id);
             return PartialView("_Edit", model);
@@ -71,6 +73,7 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Edit(EmployeeViewModel model)
         {
+            model.Update_By = User.Identity.Name;
             ResultResponse result = EmployeeRepo.Update(model);
             return Json(new
             {

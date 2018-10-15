@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace MarCom.Presentation.Controllers
 {
-    public class SouvenirSettlementRequestController : Controller
+    public class AccessDeniedController : Controller
     {
-        // GET: SouvenirSettlementRequest
+        // GET: AccessDenied
         public ActionResult Index()
         {
             return View();

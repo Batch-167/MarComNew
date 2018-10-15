@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MarCom.ViewModel.DesignItemViewModel>
+
+@foreach (var item in Model)
+{
+    <tr>@Html.HiddenFor(model => item.Id, new { @Id = "Id" })
+        <td>
+            @Html.DropDownListFor(model => item.M_Product_Id, (IEnumerable<SelectListItem>)ViewBag.Product, "-Select Souvenir-", new { @class = "form-control", @disabled = "true", @Id ="M_Product_Id" })
+            @Html.ValidationMessageFor(model => item.M_Product_Id, "", new { @class = "text-danger" })
+        </td>
+
+        <td>
+            @Html.DropDownListFor(model => item.Description, (IEnumerable<SelectListItem>)ViewBag.Description, "-Select Description-", new { @class = "form-control", @disabled = "true" })
+            @Html.ValidationMessageFor(model => item.Description, "", new { @class = "text-danger" })
+        </td>
+
+        <td>
+            @Html.EditorFor(model => item.Title_Item, new { htmlAttributes = new { @class = "form-control", @disabled = "true", @Id = "Title_Item" } })
+            @Html.ValidationMessageFor(model => item.Title_Item, "", new { @class = "text-danger" })
+        </td>
+
+        <td>
+            @Html.EditorFor(model => item.Request_Pic, new { htmlAttributes = new { @class = "form-control", @disabled = "true", @Id = "Request_Pic" } })
+            @Html.ValidationMessageFor(model => item.Request_Pic, "", new { @class = "text-danger" })
+        </td>
+
+        <td>
+            @Html.EditorFor(model => item.Request_Due_Date, new { htmlAttributes = new { @class = "form-control datepicker", @type = "date", @disabled = "true", @Id = "Request_Due_Date" } })
+            @Html.ValidationMessageFor(model => item.Request_Due_Date, "", new { @class = "text-danger" })
+        </td>
+
+        <td>
+            @Html.EditorFor(model => item.Start_Date, new { htmlAttributes = new { @class = "form-control datepicker", @type = "date", @readonly = "readonly", @disabled = "true", @Id = "Start_Date" } })
+            @Html.ValidationMessageFor(model => item.Start_Date, "", new { @class = "text-danger" })
+        </td>
+
+        <td>
+            @Html.EditorFor(model => item.End_Date, new { htmlAttributes = new { @class = "form-control datepicker", @type = "date", @readonly = "readonly", @disabled = "true" , @Id = "End_Date"} })
+            @Html.ValidationMessageFor(model => item.End_Date, "", new { @class = "text-danger" })
+        </td>
+
+        <td>
+            @Html.EditorFor(model => item.Note, new { htmlAttributes = new { @class = "form-control", @disabled = "true", @Id = "Note" } })
+            @Html.ValidationMessageFor(model => item.Note, "", new { @class = "text-danger" })
+        </td>
+
+        <td>
+            <button type="button" class="btn btn-edit" title="Edit" onclick="Disable(this)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+            <button type="button" class="btn btn-delete" title="Delete" onclick="RemoveRow(this)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+        </td>
+    </tr>
+}
