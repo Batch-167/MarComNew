@@ -12,7 +12,6 @@ namespace MarCom.Repository
     {
         public static ResultResponse Approve(DesignApproveViewModel entity)
         {
-            int? stat = entity.Status;
             ResultResponse result = new ResultResponse();
             try
             {
@@ -23,12 +22,14 @@ namespace MarCom.Repository
                     {
                         design.Reject_Reason = entity.Reject_Reason;
                         design.Assign_To = entity.Assign_To;
-                        design.Status = stat;
+                        design.Status = entity.Status;
+                        result.Message = "Data Rejected !! Transaction Design Request with code " + entity.Code + " is rejected";
 
                         if (entity.Status == 2)
                         {
                             design.Approved_Date = DateTime.Now;
                             design.Approved_By = entity.Approved_By;
+                            result.Message = "Data Approved !! Transaction Design Request with code "+entity.Code+" has been updated.";
                         }
                         db.SaveChanges();
                     }

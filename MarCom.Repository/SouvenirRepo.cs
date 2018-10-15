@@ -20,7 +20,7 @@ namespace MarCom.Repository
             using (var db = new MarComContext())
             {
                 result = (from s in db.M_Souvenir
-                          join u in db.M_Unit on s.M_Unit_Id equals u.Id
+                          join u in db.M_Unit on s.M_Unit_Id equals u.Id 
                           select new SouvenirViewModel
                           {
                               Id = s.Id,
@@ -28,7 +28,7 @@ namespace MarCom.Repository
                               Name = s.Name,
                               Description = s.Description,
                               Quantity = s.Quantity,
-                              M_Unit_Id = s.Id,
+                              M_Unit_Id = s.M_Unit_Id,
                               Unit = u.Name,                              
                               Is_Delete = s.Is_Delete,
 
@@ -171,7 +171,7 @@ namespace MarCom.Repository
             {
                 result = (from s in db.M_Souvenir
                           join u in db.M_Unit on s.M_Unit_Id equals u.Id
-                          where s.Code.Contains(entity.Code) || s.Name.Contains(entity.Name) || s.M_Unit_Id == entity.M_Unit_Id || s.Create_By.Contains(entity.Create_By) || s.Create_Date == entity.Create_Date
+                          where s.Code.Contains(entity.Code) || s.Name.Contains(entity.Name) || s.M_Unit_Id.ToString() == entity.Unit || s.Create_By.Contains(entity.Create_By) || s.Create_Date == entity.Create_Date
                           select new SouvenirViewModel
                           {
                               Id = s.Id,

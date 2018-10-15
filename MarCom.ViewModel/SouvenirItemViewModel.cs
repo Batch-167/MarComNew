@@ -18,10 +18,12 @@ namespace MarCom.ViewModel
 
         public int T_Souvenir_Id { get; set; }
 
+        [Required]
         public int M_Souvenir_Id { get; set; }
 
         public string SouvenirName { get; set; }
 
+        [Required]
         public int? Qty { get; set; }
 
         public int? Qty_Settlement { get; set; }
