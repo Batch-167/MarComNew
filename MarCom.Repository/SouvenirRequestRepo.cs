@@ -60,15 +60,48 @@ namespace MarCom.Repository
         public static ResultResponse Update(SouvenirRequestViewModel entity, List<SouvenirItemViewModel> entityitem)
         {
             ResultResponse result = new ResultResponse();
-            try
+            using (var db = new MarComContext())
             {
-                using (var db = new MarComContext())
+                if (entity.Id == 0)
                 {
-                    if (entity.Id == 0)
+                    T_Souvenir t_Souv = new T_Souvenir();
+                    t_Souv.Code = entity.Code;
+                    t_Souv.Type = "Additional";
+                    t_Souv.T_Event_Id = entity.T_Event_Id;
+                    t_Souv.Request_By = entity.Request_By;
+                    t_Souv.Request_Date = entity.Request_Date;
+                    t_Souv.Request_Due_Date = entity.Request_Due_Date;
+                    t_Souv.Note = entity.Note;
+                    t_Souv.Status = 1;
+
+                    t_Souv.Create_By = entity.Create_By;
+                    t_Souv.Create_Date = DateTime.Now;
+
+                    db.T_Souvenir.Add(t_Souv);
+
+                    foreach (var item in entityitem)
                     {
-                        T_Souvenir t_Souv = new T_Souvenir();
+                        T_Souvenir_Item t_SouvItem = new T_Souvenir_Item();
+                        t_SouvItem.T_Souvenir_Id = entity.Id;
+                        t_SouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
+                        t_SouvItem.Qty = item.Qty;
+                        t_SouvItem.Note = item.Note;
+                        t_SouvItem.Is_Delete = item.Is_Delete;
+
+                        t_SouvItem.Create_By = entity.Create_By;
+                        t_SouvItem.Create_Date = DateTime.Now;
+
+                        db.T_Souvenir_Item.Add(t_SouvItem);
+                    }
+                    db.SaveChanges();
+                    result.Message = "Data Saved ! Transaction Souvenir Request has been add with code " + entity.Code;
+                }
+                else
+                {
+                    T_Souvenir t_Souv = db.T_Souvenir.Where(ts => ts.Id == entity.Id).FirstOrDefault();
+                    if (t_Souv != null)
+                    {
                         t_Souv.Code = entity.Code;
-                        t_Souv.Type = "Additional";
                         t_Souv.T_Event_Id = entity.T_Event_Id;
                         t_Souv.Request_By = entity.Request_By;
                         t_Souv.Request_Date = entity.Request_Date;
@@ -76,84 +109,49 @@ namespace MarCom.Repository
                         t_Souv.Note = entity.Note;
                         t_Souv.Status = 1;
 
-                        t_Souv.Create_By = entity.Create_By;
-                        t_Souv.Create_Date = DateTime.Now;
-
-                        db.T_Souvenir.Add(t_Souv);
+                        t_Souv.Update_By = entity.Update_By;
+                        t_Souv.Update_Date = DateTime.Now;
 
                         foreach (var item in entityitem)
                         {
-                            T_Souvenir_Item t_SouvItem = new T_Souvenir_Item();
-                            t_SouvItem.T_Souvenir_Id = entity.Id;
-                            t_SouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
-                            t_SouvItem.Qty = item.Qty;
-                            t_SouvItem.Note = item.Note;
-                            t_SouvItem.Is_Delete = item.Is_Delete;
-
-                            t_SouvItem.Create_By = entity.Create_By;
-                            t_SouvItem.Create_Date = DateTime.Now;
-
-                            db.T_Souvenir_Item.Add(t_SouvItem);
-                        }
-                        db.SaveChanges();
-                    }
-                    else
-                    {
-                        T_Souvenir t_Souv = db.T_Souvenir.Where(ts => ts.Id == entity.Id).FirstOrDefault();
-                        if (t_Souv != null)
-                        {
-                            t_Souv.Code = entity.Code;
-                            t_Souv.T_Event_Id = entity.T_Event_Id;
-                            t_Souv.Request_By = entity.Request_By;
-                            t_Souv.Request_Date = entity.Request_Date;
-                            t_Souv.Request_Due_Date = entity.Request_Due_Date;
-                            t_Souv.Note = entity.Note;
-                            t_Souv.Status = 1;
-
-                            t_Souv.Update_By = entity.Update_By;
-                            t_Souv.Update_Date = DateTime.Now;
-
-                            foreach (var item in entityitem)
+                            if (item.Id == 0)
                             {
-                                if (item.Id == 0)
+                                T_Souvenir_Item t_SouvItem = new T_Souvenir_Item();
+                                t_SouvItem.T_Souvenir_Id = entity.Id;
+                                t_SouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
+                                t_SouvItem.Qty = item.Qty;
+                                t_SouvItem.Note = item.Note;
+                                t_SouvItem.Is_Delete = item.Is_Delete;
+
+                                t_SouvItem.Create_By = entity.Update_By;
+                                t_SouvItem.Create_Date = DateTime.Now;
+
+                                db.T_Souvenir_Item.Add(t_SouvItem);
+                            }
+                            else
+                            {
+                                T_Souvenir_Item t_SouvItem = db.T_Souvenir_Item.Where(si => si.Id == item.Id).FirstOrDefault();
+                                if (t_SouvItem != null)
                                 {
-                                    T_Souvenir_Item t_SouvItem = new T_Souvenir_Item();
+
                                     t_SouvItem.T_Souvenir_Id = entity.Id;
                                     t_SouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
                                     t_SouvItem.Qty = item.Qty;
                                     t_SouvItem.Note = item.Note;
                                     t_SouvItem.Is_Delete = item.Is_Delete;
 
-                                    t_SouvItem.Create_By = entity.Update_By;
-                                    t_SouvItem.Create_Date = DateTime.Now;
+                                    t_SouvItem.Update_By = entity.Update_By;
+                                    t_SouvItem.Update_Date = DateTime.Now;
 
                                     db.T_Souvenir_Item.Add(t_SouvItem);
-                                }
-                                else
-                                {
-                                    T_Souvenir_Item t_SouvItem = db.T_Souvenir_Item.Where(si => si.Id == item.Id).FirstOrDefault();
-                                    if (t_SouvItem != null)
-                                    {
-                                        t_SouvItem.T_Souvenir_Id = entity.Id;
-                                        t_SouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
-                                        t_SouvItem.Qty = item.Qty;
-                                        t_SouvItem.Note = item.Note;
-                                        t_SouvItem.Is_Delete = item.Is_Delete;
 
-                                        t_SouvItem.Update_By = entity.Update_By;
-                                        t_SouvItem.Update_Date = DateTime.Now;
-                                    }
                                 }
                             }
-                            db.SaveChanges();
                         }
                     }
+                    db.SaveChanges();
+                    result.Message = "Data Update ! Transaction Souvenir Request with code " + entity.Code + " has been update";
                 }
-            }
-            catch (Exception ex)
-            {
-
-                throw;
             }
             return result;
         }
@@ -239,10 +237,37 @@ namespace MarCom.Repository
                     if (item.T_Souvenir_Id == id)
                     {
                         db.T_Souvenir_Item.Remove(item);
-                    }                
+                    }
                 }
                 db.SaveChanges();
             }
+        }
+
+        public static ResultResponse Received(SouvenirRequestViewModel entity)
+        {
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new MarComContext())
+                {
+                    T_Souvenir t_Souv = db.T_Souvenir.Where(ts => ts.Id == entity.Id).FirstOrDefault();
+                    if (t_Souv != null)
+                    {
+                        t_Souv.Status = 3;
+
+                        t_Souv.Received_By = entity.Received_By;
+                        t_Souv.Received_Date = DateTime.Now;
+                    }
+                    db.SaveChanges();
+                    result.Message = "Data Updated !! Transaction Souvenir Request with code" + entity.Code +"has been Received By Requester";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            return result;
         }
 
         //Ambil Id untuk Ubah status saat Approval
