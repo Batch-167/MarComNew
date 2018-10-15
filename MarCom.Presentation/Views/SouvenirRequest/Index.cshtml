@@ -239,5 +239,30 @@
                 }
             });
         }
+
+        var value;
+        function Approved(value) {
+            var data = {
+                status: value,
+                reject_reason: $('#reject-reason').val(),
+                id: $('#settlement-id').val(),
+            };
+            debugger
+            $.ajax({
+                url: '@Url.Action("SouSettItemApproved", "SouvenirRequest")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    if (result.success) {
+                        $("#reason-input").modal("hide");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error")
+                        GetList();
+                    }
+                }
+            });
+        };
     </script>
 }

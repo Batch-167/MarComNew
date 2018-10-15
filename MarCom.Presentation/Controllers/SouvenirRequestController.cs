@@ -98,5 +98,19 @@ namespace MarCom.Presentation.Controllers
         {
             return PartialView("_SouSettItemApproved", SouvenirRequestRepo.GetItem(id));
         }
+
+        [HttpPost]
+        public ActionResult SouSettItemApproved(SouvenirRequestViewModel model)
+        {
+            UserViewModel model1 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
+            model.Settlement_Approved_By = model1.M_Employee_Id;
+            ResultResponse result = SouvenirRequestRepo.Approved(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

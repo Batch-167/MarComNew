@@ -110,7 +110,7 @@ namespace MarCom.Repository
                         ev.Request_Date = entity.Request_Date;
                         ev.Note = entity.Note;
                         ev.Is_Delete = entity.Is_Delete;
-                        ev.Status = entity.Status;
+                        ev.Status = 1;
 
                         ev.Create_By = entity.Create_By;
                         ev.Create_Date = DateTime.Now;
