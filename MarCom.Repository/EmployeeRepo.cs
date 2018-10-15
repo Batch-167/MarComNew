@@ -31,7 +31,7 @@ namespace MarCom.Repository
                               CompanyName=c.Name,
                               Email = e.Email,
                               Is_Delete = e.Is_Delete,
-                              Create_By = "Princess",
+                              Create_By = e.Create_By,
                               Create_Date = DateTime.Now
                           })
                           .Where(e=>e.Is_Delete== yes? e.Is_Delete : true)
@@ -57,8 +57,7 @@ namespace MarCom.Repository
                         employee.M_Company_Id = entity.M_Company_Id;
                         employee.Email = entity.Email;
                         employee.Is_Delete = entity.Is_Delete;
-                        employee.Create_By = "Princess";
-                        //employee.Create_By = entity.Create_By;
+                        employee.Create_By = entity.Create_By;
                         employee.Create_Date = DateTime.Now;
 
                         db.M_Employee.Add(employee);
@@ -74,8 +73,7 @@ namespace MarCom.Repository
                             employee.M_Company_Id = entity.M_Company_Id;
                             employee.Email = entity.Email;
 
-                            employee.Update_By = "Princess";
-                            //employee.Update_By = entity.Create_By;
+                            employee.Update_By = entity.Update_By;
                             employee.Update_Date = DateTime.Now;
 
                             db.SaveChanges();
@@ -164,12 +162,16 @@ namespace MarCom.Repository
 
         public static List<EmployeeViewModel> Filter(EmployeeViewModel entity)
         {
+            string date = entity.Create_Date.ToString();
+            string[] olddate = date.Split(' ');
+            date = olddate[0];
+
             List<EmployeeViewModel> result = new List<EmployeeViewModel>();
             using (var db = new MarComContext())
             {
                 result = (from e in db.M_Employee
                           join c in db.M_Company on e.M_Company_Id equals c.Id
-                          where e.Employee_Number.Contains(entity.Employee_Number) || e.First_Name.Contains(entity.FullName) && e.Last_Name.Contains(entity.FullName) || e.M_Company_Id == entity.M_Company_Id || e.Create_By.Contains(entity.Create_By) || c.Create_Date==entity.Create_Date
+                          where e.Employee_Number.Contains(entity.Employee_Number) || e.First_Name.Contains(entity.FullName) && e.Last_Name.Contains(entity.FullName) || e.M_Company_Id == entity.M_Company_Id || e.Create_By.Contains(entity.Create_By) || c.Create_Date.ToString().Contains(entity.Create_Date.ToString())
 
                           select new EmployeeViewModel
                           {
@@ -179,16 +181,34 @@ namespace MarCom.Repository
                               Last_Name=e.Last_Name,
                               M_Company_Id = e.M_Company_Id,
                               CompanyName = c.Name,
-                              Email = e.Email,
-                              Is_Delete = e.Is_Delete,
-
-                              Create_By = "Princess",
-                              Create_Date = DateTime.Now
+                              Create_By = e.Create_By,
+                              Create_Date = e.Create_Date
 
                           }).ToList();
             }
             return result;
         }
 
+        public static UserViewModel GetIdByName(string name)
+        {
+            UserViewModel result = new UserViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from u in db.M_User
+                          join e in db.M_Employee
+                          on u.M_Employee_Id equals e.Id
+                          join r in db.M_Role on u.M_Role_Id equals r.Id
+                          where name == u.UserName
+                          select new UserViewModel
+                          {
+                              Id = u.Id,
+                              Password = u.PasswordHash,
+                              M_Employee_Id = u.M_Employee_Id,
+                              Fullname = e.First_Name + " " + e.Last_Name,
+                              Role = r.Name
+                          }).FirstOrDefault();
+            }
+            return result;
+        }
     }
 }

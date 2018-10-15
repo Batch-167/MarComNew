@@ -21,16 +21,6 @@ namespace MarCom.ViewModel
 
         public int T_Promotion_id { get; set; }
 
-        [StringLength(100)]
-        [DisplayName("File Name")]
-        public string Filename { get; set; }
-
-        [StringLength(11)]
-        public string Size { get; set; }
-
-        [StringLength(11)]
-        public string Extention { get; set; }
-
         [DisplayName("Start Date")]
         public DateTime? Start_Date { get; set; }
 
@@ -90,6 +80,18 @@ namespace MarCom.ViewModel
 
         //untuk UPLOAD IMAGE
         public string ImagePath { get; set; }
+
+        [DataType(DataType.Upload)]
+        [StringLength(100)]
+        [DisplayName("File Name")]
+        [Required(ErrorMessage ="Please choose file to upload.")]
+        public string Filename { get; set; }
+
+        [StringLength(11)]
+        public string Size { get; set; }
+
+        [StringLength(11)]
+        public string Extention { get; set; }
         //public HttpPostedFileBase ImageFile { get; set; }
 
     }

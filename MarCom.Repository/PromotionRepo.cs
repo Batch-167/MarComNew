@@ -248,7 +248,59 @@ namespace MarCom.Repository
             return result;
         }
 
-        public static string GetTransactionCode()
+        //untuk update Create 3
+
+        public static ResultResponse UpdateCreate3(PromotionViewModel entity, List<PromotionItemFileViewModel> entityFile, int id)
+        {
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new MarComContext())
+                {
+                    if (entity.Id==0)
+                    {
+                        T_Promotion promotion = new T_Promotion();
+                        promotion.Code = entity.Code;
+                        promotion.T_Event_Id = entity.T_Event_Id;
+                        promotion.T_Design_Id = entity.T_Design_Id;
+                        promotion.Is_Delete = entity.Is_Delete;
+                        promotion.Flag_Design = "1";
+                        promotion.Status = 1;
+                        promotion.Title = entity.Title;
+                        promotion.Note = entity.Note;
+                        promotion.Create_By = entity.Create_By;
+                        promotion.Create_Date = DateTime.Now;
+                        promotion.Request_By = entity.Request_By;
+                        promotion.Request_Date = DateTime.Now;
+
+                        db.T_Promotion.Add(promotion);
+
+                        foreach (var item in entityFile)
+                        {
+                            T_Promotion_Item_File promotionFile = new T_Promotion_Item_File();
+                            promotionFile.T_Promotion_id = id;
+                            promotionFile.Filename = item.Filename;
+                            promotionFile.Qty = item.Qty;
+                            promotionFile.Todo = item.Todo;
+                            promotionFile.Request_Due_Date = item.Request_Due_Date;
+                            promotionFile.Note = item.Note;
+
+                            promotionFile.Create_By = item.Create_By;
+                            promotionFile.Create_Date = DateTime.Now;
+
+                            db.T_Promotion_Item_File.Add(promotionFile);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = true;
+            }
+            return result;
+        }
+
+    public static string GetTransactionCode()
         {
             string date = DateTime.Now.Day.ToString("D2");
             string month = DateTime.Now.Month.ToString("D2");

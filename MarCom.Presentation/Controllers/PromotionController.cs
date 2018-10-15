@@ -3,7 +3,10 @@ using MarCom.Repository;
 using MarCom.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -24,12 +27,53 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_List", PromotionRepo.Get());
         }
 
-        public ActionResult AddItem()
+        public ActionResult AddItem(HttpPostedFileBase file)
         {
             //ViewBag.Promotion = new SelectList(PromotionRepo.Get(), "Id", "Name");
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (file != null)
+                    {
+                        string imagePath = Path.Combine(Server.MapPath("~/App_Data/Images"), Path.GetFileName(file.FileName));
+                        file.SaveAs(imagePath);
+                    }
+                    ViewBag.FileStatus = "File uploaded successfully.";
+                }
+                catch (Exception)
+                {
+                    ViewBag.FileStatus = "Error while uploading.";
+                }
+            }
+
             PromotionItemFileViewModel model = new PromotionItemFileViewModel();
             return PartialView("_AddItem", model);
         }
+
+        ////untuk Upload Coba2 Aja
+
+        //public ActionResult UploadFiles(HttpPostedFileBase file)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            if (file != null)
+        //            {
+        //                string imagePath = Path.Combine(Server.MapPath("~/App_Data/Images"), Path.GetFileName(file.FileName));
+        //                file.SaveAs(imagePath);
+        //            }
+        //            ViewBag.FileStatus = "File uploaded successfully.";
+        //        }
+        //        catch (Exception)
+        //        {
+        //            ViewBag.FileStatus = "Error while uploading.";
+        //        }
+        //    }
+        //    return View("_AddItem");
+        //}
 
         public ActionResult Create()
         {
@@ -65,6 +109,30 @@ namespace MarCom.Presentation.Controllers
 
             ResultResponse result = PromotionRepo.Update(model, itemModel);
             ResultResponse result2 = PromotionRepo.UpdateFile(fileModel, model.Id);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        //Get Create 3
+        public ActionResult Create3()
+        {
+            UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
+
+            PromotionViewModel model = new PromotionViewModel();
+            model.RequestBy = model2.Fullname;
+            //model.T_Event_Id = eventid;
+            return PartialView("_Create3", model);
+        }
+
+        //Post Create 3
+        [HttpPost]
+        public ActionResult Create3(PromotionViewModel model, List<PromotionItemFileViewModel> fileModel)
+        {
+            ResultResponse result = PromotionRepo.UpdateCreate3(model, fileModel, model.Id);
             return Json(new
             {
                 success = result.Success,

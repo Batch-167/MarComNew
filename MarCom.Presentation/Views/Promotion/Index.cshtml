@@ -92,6 +92,8 @@
             });
         });
 
+        
+
 
          function GetList() {
             $.ajax({
@@ -301,6 +303,20 @@
                     $(".modal").modal("show");
                     GetDesignReq(designID);
                     GetDesignReqItem(designID);
+                }
+            });
+        }
+
+        function create3() {
+            //var eventID = $('T_Event_Id').val();
+            $.ajax({
+                url: '@Url.Action("Create3","Promotion")',
+                type: 'get',
+                //data:{eventid: eventID},
+                success: function (result) {
+                    $(".modal-body").html(result);
+                    $(".modal").modal("show");
+                    AddItem();
                 }
             });
         }

@@ -7,7 +7,7 @@
     string date = DateTime.Now.ToString("dd-MM-yyyy");
 }
 
-@using (Html.BeginForm("Create2", "Promotion", FormMethod.Post, new { @id = "input-form", enctype }))
+@using (Html.BeginForm("Create2", "Promotion", FormMethod.Post, new { @id = "input-form", enctype="multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
