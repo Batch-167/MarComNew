@@ -18,7 +18,7 @@
                     </tr>
                     <tr>
                         <td class="col-lg-3">
-                            <input id="Employee_Number" name="Employee_Number" type="text" class="form-control text-box single-line" placeholder="Employee ID Number" />
+                            <input id="Employee_Number" name="Employee_Number" type="text" class="form-control text-box single-line" placeholder="Employee ID Number" onkeyup="myFunction()"/>
                         </td>
                         <td class="col-lg-3">
                             <input id="FullName" name="FullName" type="text" class="form-control text-box single-line" placeholder="Employee Name" />
@@ -114,12 +114,10 @@
         $("#btn-search").click(function Search() {
             var data = {
                 employee_number: $("Employee_Number").val(),
-                fullname: $("FullName").val(),
                 companyname: $("CompanyName").val(),
                 create_date: $("Create_Date").val(),
                 create_by: $("Created_By").val(),
             };
-
             $.ajax({
                 url: '@Url.Action("Filter","Employee")',
                 type: 'post',
@@ -128,11 +126,28 @@
                     $("#table-list").html(result);
                 },
                 error: function (err) {
-                    $("table - list").html(result);
+                    $("table-list").html(err);
                 }
             });
         });
 
+        //function myFunction() {
+        //    var input, filter, table, tr, td, i;
+        //    input = document.getElementById("Employee_Number");
+        //    filter = input.value.toUpperCase();
+        //    table = document.getElementById("myTable");
+        //    tr = table.getElementsByTagName("tr");
+        //    for (var i = 0; i < tr.length; i++) {
+        //        td = tr[i].getElementsByTagName("td")[0];
+        //        if (td) {
+        //            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        //                tr[i].style.display = "";
+        //            } else {
+        //                tr[i].style.display = "none";
+        //            }
+        //        }
+        //    }
+        //}
 
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');

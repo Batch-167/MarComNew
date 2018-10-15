@@ -5,80 +5,159 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h5><span style="font-family:Arial;color:goldenrod"><b>HEADER MARKETING PROMOTION</b></span></h5>
-        <hr />
+        <div class="row">
+            <h5><span style="font-family:Arial;color:goldenrod"><b>HEADER MARKETING PROMOTION</b></span></h5>
+            <hr />
             <input type="hidden" id="promotion-id" value="@Model.Id" />
-        <table cellspacing="10">
-
-            <tbody>
-                <tr class="row">
-                    <td class="col-lg-2">
-                        <span><b>Transaction</b></span>
-                    </td>
-
-                    <td class="col-lg-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Code, "Transaction", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
                         @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </td>
+                        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-                    <td class="col-lg-1"></td>
-                    <td>
-                        <span><b>Request By</b></span>
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.RequestBy, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </td>
-
-                    <td class="col-lg-1"></td>
-                    <td>
-                        <span><b>Status</b></span>
-                    </td>
-                    <td class="col-lg-4">
-                        @Html.EditorFor(model => model.StatusCondt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </td>
-                </tr>
-                <tr class="row">
-                    <td class="col-lg-1">
-                        <span>
-                            <b>Event Code</b>
-                        </span>
-                    </td>
-                    <td class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EventCode, "Event Code", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
                         @Html.EditorFor(model => model.EventCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </td>
-                    <td class="col-lg-1"></td>
-                    <td>
-                        <span><b>Request Date</b></span>
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.Request_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </td>
-                    <td class="col-lg-1"></td>
-                    <td>
-                        <span><b>Assign To</b></span>
-                    </td>
-                    <td class="col-lg-4">
-                        @Html.DropDownListFor(model => model.Assign_To, (IEnumerable<SelectListItem>)ViewBag.Employee, "Select Employee", new { @class = "form-control", @id = "assign-to" })
-                    </td>
-                </tr>
+                        @Html.ValidationMessageFor(model => model.EventCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-                <tr class="row">
-                    <td class="col-lg-1"><span><b>Title Header</b></span></td>
-                    <td class="col-lg-4">
-                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                    </td>
-                    <td class="col-lg-1"></td>
-                    <td><span><b>Note</b></span></td>
-                    <td>
-                        @Html.TextAreaFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Title, "Title Header", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.RequestBy, "Request By", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.RequestBy, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.RequestBy, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Request_Date, "Request Date", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.Request_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.RequestBy, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note, "Note", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StatusCondt, "Status", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.StatusCondt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.StatusCondt, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Assign_To, "Assign To", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(model => model.Assign_To, (IEnumerable<SelectListItem>)ViewBag.Employee, "Select Employee", new { @class = "form-control", @id = "assign-to" })
+                        @Html.ValidationMessageFor(model => model.Assign_To, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     
+
+
+
+
+        @*<table cellspacing="10">
+
+                <tbody>
+                    <tr class="row">
+                        <td class="col-lg-2">
+                            <span><b>Transaction</b></span>
+                        </td>
+
+                        <td class="col-lg-4">
+                            @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </td>
+
+                        <td class="col-lg-1"></td>
+                        <td>
+                            <span><b>Request By</b></span>
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.RequestBy, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </td>
+
+                        <td class="col-lg-1"></td>
+                        <td>
+                            <span><b>Status</b></span>
+                        </td>
+                        <td class="col-lg-4">
+                            @Html.EditorFor(model => model.StatusCondt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td class="col-lg-1">
+                            <span>
+                                <b>Event Code</b>
+                            </span>
+                        </td>
+                        <td class="col-lg-4">
+                            @Html.EditorFor(model => model.EventCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </td>
+                        <td class="col-lg-1"></td>
+                        <td>
+                            <span><b>Request Date</b></span>
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.Request_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </td>
+                        <td class="col-lg-1"></td>
+                        <td>
+                            <span><b>Assign To</b></span>
+                        </td>
+                        <td class="col-lg-4">
+                            @Html.DropDownListFor(model => model.Assign_To, (IEnumerable<SelectListItem>)ViewBag.Employee, "Select Employee", new { @class = "form-control", @id = "assign-to" })
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-lg-1"><span><b>Title Header</b></span></td>
+                        <td class="col-lg-4">
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td class="col-lg-1"></td>
+                        <td><span><b>Note</b></span></td>
+                        <td>
+                            @Html.TextAreaFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>*@
 
 
         <div class="panel-body">
             <div class="row">
-                <div class="col-lg-12" id="design-request">
+                <div class="col-lg-12" id="design-request"> 
                 </div>
             </div>
         </div>
@@ -100,12 +179,12 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
 
-                <input type="submit" value="Approve" class="btn btn-primary" onclick="Approve(2)"/>
+                <input type="button" value="Approve" class="btn btn-primary" onclick="Approve(2)" />
                 <input type="button" value="Reject" class="btn btn-danger" data-toggle="modal" data-target="#reason-input" />
                 <input type="button" value="Cancel" class="btn btn-warning" data-dismiss="modal" />
             </div>
         </div>
-    </div>
+
 
 }
 <div class="modal fade" tabindex="-1" role="dialog" id="reason-input">

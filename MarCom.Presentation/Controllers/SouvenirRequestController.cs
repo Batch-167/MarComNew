@@ -136,6 +136,12 @@ namespace MarCom.Presentation.Controllers
             }
         }
 
+        public ActionResult SouSettRequest(int id)
+        {
+            SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
+            return PartialView("_SouSettRequest", model);
+        }
+
         public ActionResult SouSettApproved(int id)
         {
             return PartialView("_SouSettApproved", SouvenirRequestRepo.GetById(id));
@@ -165,6 +171,20 @@ namespace MarCom.Presentation.Controllers
                     entity = model,
                     message = result.Message
                 }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult SouSettItemApproved(SouvenirRequestViewModel model)
+        {
+            UserViewModel model1 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
+            model.Settlement_Approved_By = model1.M_Employee_Id;
+            ResultResponse result = SouvenirRequestRepo.Approved(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

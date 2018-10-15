@@ -24,7 +24,7 @@
                         <td class="col-lg-2">
                             <input id="Code" name="CompCode" type="text" class="form-control" placeholder="Company Code" />
                         </td>
-                        <td class="col-lg-3">   
+                        <td class="col-lg-3">
                             <input id="Name" name="CompName" type="text" class="form-control text-box single-line" placeholder="Company Name" />
                         </td>
                         <td class="col-lg-3">
@@ -93,7 +93,7 @@
                 }
 
             });
-        }); 
+        });
 
         $("#btn-search").click(function Search() {
             var data = {
@@ -168,6 +168,17 @@
             });
             return false;
         });
+
+
+        function startdatepick() {
+            $("#startdate").datepicker({ dateFormat: 'yy-mm-dd' }).bind("change", function () {
+                var minValue = $(this).val();
+                minValue = $.datepicker.parseDate("yy-mm-dd", minValue);
+                minValue.setDate(minValue.getDate() + 1);
+                $("#startdate").datepicker("option", "minDate", minValue);
+
+            })
+        };
 
 
 
