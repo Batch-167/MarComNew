@@ -14,7 +14,14 @@ namespace MarCom.Presentation.Controllers
         // GET: SouvenirStock
         public ActionResult Index()
         {
+            ViewBag.Received = new SelectList(SouvenirStockRepo.Get(), "Id", "R_Name");
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Filter(SouvenirStockViewModel model)
+        {
+            return PartialView("_List", SouvenirStockRepo.Filter(model));
         }
 
         public ActionResult List()

@@ -1,4 +1,4 @@
-﻿@Styles.Render("~/AdminLTE/plugins/datatables/css")
+﻿@model MarCom.ViewModel.SouvenirStockViewModel
 
 @{
     ViewBag.Title = "Souvenir Stock";
@@ -30,7 +30,7 @@
                     <input id="Code" type="text" class="form-control" placeholder="Transaction Code" />
                 </td>
                 <td class="col-lg-3">
-                    <input id="Received" type="text" class="form-control text-box single-line" placeholder="Received By" />
+                    @Html.DropDownListFor(model => model.Received_By, (IEnumerable<SelectListItem>)ViewBag.Received, "Received By", new { @id ="Received", @class = "form-control" })
                 </td>
                 <td class="col-lg-2">
                     <div class="input-group">
@@ -45,10 +45,10 @@
                     </div>
                 </td>
                 <td class="col-lg-3">
-                    <input id="Created" type="text" class="form-control text-box single-line" placeholder="Create By" />
+                    <input id="Create" type="text" class="form-control text-box single-line" placeholder="Create By" />
                 </td>
                 <td>
-                    <button type="button" id="btn-new" class="btn btn-warning btn-sm">Search</button>
+                    <button type="button" id="btn-search" class="btn btn-warning btn-sm">Search</button>
                 </td>
             </tr>
         </table>
@@ -77,7 +77,6 @@
 </div><!-- /.modal -->
 
 @section Scripts{
-    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
     <script type="text/javascript">
         //(".table").DataTable();
         $(document).ready(function () {
@@ -96,6 +95,28 @@
                 }
             });
         }
+
+
+        $("#btn-search").click(function Search() {
+            var data = {
+                code: $("#Code").val(),
+                received_by: $("#Received").val(),
+                received_date: $("#RDate").val(),
+                create_date: $("#CDate").val(),
+                create_by: $("#Create").val()
+            };
+            $.ajax({
+                url: '@Url.Action("Filter", "SouvenirStock")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    $("#table-list").html(result);
+                },
+                error: function (err) {
+                    $("#table-list").html(err);
+                }
+            });
+        });
 
         function GetListItem(id) {
             $.ajax({
