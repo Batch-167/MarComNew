@@ -245,5 +245,38 @@ namespace MarCom.Repository
             }
         }
 
+        //Ambil Id untuk Ubah status saat Approval
+        public static ResultResponse Approved(SouvenirRequestViewModel entity)
+        {
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new MarComContext())
+                {
+                    T_Souvenir so = db.T_Souvenir.Where(s => s.Id == entity.Id).FirstOrDefault();
+                    if (so != null)
+                    {
+                        so.Reject_Reason = entity.Reject_Reason;
+                        so.Status = entity.Status;
+                       
+                        if (entity.Status == 2)
+                        {
+                            so.Settlement_Approved_By = entity.Settlement_Approved_By;
+                            so.Settlement_Approved_Date = DateTime.Now;
+                        }
+
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+
     }
 }

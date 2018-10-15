@@ -79,6 +79,7 @@
             GetList();
         });
 
+        //button Add
         $("#btn-new").click(function () {
             $(".modal-title").html("Add Data");
             $.ajax({
@@ -91,9 +92,12 @@
             });
         });
 
-        function GetList() {
+        
+
+
+         function GetList() {
             $.ajax({
-                url: '@Url.Action("List","Promotion")',
+                url: '@Url.Action("List", "Promotion")',
                 type: 'get',
                 success: function (result) {
                     $("#table-list").html(result);
@@ -198,6 +202,37 @@
             });
         }
 
+        //untuk edit design request
+        function getEditDesignReq(id) {
+            debugger
+            $.ajax({
+                url: '@Url.Action("EditDesign", "Promotion")',
+                type: 'get',
+                data: { id: id },
+                success: function (result) {
+                    $("#Editdesign-req").html(result);
+                },
+                error: function (err) {
+                    $("#Editdesign-req").html(result);
+                },
+            });
+        }
+
+        function getEditDesignItemReq(id) {
+            debugger
+            $.ajax({
+                url: '@Url.Action("EditDesignItem", "Promotion")',
+                type: 'get',
+                data: { id: id },
+                success: function (result) {
+                    $("#Editdesignitem-req").html(result);
+                },
+                error: function (err) {
+                    $("#Editdesignitem-req").html(result);
+                },
+            });
+        }
+
         function action(act, id) {
             $.ajax({
                 url: '/Promotion/' + act,
@@ -207,29 +242,42 @@
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
                     $('#modal-input').modal('show');
+                    getEditDesignReq(id);
+                    getEditDesignItemReq(id);
+
                     getDesignView(id); //agar view design dapat tampil ketika menekan button approve
                     getDesignItemView(id); //agar view design item dapat tampil ketika menekan button approve
                     getPromotionFile(id); //agar view promotion file dapat tampil ketika menekan button approve
                 },
                 error: function (err) {
-                    $("#table-list").tml(err);
+                    $("#table-list").html(err);
                 }
             });
         }
 
+        //button submit
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
-            var vData = { Code: $(this).find('#Code').val(), T_Event_Id: $(this).find('#T_Event_Id').val(), Title: $(this).find('#Title').val(), RequestBy: $(this).find('#RequestBy').val(), Date: $(this).find('#Date').val(), Note: $(this).fing('#Note').val() };
 
-            //var vItems = []
-            //$('#designitem-req').find('tr').each(function (index) {
-            //    var vItems = { M_Product_Id: $(this).find('#M_Product_Id').val(), Title: $(this).find('#Title').val(), }
-            //});
+            var vData = {Id : $(this).find("#Id").val(), T_Design_Id: $(this).find('#T_Design_Id').val(), Code: $(this).find('#Code').val(), T_Event_Id: $(this).find('#T_Event_Id').val(), Title: $(this).find('#Title').val(), Request_By: $(this).find('#Request_By').val(), Date: $(this).find('#Date').val(), Note: $(this).find('#Note').val() };
+
+            var vItems = [];
+            $('#designitem-req').find('tr').each(function (index) {
+                var vItem = { Id : $(this).find("#Id").val(), T_Design_Item_Id: $(this).find('T_Design_Item_Id').val(), M_Product_Id: $(this).find('#M_Product_Id').val(), Title: $(this).find('#Title').val(), Qty: $(this).find('#Qty').val(), Todo: $(this).find('#Todo').val(), Request_Due_Date: $(this).find('#Request_Due_Date').val(), Note: $(this).find('#Note').val() };
+                vItems.push(vItem);
+            });
+
+            var vFiles = [];
+            $('#promotion-file').find('tr').each(function (index) {
+                var vFile = { Id : $(this).find("#Id").val(), Qty: $(this).find('#Qty').val(), Todo: $(this).find('#Todo').val(), Request_Due_Date: $(this).find('#Request_Due_Date').val(), Note: $(this).find('#Note').val() };
+                vFiles.push(vFile);
+            });
+            debugger
             $.ajax({
                 url: vUrl,
                 type: vMethod,
-                data: vData,
+                data: { model: vData, itemModel: vItems, fileModel: vFiles },
                 success: function (result) {
                     if (result.success) {
                         alert("Succesful! Data has been saved.");
@@ -243,12 +291,13 @@
             return false;
         });
 
+
         function create2() {
             var designID = $('#T_Design_Id').val();
             $.ajax({
                 url: '@Url.Action("Create2","Promotion")',
                 type: 'get',
-                data: {id:designID},
+                data: { designid: designID },
                 success: function (result) {
                     $(".modal-body").html(result);
                     $(".modal").modal("show");
@@ -258,10 +307,24 @@
             });
         }
 
+        function create3() {
+            //var eventID = $('T_Event_Id').val();
+            $.ajax({
+                url: '@Url.Action("Create3","Promotion")',
+                type: 'get',
+                //data:{eventid: eventID},
+                success: function (result) {
+                    $(".modal-body").html(result);
+                    $(".modal").modal("show");
+                    AddItem();
+                }
+            });
+        }
+
         var value;
         function Approve(value) {
             var data = {
-                assign_to: $('#assignto').val(),
+                assign_to: $('#assign-to').val(),
                 status: value,
                 reject_reason: $('#reject-reason').val(),
                 id: $('#promotion-id').val(),

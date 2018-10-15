@@ -52,6 +52,7 @@
                     @Html.DisplayFor(modelItem => item.Assign_To)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Status)
                     @Html.DisplayFor(modelItem => item.StatusName)
                 </td>
                 <td>
@@ -84,6 +85,15 @@
                             <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
                         </button>
                     </div>
+                    <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="Close" onclick="action('View', @item.Id)">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" onclick="action('Edit', @item.Id)">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger btn-approve" data-id="@item.Id" title="Approve" onclick="action('Approve', @item.Id)">
+                        <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                    </button>
                 </td>
             </tr>
         }

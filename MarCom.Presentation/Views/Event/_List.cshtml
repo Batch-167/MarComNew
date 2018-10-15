@@ -14,18 +14,12 @@
                 @Html.DisplayNameFor(model => model.Request_By)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NameRequest)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-
-            <th>
                 @Html.DisplayNameFor(model => model.Request_Date)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Create_By)
             </th>
@@ -53,7 +47,7 @@
                     @Html.DisplayFor(modelItem => item.Request_Date)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Status)
+                    @Html.DisplayFor(modelItem => item.StatusName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Create_By)

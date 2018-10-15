@@ -172,7 +172,7 @@
                     $('#modal-input').modal('show');
                     GetListItem(id);
                     SouSettItemApproved(id);
-                    if (act=="Received") {
+                    if (act=="Received" && act=="Settled") {
                         RemoveAdditem();
                     }
                 },
@@ -226,6 +226,22 @@
             });
         };
 
+        function Settled() {
+            $.ajax({
+                url: '@Url.Action("SouSettRequest", "SouvenirRequest")',
+                type: 'post',
+                success: function (result) {
+                    if (result.success) {
+                        $("#reason-input").modal("hide");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error")
+                    }
+                }
+            });
+        };
+
         function SouSettItemApproved(id) {
             $.ajax({
                 url: '@Url.Action("SouSettItemApproved", "SouvenirRequest")',
@@ -239,5 +255,30 @@
                 }
             });
         }
+
+        var value;
+        function Approved(value) {
+            var data = {
+                status: value,
+                reject_reason: $('#reject-reason').val(),
+                id: $('#settlement-id').val(),
+            };
+            debugger
+            $.ajax({
+                url: '@Url.Action("SouSettItemApproved", "SouvenirRequest")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    if (result.success) {
+                        $("#reason-input").modal("hide");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error")
+                        GetList();
+                    }
+                }
+            });
+        };
     </script>
 }

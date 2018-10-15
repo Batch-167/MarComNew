@@ -60,5 +60,9 @@ namespace MarCom.ViewModel
 
         [DisplayName("Create Date")]
         public DateTime Create_Date { get; set; }
+
+        public string Update_By { get; set; }
+
+        public DateTime? Update_Date { get; set; }
     }
 }

@@ -3,7 +3,10 @@ using MarCom.Repository;
 using MarCom.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -24,12 +27,53 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_List", PromotionRepo.Get());
         }
 
-        public ActionResult AddItem()
+        public ActionResult AddItem(HttpPostedFileBase file)
         {
             //ViewBag.Promotion = new SelectList(PromotionRepo.Get(), "Id", "Name");
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (file != null)
+                    {
+                        string imagePath = Path.Combine(Server.MapPath("~/App_Data/Images"), Path.GetFileName(file.FileName));
+                        file.SaveAs(imagePath);
+                    }
+                    ViewBag.FileStatus = "File uploaded successfully.";
+                }
+                catch (Exception)
+                {
+                    ViewBag.FileStatus = "Error while uploading.";
+                }
+            }
+
             PromotionItemFileViewModel model = new PromotionItemFileViewModel();
             return PartialView("_AddItem", model);
         }
+
+        ////untuk Upload Coba2 Aja
+
+        //public ActionResult UploadFiles(HttpPostedFileBase file)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            if (file != null)
+        //            {
+        //                string imagePath = Path.Combine(Server.MapPath("~/App_Data/Images"), Path.GetFileName(file.FileName));
+        //                file.SaveAs(imagePath);
+        //            }
+        //            ViewBag.FileStatus = "File uploaded successfully.";
+        //        }
+        //        catch (Exception)
+        //        {
+        //            ViewBag.FileStatus = "Error while uploading.";
+        //        }
+        //    }
+        //    return View("_AddItem");
+        //}
 
         public ActionResult Create()
         {
@@ -39,21 +83,32 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_Create", model);
         }
 
-        public ActionResult Create2()
+        public ActionResult Create2(int designid)
         {
             ViewBag.EventCode = new SelectList(EventRepo.Get(), "id", "Code");
             ViewBag.DesignCode = new SelectList(DesignRequestRepo.Get(), "id", "Code");
+
             UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
+
             PromotionViewModel model = new PromotionViewModel();
             model.RequestBy = model2.Fullname;
+            model.T_Design_Id = designid;
             return PartialView("_Create2", model);
         }
 
         [HttpPost]
         public ActionResult Create2(PromotionViewModel model, List<PromotionItemViewModel> itemModel, List<PromotionItemFileViewModel> fileModel)
         {
+            UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
             model.Create_By = User.Identity.Name;
-            ResultResponse result = PromotionRepo.Update(model, itemModel, fileModel);
+            model.Request_By = model2.M_Employee_Id;
+
+
+            //untuk upload
+            //string fileName =Path.GetfileNameWithoutExtension(fileModel.imageFile.fileName)
+
+            ResultResponse result = PromotionRepo.Update(model, itemModel);
+            ResultResponse result2 = PromotionRepo.UpdateFile(fileModel, model.Id);
             return Json(new
             {
                 success = result.Success,
@@ -61,23 +116,39 @@ namespace MarCom.Presentation.Controllers
                 message = result.Message
             }, JsonRequestBehavior.AllowGet);
         }
+
+        //Get Create 3
         public ActionResult Create3()
         {
-            ViewBag.EventCode = new SelectList(EventRepo.Get(), "id", "Code");
             UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
+
             PromotionViewModel model = new PromotionViewModel();
             model.RequestBy = model2.Fullname;
+            //model.T_Event_Id = eventid;
             return PartialView("_Create3", model);
         }
 
-        //untuk view design request
+        //Post Create 3
+        [HttpPost]
+        public ActionResult Create3(PromotionViewModel model, List<PromotionItemFileViewModel> fileModel)
+        {
+            ResultResponse result = PromotionRepo.UpdateCreate3(model, fileModel, model.Id);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        //untuk view design request, menu ADD
         public ActionResult DesignReq(int id)
         {
             DesignRequestViewModel model = PromotionRepo.GetDesReq(id);
             return PartialView("_DesignReq", model);
         }
 
-        //untuk view design request item
+        //untuk view design request item, menu ADD
         public ActionResult DesignReqItem(int id)
         {
             List<PromotionItemViewModel> model = PromotionRepo.GetDesReqItem(id);
@@ -106,22 +177,63 @@ namespace MarCom.Presentation.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        //View Design 
+        //View Design, untuk Approval
         public ActionResult ViewDesign(int id)
         {
             return PartialView("_ViewDesign", PromotionRepo.GetId(id));
         }
 
-        //View Design Item
+        //View Design Item, untuk Approval
         public ActionResult ViewDesignItem(int id)
         {
             return PartialView("_ViewDesignItem", PromotionRepo.GetItemId(id));
         }
 
-        //View Promotion Item File
+        //View Promotion Item File, untuk Approval
         public ActionResult ViewPromotionItemFile(int id)
         {
             return PartialView("_ViewPromotionItemFile", PromotionRepo.GetIdFile(id));
+        }
+        //GET: View Edit
+        public ActionResult Edit(int id)
+        {
+            PromotionViewModel model = PromotionRepo.GetById(id);
+            return PartialView("_Edit", model);
+        }
+
+        //View Design, untuk Edit
+        public ActionResult EditDesign(int id)
+        {
+            return PartialView("_EditDesign", PromotionRepo.GetId(id));
+        }
+
+        //View Design Item, untuk Edit
+        public ActionResult EditDesignItem(int id)
+        {
+            List<PromotionItemViewModel> model = PromotionRepo.GetItemId(id);
+            return PartialView("_EditDesignItem", model);
+        }
+        //POST: Edit
+        [HttpPost]
+        public ActionResult Edit(PromotionViewModel model, List<PromotionItemViewModel> itemModel, List<PromotionItemFileViewModel> fileModel)
+        {
+            model.Update_By = User.Identity.Name;
+            ResultResponse result = PromotionRepo.Update(model, itemModel);
+            ResultResponse result2 = PromotionRepo.UpdateFile(fileModel, model.Id);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        //UPLOAD IMAGE
+        [HttpGet]
+        public ActionResult UploadImage()
+        {
+            return View();
         }
     }
 }

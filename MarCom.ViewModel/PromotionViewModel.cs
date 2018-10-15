@@ -15,7 +15,11 @@ namespace MarCom.ViewModel
             Is_Delete = false;
             Request_Date = DateTime.Now;
             Flag_Design = "0";
+           
+            Assign_To = 1;
         }
+
+       // public string AssignName { get; set; }
 
         public string FlagDesign
         {
@@ -58,11 +62,13 @@ namespace MarCom.ViewModel
                 }
                 else
                 {
-                    return "Rejected";
+                    return "Nothin Happen";
                 }
             }
         }
         public string RequestBy { get; set; }
+
+        [DisplayName("Design Code")]
         public string DesignCode { get; set; }
 
         [DisplayName("Event Code")]
