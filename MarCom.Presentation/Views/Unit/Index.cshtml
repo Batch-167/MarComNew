@@ -34,7 +34,7 @@
                 </td>
                 <td class="col-lg-3">
                     <div class="input-group">
-                        @Html.EditorFor(model => model.Create_Date, new { htmlAttributes = new { @class = "form-control datepicker1", placeholder="Creted Date" } })
+                        @Html.EditorFor(model => model.Create_Date, new { htmlAttributes = new { @class = "form-control datepicker1", placeholder="Created Date" } })
                         <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                     </div>
                 </td>
@@ -89,7 +89,7 @@
         }
 
         $(function () {
-            $(".datepicker1").datepicker({ format: 'yyyy-mm-dd' });
+            $(".datepicker1").datepicker({ format: "mm/dd/yy", autoclose: true });
         });
 
         $("#btn-search").click(function Search(){

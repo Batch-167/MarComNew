@@ -169,9 +169,8 @@
         $("#btn-search").click(function () {
             $("#tb-input .form-control").each(function (i) {
                 filterColumn($(this).attr('data'));
-            })
-
-        })
+            });
+        });
 
         $("#tb-input").find(".datepicker").datepicker({
             format: "mm/dd/yyyy",
@@ -304,7 +303,8 @@
                     };
                     SouSettItemApproved(id);
                     if (act == "Received" && act == "Settled") {
-                    GetApproveItem(id)
+                        GetApproveItem(id)
+                    }
                     if (act=="Received") {
                         RemoveAdditem();
                     }
