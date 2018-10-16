@@ -9,7 +9,7 @@
     <div class="panel-heading">
         <div class="row">
             <div>
-                <table class="table table-bordered table-striped" id="example1">
+                <table class="table table-striped" id="example1">
                     <thead id="tb-input">
                         <tr>
                             <td colspan="8"></td>
@@ -304,10 +304,11 @@
                     };
                     SouSettItemApproved(id);
                     if (act == "Received" && act == "Settled") {
-                    GetApproveItem(id)
-                    if (act=="Received") {
+                        GetApproveItem(id)
+                    };
+                    if (act == "Received") {
                         RemoveAdditem();
-                    }
+                    };
                 },
                 error: function (err) {
                     $("#table-list").html(err);
