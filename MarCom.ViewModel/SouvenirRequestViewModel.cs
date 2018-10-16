@@ -38,7 +38,7 @@ namespace MarCom.ViewModel
 
         [DisplayName("Due Date")]
         [Required]
-        [DataType(DataType.DateTime)]
+        //[DataType(DataType.DateTime)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? Request_Due_Date { get; set; }
 

@@ -522,10 +522,6 @@ namespace MarCom.DataModel
                 .IsUnicode(false);
 
             modelBuilder.Entity<T_Promotion_Item_File>()
-                .Property(e => e.ImagePath)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<T_Promotion_Item_File>()
                 .Property(e => e.Note)
                 .IsUnicode(false);
 

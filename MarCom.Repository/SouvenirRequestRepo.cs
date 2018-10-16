@@ -80,11 +80,12 @@ namespace MarCom.Repository
                         t_Souv.Create_Date = DateTime.Now;
 
                         db.T_Souvenir.Add(t_Souv);
+                        db.SaveChanges();
 
                         foreach (var item in entityitem)
                         {
                             T_Souvenir_Item t_SouvItem = new T_Souvenir_Item();
-                            t_SouvItem.T_Souvenir_Id = entity.Id;
+                            t_SouvItem.T_Souvenir_Id = t_Souv.Id;
                             t_SouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
                             t_SouvItem.Qty = item.Qty;
                             t_SouvItem.Note = item.Note;
@@ -94,8 +95,8 @@ namespace MarCom.Repository
                             t_SouvItem.Create_Date = DateTime.Now;
 
                             db.T_Souvenir_Item.Add(t_SouvItem);
+                            db.SaveChanges();
                         }
-                        db.SaveChanges();
                         result.Message = "Data Saved ! Transaction Souvenir Request has been add with code " + entity.Code;
                     }
                     else
@@ -125,23 +126,18 @@ namespace MarCom.Repository
 
                                 if (item.Id == 0)
                                 {
-
                                     t_SouvItem.Create_By = entity.Update_By;
                                     t_SouvItem.Create_Date = DateTime.Now;
-
                                 }
                                 else
                                 {
                                     t_SouvItem.Update_By = entity.Update_By;
                                     t_SouvItem.Update_Date = DateTime.Now;
-
-                                    db.T_Souvenir_Item.Add(t_SouvItem);
-
                                 }
                                 db.T_Souvenir_Item.Add(t_SouvItem);
                             }
+                            db.SaveChanges();
                         }
-                        db.SaveChanges();
                         result.Message = "Data Update ! Transaction Souvenir Request with code " + entity.Code + " has been update";
                     }
                 }
@@ -258,7 +254,7 @@ namespace MarCom.Repository
 
                         if (entity.Status == 2)
                         {
-                            souv.Approved_Date = DateTime.Now;
+                            souv.Approve_Date = DateTime.Now;
                             souv.Approved_By = entity.Approved_By;
                         }
                         db.SaveChanges();

@@ -13,7 +13,7 @@ using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class UserController : Controller
     {
         private ApplicationUserManager _userManager;
@@ -43,14 +43,14 @@ namespace MarCom.Presentation.Controllers
             UserViewModel result = UserRepo.GetIdByName(User.Identity.Name);
             ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
             ViewBag.Role = new SelectList(RoleRepo.Get(), "Id", "Name");
-            if (result.Role == "Admin")
-            {
+            //if (result.Role == "Admin")
+            //{
             return PartialView("_Add", new RegisterViewModel());
-            }
-            else
-            {
-                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
-            }
+            //}
+            //else
+            //{
+            //    return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            //}
         }
 
         //

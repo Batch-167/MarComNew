@@ -65,7 +65,9 @@ namespace MarCom.Repository
                         souvenir.Create_Date = DateTime.Now;
 
                         db.M_Souvenir.Add(souvenir);
+
                         db.SaveChanges();
+                        result.Message = "Data Saved ! New Souvenier has been add with code " + entity.Code;
                     }
                     else
                     {
@@ -82,6 +84,7 @@ namespace MarCom.Repository
                             souvenir.Update_Date = DateTime.Now;
 
                             db.SaveChanges();
+                            result.Message = "Data Update ! Data Souvenir has been updated";
                         }
                     }
                 }

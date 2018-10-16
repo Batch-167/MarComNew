@@ -126,7 +126,7 @@ namespace MarCom.Presentation.Controllers
         {
             if (SouvenirRepo.Delete(id))
             {
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true, }, JsonRequestBehavior.AllowGet);
             }
             else
             {

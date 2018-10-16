@@ -57,9 +57,9 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-blue">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
+                <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
@@ -146,7 +146,7 @@
         //    });
         //}
 
-        function Action(act, id) {
+        function Action(act, id, name, code) {
             $.ajax({
                 url: '/Souvenir/' + act,
                 type: 'get',
@@ -155,6 +155,11 @@
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
                     $('#modal-input').modal('show');
+                    if (act == "Delete") {
+                        $(".modal-title").html(act + " Souvenir");
+                    } else {
+                        $(".modal-title").html(act + " Souvenir - " + name + " ( " + code + " )");
+                    }
                 },
             })
         }
@@ -163,7 +168,6 @@
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
             var vData = $(this).serialize();
-            var info = $(this).attr('name');
             $.ajax({
                 name: name,
                 url: vUrl,
@@ -171,7 +175,7 @@
                 data: vData,
                 success: function (result) {
                     if (result) {
-                        alert(info);
+                        alert(result.message);
                         $('#modal-input').modal('hide');
                         GetList();
                     } else {
