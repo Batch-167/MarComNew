@@ -16,7 +16,20 @@ namespace MarCom.Presentation.Controllers
         // GET: DesignRequest
         public ActionResult Index()
         {
+            ViewBag.Assign = new SelectList(DesignRequestRepo.Get(), "Assign_To", "Assign_To");
             return View();
+        }
+
+        public ActionResult List()
+        {
+            return PartialView("_List", DesignRequestRepo.Get());
+        }
+
+        //FILTER
+        [HttpPost]
+        public ActionResult Filter(DesignRequestViewModel model)
+        {
+            return PartialView("_List", DesignRequestRepo.Filter(model));
         }
 
         public ActionResult Approve(int id)
@@ -41,11 +54,6 @@ namespace MarCom.Presentation.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-
-        public ActionResult List()
-        {
-            return PartialView("_List", DesignRequestRepo.Get());
-        }
 
         //GET : New Product
         public ActionResult Create()
@@ -108,7 +116,15 @@ namespace MarCom.Presentation.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        //CLOSE DESIGN REQUEST POST
+        public ActionResult Close(int id)
+        {
+            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
+            DesignApproveViewModel model = DesignApproveRepo.GetById(id);
+            return PartialView("_Close", model);
+        }
 
+        //Add Item EDIT
         public ActionResult EditList(int id)
         {
             ViewBag.Product = new SelectList(ProductRepo.Get(), "Id", "Name");
@@ -117,9 +133,20 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_EditList", DesignApproveRepo.Get(id));
         }
 
-        public ActionResult ProductList (int id)
+        //Add Item APPROVE
+        public ActionResult ProductList(int id)
         {
             return PartialView("_ProductList", DesignApproveRepo.Get(id));
         }
+
+        //Add Item CLOSE
+        public ActionResult CloseList(int id)
+        {
+            ViewBag.Product = new SelectList(ProductRepo.Get(), "Id", "Name");
+            ViewBag.Description = new SelectList(ProductRepo.Get(), "Id", "Description");
+            List<DesignItemViewModel> model = DesignRequestRepo.GetCloseItem(id);
+            return PartialView("_CloseList", DesignApproveRepo.Get(id));
+        }
+
     }
 }

@@ -10,6 +10,8 @@ namespace MarCom.Repository
 {
     public class DesignRequestRepo
     {
+
+        //LIST
         public static List<DesignRequestViewModel> Get()
         {
             List<DesignRequestViewModel> result = new List<DesignRequestViewModel>();
@@ -18,6 +20,8 @@ namespace MarCom.Repository
                 result = (from dr in db.T_Design
                           join e in db.T_Event on
                           dr.T_Event_Id equals e.Id
+                          join em in db.M_Employee on 
+                          dr.Request_By equals em.Id
                           select new DesignRequestViewModel
                           {
                               Id = dr.Id,
@@ -25,6 +29,7 @@ namespace MarCom.Repository
                               T_Event_Id = dr.T_Event_Id,
                               EventCode = e.Code,
                               Request_By = dr.Request_By,
+                              NameRequest = em.First_Name + " " + em.Last_Name,
                               Request_Date = dr.Request_Date,
                               Assign_To = dr.Assign_To,
                               Status = dr.Status,
@@ -33,12 +38,13 @@ namespace MarCom.Repository
 
                               Create_Date = dr.Create_Date,
                               Create_By = dr.Create_By
-                          })//.Where(p => p.Is_Delete == all ? p.Is_Delete : true)
-                            .ToList();
+                          }).ToList();
             }
             return result;
         }
 
+
+        //CREATE and EDIT
         public static ResultResponse Update(DesignRequestViewModel entity, List<DesignItemViewModel> entityitem)
         {
             ResultResponse result = new ResultResponse();
@@ -48,8 +54,9 @@ namespace MarCom.Repository
                 {
                     if (entity.Id == 0)
                     {
+                        string newCode = GetNewCode();
                         T_Design design = new T_Design();
-                        design.Code = entity.Code;
+                        design.Code = newCode;
                         design.Title_Header = entity.Title_Header;
                         design.T_Event_Id = entity.T_Event_Id;
                         design.Request_By = entity.Request_By;
@@ -69,6 +76,7 @@ namespace MarCom.Repository
                             designItem.M_Product_Id = item.M_Product_Id;
                             designItem.Title_Item = item.Title_Item;
                             designItem.Request_Pic = 1;
+                            designItem.Request_Due_Date = item.Request_Due_Date;
                             designItem.Note = item.Note;
                             designItem.Is_Delete = item.Is_Delete;
 
@@ -105,6 +113,7 @@ namespace MarCom.Repository
                                     designItem.M_Product_Id = item.M_Product_Id;
                                     designItem.Title_Item = item.Title_Item;
                                     designItem.Request_Pic = 1;
+                                    designItem.Request_Due_Date = item.Request_Due_Date;
                                     designItem.Note = item.Note;
                                     designItem.Is_Delete = item.Is_Delete;
 
@@ -122,6 +131,7 @@ namespace MarCom.Repository
                                         designItem.M_Product_Id = item.M_Product_Id;
                                         designItem.Title_Item = item.Title_Item;
                                         designItem.Request_Pic = 1;
+                                        designItem.Request_Due_Date = item.Request_Due_Date;
                                         designItem.Note = item.Note;
                                         designItem.Is_Delete = item.Is_Delete;
 
@@ -144,6 +154,8 @@ namespace MarCom.Repository
             }
             return result;
         }
+
+        //CODE
         public static string GetNewCode()
         {
             string yearMonth = DateTime.Now.ToString("dd") +
@@ -170,6 +182,7 @@ namespace MarCom.Repository
             return newRef;
         }
 
+        //REQUEST_BY
         public static UserViewModel GetIdByName(string name)
         {
             UserViewModel result = new UserViewModel();
@@ -190,6 +203,7 @@ namespace MarCom.Repository
             return result;
         }
 
+        
         public static DesignRequestViewModel GetById(int id)
         {
             DesignRequestViewModel result = new DesignRequestViewModel();
@@ -247,6 +261,34 @@ namespace MarCom.Repository
             return result;
         }
 
+        public static List<DesignItemViewModel> GetCloseItem(int id)
+        {
+            List<DesignItemViewModel> result = new List<DesignItemViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from di in db.T_Design_Item
+                          join td in db.T_Design on di.T_Design_Id equals td.Id
+                          join p in db.M_Product on di.M_Product_Id equals p.Id
+                          join df in db.T_Design_Item_File on di.Id equals df.T_Design_Item_Id
+                          where di.T_Design_Id == id
+                          select new DesignItemViewModel
+                          {
+                              Id = di.Id,
+                              T_Design_Id = di.T_Design_Id,
+                              M_Product_Id = di.M_Product_Id,
+                              ProductName = p.Name,
+                              Description = p.Description,
+                              Title_Item = di.Title_Item,
+                              Request_Pic = di.Request_Pic,
+                              Request_Due_Date = di.Request_Due_Date,
+                              Start_Date = di.Start_Date,
+                              End_Date = di.End_Date,
+                              Note = di.Note
+                          }).ToList();
+            }
+            return result;
+        }
+
         public static void DeleteItem(int id)
         {
             using (var db = new MarComContext())
@@ -260,6 +302,28 @@ namespace MarCom.Repository
                 }
                 db.SaveChanges();
             }
+        }
+
+        public static List<DesignRequestViewModel> Filter(DesignRequestViewModel entity)
+        {
+            List<DesignRequestViewModel> result = new List<DesignRequestViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from d in db.T_Design
+                          where d.Code.Contains(entity.Code) || d.Request_By == entity.Request_By || d.Request_Date == entity.Request_Date || d.Assign_To == entity.Assign_To || d.Status == entity.Status || d.Create_Date == entity.Create_Date || d.Create_By.Contains(entity.Create_By)
+                          select new DesignRequestViewModel
+                          {
+                              Code = d.Code,
+                              Request_By = d.Request_By,
+                              Request_Date = d.Request_Date,
+                              Assign_To = d.Assign_To,
+                              Status = d.Status,
+                              Create_Date = d.Create_Date,
+                              Create_By = d.Create_By
+                          }).ToList();
+                          
+            }
+            return result;
         }
     }
 }

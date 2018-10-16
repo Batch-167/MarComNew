@@ -43,7 +43,7 @@
                     @Html.DisplayFor(modelItem => item.Code)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Request_By)
+                    @Html.DisplayFor(modelItem => item.NameRequest)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Request_Date)
@@ -74,8 +74,8 @@
                                 approveStyle = "disabled";
                             }
                         }
-                        <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="View" onclick="action('View', @item.Id)">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        <button type="button" class="btn btn-default btn-close" data-id="@item.Id" title="Close" onclick="action('Close', @item.Id)">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
                         <button type="button" class="btn btn-warning btn-edit" @editStyle data-id="@item.Id" title="Edit" id="design-edit" onclick="action('Edit', @item.Id)">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -84,15 +84,6 @@
                             <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
                         </button>
                     </div>
-                    <button type="button" class="btn btn-default btn-view" data-id="@item.Id" title="Close" onclick="action('View', @item.Id)">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" onclick="action('Edit', @item.Id)">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-approve" data-id="@item.Id" title="Approve" onclick="action('Approve', @item.Id)">
-                        <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-                    </button>
                 </td>
             </tr>
         }

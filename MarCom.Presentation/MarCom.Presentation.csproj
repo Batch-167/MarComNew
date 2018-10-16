@@ -1222,6 +1222,10 @@
     <Content Include="Views\SouvenirRequest\_SouSettItemApproved.cshtml" />
     <Content Include="Views\DesignRequest\_ProductList.cshtml" />
     <Content Include="Views\DesignRequest\_EditList.cshtml" />
+    <Content Include="Views\DesignRequest\_Close.cshtml" />
+    <Content Include="Views\DesignRequest\_CloseList.cshtml" />
+    <Content Include="Views\SouvenirRequest\_Approve.cshtml" />
+    <Content Include="Views\SouvenirRequest\_ApproveList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdminLTE\dist\PromotionFile\" />
