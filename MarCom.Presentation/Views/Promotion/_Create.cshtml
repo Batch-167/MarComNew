@@ -3,36 +3,41 @@
 <div class="form-horizontal">
 
     <div class="form-group">
-        @Html.LabelFor(model => model.EventCode, htmlAttributes: new { @class = "control-label col-md-4" })
-        <div class="col-md-8">
-            @Html.DropDownListFor(model => model.T_Event_Id, (IEnumerable<SelectListItem>)ViewBag.EventCode, "Select Event Code", new { @class = "form-control" })
+        @Html.LabelFor(model => model.EventCode, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.EventCode, (IEnumerable<SelectListItem>)ViewBag.EventCode, "Select Event Code", new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.T_Event_Id, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        <span class="col-md-4">Select From Design</span>
+        <span class="col-md-3">Select From Design</span>
 
-        <div class="col-md-8">
+        <div class="col-md-9">
             <label for="yesCheck">Yes</label> <input type="radio" onclick="yesnoCheck();" name="yesno" id="yesCheck" />
             <label for="noCheck">No</label> <input type="radio" onclick="yesnoCheck();" name="yesno" id="noCheck`" />
-
-            <div id="ifYes" style="visibility:hidden">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.DesignCode, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.DropDownListFor(model => model.T_Design_Id, (IEnumerable<SelectListItem>)ViewBag.DesignCode, "Select Design Code", new { @class = "form-control" })
-                    </div>
-                </div>
+        </div>
+        <div id="ifYes" style="visibility:hidden" class="form-group">
+            @Html.LabelFor(model => model.DesignCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model=> model.T_Design_Id)
+                @Html.DropDownListFor(model => model.T_Design_Id, (IEnumerable<SelectListItem>)ViewBag.DesignCode, "Select Design Code", new { @class = "form-control" })
             </div>
         </div>
+
+
     </div>
 
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="button" value="Cancel" class="btn btn-warning" data-dismiss="modal" />
-            <input type="button" value="Next" class="btn btn-primary" id="btn-next" onclick="create2()" />
+            <div id="ifYes1" style="visibility:hidden">
+                <input type="button" value="Next" class="btn btn-primary" id="btn-next" onclick="create2()" />
+            </div>
+            <div id="ifNo1" style="visibility:visible">
+                <input type="button" value="Next" class="btn btn-primary" id="btn-next2" onclick="create3()" />
+            </div>
         </div>
     </div>
 </div>
@@ -43,7 +48,13 @@
     function yesnoCheck() {
         if (document.getElementById('yesCheck').checked) {
             document.getElementById('ifYes').style.visibility = 'visible';
+            document.getElementById('ifYes1').style.visibility = 'visible';
+            document.getElementById('ifNo1').style.visibility = 'hidden';
         }
-        else document.getElementById('ifYes').style.visibility = 'hidden';
+        else {
+            document.getElementById('ifYes').style.visibility = 'hidden';
+            document.getElementById('ifNo1').style.visibility = 'visible';
+            document.getElementById('ifYes1').style.visibility = 'hidden';
+        }
     }
 </script>

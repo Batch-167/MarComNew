@@ -17,15 +17,14 @@ namespace MarCom.ViewModel
         public int Id { get; set; }
 
         [DisplayName("Transaction Code")]
-        [Required]
         [StringLength(50)]
         public string Code { get; set; }
 
-        [Required]
         [StringLength(11)]
         public string Type { get; set; }
 
         [DisplayName("Event")]
+        [Required]
         public int? T_Event_Id { get; set; }
 
         public string CodeEvent { get; set; }
@@ -37,6 +36,7 @@ namespace MarCom.ViewModel
         public DateTime? Request_Date { get; set; }
 
         [DisplayName("Due Date")]
+        [Required]
         public DateTime? Request_Due_Date { get; set; }
 
         public int? Approved_By { get; set; }
@@ -66,7 +66,6 @@ namespace MarCom.ViewModel
         public bool? Is_Delete { get; set; }
 
         [DisplayName("Create By")]
-        [Required]
         [StringLength(50)]
         public string Create_By { get; set; }
 

@@ -14,10 +14,19 @@ namespace MarCom.Presentation.Controllers
 {
     public class SouvenirRequestController : Controller
     {
+
         // GET: SouvenirRequest
         public ActionResult Index()
         {
-            return View();
+            UserViewModel currentuser = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
+            if (currentuser.Role == "Staff" || currentuser.Role == "Admin")
+            {
+                return View();
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         public ActionResult List()
@@ -34,7 +43,7 @@ namespace MarCom.Presentation.Controllers
             model.Name = result.Fullname;
             model.Code = SouvenirRequestRepo.GetNewCode();
             model.Request_Date = DateTime.Now;
-            if (result.Role == "Staff")
+            if (result.Role == "Staff" || result.Role == "Admin")
             {
                 return PartialView("_Add", model);
             }
@@ -47,6 +56,8 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Add(SouvenirRequestViewModel model, List<SouvenirItemViewModel> item)
         {
+            if (ModelState.IsValid)
+            {
             model.Create_By = User.Identity.Name;
             ResultResponse result = SouvenirRequestRepo.Update(model, item);
             return Json(new
@@ -55,6 +66,10 @@ namespace MarCom.Presentation.Controllers
                 entity = model,
                 message = result.Message
             }, JsonRequestBehavior.AllowGet);
+            } else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "SouvenirRequest", action = "Index" }));
+            }
         }
 
         public ActionResult AddItem()
@@ -68,7 +83,7 @@ namespace MarCom.Presentation.Controllers
         {
             UserViewModel result = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
-            if (result.Role == "Staff")
+            if (result.Role == "Staff" || result.Role == "Admin")
             {
                 return PartialView("_Edit", model);
             }
@@ -76,20 +91,28 @@ namespace MarCom.Presentation.Controllers
             {
                 return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
             }
+
         }
 
         [HttpPost]
         public ActionResult Edit(SouvenirRequestViewModel model, List<SouvenirItemViewModel> item)
         {
-            model.Update_By = User.Identity.Name;
-            SouvenirRequestRepo.DeleteItem(model.Id);
-            ResultResponse result = SouvenirRequestRepo.Update(model, item);
-            return Json(new
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
+                model.Update_By = User.Identity.Name;
+                SouvenirRequestRepo.DeleteItem(model.Id);
+                ResultResponse result = SouvenirRequestRepo.Update(model, item);
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "SouvenirRequest", action = "Index" }));
+            }
         }
 
         public ActionResult ListItem(int id)
@@ -103,7 +126,7 @@ namespace MarCom.Presentation.Controllers
         {
             UserViewModel result = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
-            if (result.Role == "Staff")
+            if (result.Role == "Staff" || result.Role == "Admin")
             {
                 return PartialView("_Received", model);
             }
@@ -111,6 +134,12 @@ namespace MarCom.Presentation.Controllers
             {
                 return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
             }
+        }
+
+        public ActionResult SouSettRequest(int id)
+        {
+            SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
+            return PartialView("_SouSettRequest", model);
         }
 
         public ActionResult SouSettApproved(int id)
@@ -147,6 +176,41 @@ namespace MarCom.Presentation.Controllers
             UserViewModel model2 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             model.Approved_By = model2.M_Employee_Id;
             ResultResponse result = SouvenirRequestRepo.Approve(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DetailItem(int id)
+        {
+            ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
+            List<SouvenirItemViewModel> model = SouvenirRequestRepo.GetItem(id);
+            return PartialView("_DetailItem", model);
+        }
+
+        [HttpPost]
+        public ActionResult Received(SouvenirRequestViewModel model)
+        {
+                UserViewModel model2 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
+                model.Received_By = model2.M_Employee_Id;
+                ResultResponse result = SouvenirRequestRepo.Received(model);
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult SouSettItemApproved(SouvenirRequestViewModel model)
+        {
+            UserViewModel model1 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
+            model.Settlement_Approved_By = model1.M_Employee_Id;
+            ResultResponse result = SouvenirRequestRepo.Approved(model);
             return Json(new
             {
                 success = result.Success,

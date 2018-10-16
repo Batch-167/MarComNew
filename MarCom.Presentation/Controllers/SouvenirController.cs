@@ -68,7 +68,7 @@ namespace MarCom.Presentation.Controllers
             UserViewModel model2 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             ViewBag.Unit = new SelectList(UnitRepo.Get(), "Id", "Name");
             SouvenirViewModel model = SouvenirRepo.GetById(id);
-            if (model2.Role == "Staff")
+            if (model2.Role == "Staff" || model2.Role == "Admin")
             {
                 return PartialView("_Edit", model);
             }

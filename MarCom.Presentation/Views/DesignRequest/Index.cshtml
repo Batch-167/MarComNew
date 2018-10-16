@@ -185,6 +185,7 @@
             });
         }
 
+        function action(act, id, code) {
         function GetCloseList(id) {
             $.ajax({
                 url: '@Url.Action("CloseList", "DesignRequest")',
@@ -207,7 +208,7 @@
                 dataType: 'html',
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
-                    $("title-panel").html(act + "Design Request");
+                    $("#title-panel").html(act+" Design Request - "+code);
                     $('#modal-input').modal('show');
                     if (act == "Edit") {
                         GetEditList(id);
@@ -253,11 +254,11 @@
 
         //var value;
         function Approve(value) {
-            console.log('Approve');
             var data = {
                 assign_to: $('#assignto').val(),
                 status: value,
                 reject_reason: $('#reject-reason').val(),
+                Code : $('#Code').val(),
                 id: $('#request-id').val(),
             };
             //debugger;
@@ -267,6 +268,7 @@
                 data: data,
                 success: function (result) {
                     if (result.success) {
+                        alert(result.message)
                         $("#reason-input").modal("hide");
                         $("#modal-input").modal("hide");
                         GetList();

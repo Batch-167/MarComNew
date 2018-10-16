@@ -24,13 +24,13 @@
                             <input name="Request_By" type="text" class="form-control text-box single-line" placeholder="Request By" />
                         </td>
                         <td class="col-md-offset-2">
-                            <div class="input-group class="col-md-offset-2"">
+                            <div class="input-group class=" col-md-offset-2"">
                                 <input class="form-control datepicker" placeholder="Request Date" type="date" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
                         </td>
                         <td class="col-md-offset-2">
-                            <div class="input-group class="col-md-offset-2"">
+                            <div class="input-group class=" col-md-offset-2"">
                                 <input class="form-control datepicker" placeholder="Due Date" type="date" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
@@ -42,7 +42,7 @@
                             <input name="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
                         </td>
                         <td class="col-md-offset-2">
-                            <div class="input-group class="col-md-offset-2"">
+                            <div class="input-group class=" col-md-offset-2"">
                                 <input class="form-control datepicker" placeholder="Created" type="date" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
@@ -112,7 +112,21 @@
             $.ajax({
                 url: '@Url.Action("ListItem", "SouvenirRequest")',
                 type: 'get',
-                data: {id : id},
+                data: { id: id },
+                success: function (result) {
+                    $('#item-body').append(result);
+                },
+                error: function (err) {
+                    $('#item-body').html(err);
+                }
+            });
+        }
+
+        function GetDetailItem(id) {
+            $.ajax({
+                url: '@Url.Action("DetailItem", "SouvenirRequest")',
+                type: 'get',
+                data: { id: id },
                 success: function (result) {
                     $('#item-body').append(result);
                 },
@@ -167,26 +181,34 @@
 
         function Disable(obj) {
             var tr = $(obj).closest('tr');
-            $(tr).find('Select[disabled]').prop('disabled',false);
+            $(tr).find('Select[disabled]').prop('disabled', false);
             $(tr).find('Input[disabled]').prop('disabled', false);
         }
 
         function RemoveAdditem() {
-            $('#additem-button').find('button').remove();
+            $('#additem-button').closest('td').remove();
+
         }
 
-        function action(act, id) {
+        function action(act, id, code) {
+            var Code = code;
             $.ajax({
                 url: '/SouvenirRequest/' + act,
                 type: 'get',
                 data: { id: id },
-                dataType: 'html',
+                //dataType: 'html',
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
-                    $("#title-panel").html(act + " Souvenir Request");
+                    $("#title-panel").html(act + " Souvenir Request - "+Code);
                     $('#modal-input').modal('show');
-                    GetListItem(id);
+                    if (act == "Edit") {
+                        GetListItem(id);
+                    };
+                    if (act == "Received") {
+                        GetDetailItem(id);
+                    };
                     SouSettItemApproved(id);
+                    if (act=="Received" && act=="Settled") {
                     GetApproveItem(id)
                     if (act=="Received") {
                         RemoveAdditem();
@@ -202,10 +224,10 @@
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
-            var vData = { Id : $(this).find("#Id").val(), Code: $(this).find("#Code").val(), T_Event_Id: $(this).find("#T_Event_Id").val(), Request_By: $(this).find("#Request_By").val(), Request_Date: $(this).find("#Request_Date").val(), Request_Due_Date: $(this).find("#Request_Due_Date").val(), Note: $(this).find("#Note").val() };
+            var vData = { Id: $(this).find("#Id").val(), Code: $(this).find("#Code").val(), T_Event_Id: $(this).find("#T_Event_Id").val(), Request_By: $(this).find("#Request_By").val(), Request_Date: $(this).find("#Request_Date").val(), Request_Due_Date: $(this).find("#Request_Due_Date").val(), Note: $(this).find("#Note").val() };
             var vItems = [];
             $("#item-body").find('tr').each(function (index) {
-                var vItem = { Id : $(this).find("#Id").val(), M_Souvenir_Id: $(this).find("#M_Souvenir_Id").val(), Qty: $(this).find("#Qty").val(), Note: $(this).find("#Note").val() };
+                var vItem = { Id: $(this).find("#Id").val(), M_Souvenir_Id: $(this).find("#M_Souvenir_Id").val(), Qty: $(this).find("#Qty").val(), Note: $(this).find("#Note").val() };
                 vItems.push(vItem);
             });
             $.ajax({
@@ -214,11 +236,11 @@
                 data: { model: vData, item: vItems },
                 success: function (result) {
                     if (result.success) {
-                        alert("Data Saved !");
+                        alert(result.message);
                         $("#modal-input").modal("hide");
                         GetList();
                     } else {
-                        alert("Eror! Product has not been saved. \n" + result.message);
+                        alert("Eror! Data has not been saved. \n" + result.message);
                     }
                 }
             });
@@ -226,9 +248,27 @@
         });
 
         function Received() {
-            debugger
+            var data = { Id: $('#Id').val(), Code: $('#Code').val() }
             $.ajax({
                 url: '@Url.Action("Received","SouvenirRequest")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    if (result.success) {
+                        alert(result.message);
+                        $("#receive-confirm").modal("hide");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error !! " + result.message)
+                    }
+                }
+            });
+        };
+
+        function Settled() {
+            $.ajax({
+                url: '@Url.Action("SouSettRequest", "SouvenirRequest")',
                 type: 'post',
                 success: function (result) {
                     if (result.success) {
@@ -274,6 +314,31 @@
                         GetList();
                     } else {
                         alert("Error")
+                    }
+                }
+            });
+        };
+
+        var value;
+        function Approved(value) {
+            var data = {
+                status: value,
+                reject_reason: $('#reject-reason').val(),
+                id: $('#settlement-id').val(),
+            };
+            debugger
+            $.ajax({
+                url: '@Url.Action("SouSettItemApproved", "SouvenirRequest")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    if (result.success) {
+                        $("#reason-input").modal("hide");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error")
+                        GetList();
                     }
                 }
             });
