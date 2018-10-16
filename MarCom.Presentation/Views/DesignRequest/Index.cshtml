@@ -5,7 +5,7 @@
 
 @Scripts.Render("~/AdminLTE/plugins/datatables/css")
 
-<div class="panel panel-warning">
+<div class="panel panel-primary">
     <div class="panel-heading">
         <div class="row">
             <div class="col-lg-12">
@@ -185,7 +185,6 @@
             });
         }
 
-        function action(act, id, code) {
         function GetCloseList(id) {
             $.ajax({
                 url: '@Url.Action("CloseList", "DesignRequest")',
@@ -200,7 +199,8 @@
             });
         }
 
-        function action(act, id) {
+        function action(act, id, code) {
+            var Code = code;
             $.ajax({
                 url: '/DesignRequest/' + act,
                 type: 'get',
