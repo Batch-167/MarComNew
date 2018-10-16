@@ -172,7 +172,8 @@
                     $('#modal-input').modal('show');
                     GetListItem(id);
                     SouSettItemApproved(id);
-                    if (act=="Received" && act=="Settled") {
+                    SettledItem(id);
+                    if (act=="Received") {
                         RemoveAdditem();
                     }
                 },
@@ -226,10 +227,32 @@
             });
         };
 
-        function Settled() {
+        function SettledItem(id) {
             $.ajax({
-                url: '@Url.Action("SouSettRequest", "SouvenirRequest")',
+                url: '@Url.Action("SouSettReqItem", "SouvenirRequest")',
+                type: 'get',
+                data: { id: id },
+                success: function (result) {
+                    $('#QtyActual').append(result);
+                },
+                error: function (err) {
+                    $("#QtyActual").html(err);
+                }
+            });
+        }
+
+        var value;
+        function Approved(value) {
+            var data = {
+                status: value,
+                reject_reason: $('#reject-reason').val(),
+                id: $('#settlement-id').val(),
+            };
+            debugger
+            $.ajax({
+                url: '@Url.Action("SouSettItemApproved", "SouvenirRequest")',
                 type: 'post',
+                data: data,
                 success: function (result) {
                     if (result.success) {
                         $("#reason-input").modal("hide");
@@ -237,6 +260,7 @@
                         GetList();
                     } else {
                         alert("Error")
+                        GetList();
                     }
                 }
             });

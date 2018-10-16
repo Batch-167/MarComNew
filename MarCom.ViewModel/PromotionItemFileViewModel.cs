@@ -92,7 +92,8 @@ namespace MarCom.ViewModel
 
         [StringLength(11)]
         public string Extention { get; set; }
-        //public HttpPostedFileBase ImageFile { get; set; }
+
+        //public HttpPostedFileBase MyProperty { get; set; }
 
     }
 }

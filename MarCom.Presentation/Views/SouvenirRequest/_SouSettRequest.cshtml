@@ -3,10 +3,10 @@
 
 <div class="panel panel-primary">
     <div class="panel-body">
-        @using (Html.BeginForm("Edit", "SouvenirRequest", FormMethod.Post, new { @id = "input-form" }))
+        @using (Html.BeginForm("SouSettRequest", "SouvenirRequest", FormMethod.Post, new { @id = "input-form" }))
         {
             @Html.AntiForgeryToken()
-
+            
             <div class="form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
@@ -79,6 +79,9 @@
                                     <th class="col-lg-2">
                                         <span>Qty</span>
                                     </th>
+                                    <th class="col-lg-2">
+                                        <span>Qty Actual</span>
+                                    </th>
                                     <th class="col-lg-4">
                                         <span>Note</span>
                                     </th>
@@ -86,7 +89,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody id="item-body"></tbody>
+                            <tbody id="QtyActual"></tbody>
                         </table>
                     </div>
                 </div>

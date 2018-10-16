@@ -26,54 +26,14 @@ namespace MarCom.Presentation.Controllers
         {
             return PartialView("_List", PromotionRepo.Get());
         }
-
-        public ActionResult AddItem(HttpPostedFileBase file)
+        
+        public ActionResult AddItem()
         {
+
             //ViewBag.Promotion = new SelectList(PromotionRepo.Get(), "Id", "Name");
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    if (file != null)
-                    {
-                        string imagePath = Path.Combine(Server.MapPath("~/App_Data/Images"), Path.GetFileName(file.FileName));
-                        file.SaveAs(imagePath);
-                    }
-                    ViewBag.FileStatus = "File uploaded successfully.";
-                }
-                catch (Exception)
-                {
-                    ViewBag.FileStatus = "Error while uploading.";
-                }
-            }
-
             PromotionItemFileViewModel model = new PromotionItemFileViewModel();
             return PartialView("_AddItem", model);
         }
-
-        ////untuk Upload Coba2 Aja
-
-        //public ActionResult UploadFiles(HttpPostedFileBase file)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            if (file != null)
-        //            {
-        //                string imagePath = Path.Combine(Server.MapPath("~/App_Data/Images"), Path.GetFileName(file.FileName));
-        //                file.SaveAs(imagePath);
-        //            }
-        //            ViewBag.FileStatus = "File uploaded successfully.";
-        //        }
-        //        catch (Exception)
-        //        {
-        //            ViewBag.FileStatus = "Error while uploading.";
-        //        }
-        //    }
-        //    return View("_AddItem");
-        //}
 
         public ActionResult Create()
         {
@@ -102,13 +62,10 @@ namespace MarCom.Presentation.Controllers
             UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
             model.Create_By = User.Identity.Name;
             model.Request_By = model2.M_Employee_Id;
+            
 
 
-            //untuk upload
-            //string fileName =Path.GetfileNameWithoutExtension(fileModel.imageFile.fileName)
-
-            ResultResponse result = PromotionRepo.Update(model, itemModel);
-            ResultResponse result2 = PromotionRepo.UpdateFile(fileModel, model.Id);
+            ResultResponse result = PromotionRepo.Update(model, itemModel, fileModel);
             return Json(new
             {
                 success = result.Success,
@@ -118,13 +75,14 @@ namespace MarCom.Presentation.Controllers
         }
 
         //Get Create 3
-        public ActionResult Create3()
+        public ActionResult Create3(int eventid)
         {
             UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
 
+            ViewBag.EventCode = new SelectList(EventRepo.Get(), "id", "Code");
             PromotionViewModel model = new PromotionViewModel();
             model.RequestBy = model2.Fullname;
-            //model.T_Event_Id = eventid;
+            model.T_Event_Id = eventid;
             return PartialView("_Create3", model);
         }
 
@@ -132,7 +90,11 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Create3(PromotionViewModel model, List<PromotionItemFileViewModel> fileModel)
         {
+            UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
+            model.Create_By = User.Identity.Name;
+            model.Request_By = model2.M_Employee_Id;
             ResultResponse result = PromotionRepo.UpdateCreate3(model, fileModel, model.Id);
+            
             return Json(new
             {
                 success = result.Success,
@@ -198,7 +160,15 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Edit(int id)
         {
             PromotionViewModel model = PromotionRepo.GetById(id);
-            return PartialView("_Edit", model);
+            if (model.Flag_Design=="Yes")
+            {
+                return PartialView("_Edit", model);
+            }
+            else
+            {
+                return PartialView("_EditNo", model);
+            }
+            
         }
 
         //View Design, untuk Edit
@@ -213,27 +183,37 @@ namespace MarCom.Presentation.Controllers
             List<PromotionItemViewModel> model = PromotionRepo.GetItemId(id);
             return PartialView("_EditDesignItem", model);
         }
+
+        public ActionResult EditList(int id)
+        {
+            List<PromotionItemFileViewModel> model = PromotionRepo.GetIdFile(id);
+            return PartialView("_EditList", model);
+        }
         //POST: Edit
         [HttpPost]
         public ActionResult Edit(PromotionViewModel model, List<PromotionItemViewModel> itemModel, List<PromotionItemFileViewModel> fileModel)
         {
             model.Update_By = User.Identity.Name;
-            ResultResponse result = PromotionRepo.Update(model, itemModel);
-            ResultResponse result2 = PromotionRepo.UpdateFile(fileModel, model.Id);
-            return Json(new
+            if (model.Flag_Design=="Yes")
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
-        }
-
-
-        //UPLOAD IMAGE
-        [HttpGet]
-        public ActionResult UploadImage()
-        {
-            return View();
+                ResultResponse result = PromotionRepo.Update(model, itemModel, fileModel);
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                ResultResponse result2 = PromotionRepo.UpdateCreate3(model, fileModel, model.Id);
+                return Json(new
+                {
+                    success = result2.Success,
+                    entity = model,
+                    message = result2.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

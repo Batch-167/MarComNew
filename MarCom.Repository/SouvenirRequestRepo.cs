@@ -152,8 +152,30 @@ namespace MarCom.Repository
             }
             catch (Exception ex)
             {
-
                 throw;
+            }
+            return result;
+        }
+
+        public static ResultResponse UpdateQtyActual(SouvenirItemViewModel entity)
+        {
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new MarComContext())
+                {
+                    T_Souvenir_Item si = db.T_Souvenir_Item.Where(s => s.Id == entity.Id).FirstOrDefault();
+                    if (si !=null)
+                    {
+                        si.Qty_Settlement = entity.Qty_Settlement;
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
             }
             return result;
         }

@@ -63,6 +63,9 @@
             <button type="button" class="btn btn-danger btn-received" data-id="@item.Id" title="Received" onclick="action('Received', @item.Id)">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
             </button>
+            <button type="button" class="btn btn-success btn-settled" data-id="@item.Id" title="Settlement Request" onclick="action('SouSettRequest', @item.Id)">
+                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+            </button>
             <button type="button" class="btn btn-danger btn-settlement" data-id="@item" title="Settlement Approved" onclick="action('SouSettApproved', @item.Id)">
                 <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
             </button>

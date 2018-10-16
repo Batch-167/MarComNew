@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MarCom.ViewModel.PromotionItemFileViewModel>
+@foreach (var item in Model)
+{
+<tr>
+    @Html.HiddenFor(model => item.Id, new { @Id = "Id" })
+    <td>
+        <input type="file" name="images[]" accept="image/*" id="txtUploadFile" value="Browse" class="btn btn-primary" multiple />
+        @Html.ValidationMessageFor(model => item.ImagePath, "", new { @class = "text-danger" })
+        @ViewBag.FileStatus
+    </td>
+    <td>
+        @Html.EditorFor(model => item.Filename, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => item.Filename, "", new { @class = "text-danger" })
+    </td>
+    <td>
+        @Html.EditorFor(model => item.Qty, new { htmlAttributes = new { @class = "form-control", @id="Qty" } })
+        @Html.ValidationMessageFor(model => item.Qty, "", new { @class = "text-danger" })
+    </td>
+    <td>
+        @Html.EditorFor(model => item.Todo, new { htmlAttributes = new { @class = "form-control", @id="Todo" } })
+        @Html.ValidationMessageFor(model => item.Todo, "", new { @class = "text-danger" })
+    </td>
+    <td>
+        @Html.EditorFor(model => item.Request_Due_Date, new { htmlAttributes = new { @class = "form-control", @type = "date", @id= "Request_Due_Date" } })
+        @Html.ValidationMessageFor(model => item.Request_Due_Date, "", new { @class = "text-danger" })
+    </td>
+    <td>
+        @Html.EditorFor(model => item.Start_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => item.Start_Date, "", new { @class = "text-danger" })
+    </td>
+    <td>
+        @Html.EditorFor(model => item.End_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => item.End_Date, "", new { @class = "text-danger" })
+    </td>
+    <td>
+        @Html.EditorFor(model => item.Note, new { htmlAttributes = new { @class = "form-control", @id="Note" } })
+        @Html.ValidationMessageFor(model => item.Note, "", new { @class = "text-danger" })
+    </td>
+    <td>
+        <button type="button" class="btn btn-delete" title="Delete" onclick="RemoveRow(this)">
+            <span class="glyphicon glyphicon-remove " aria-hidden="true"></span>
+        </button>
+    </td>
+</tr>
+}

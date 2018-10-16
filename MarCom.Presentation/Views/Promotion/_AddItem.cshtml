@@ -2,7 +2,7 @@
 
 <tr id="promotion-@Model.Id">
     <td>
-        <input type="file" name="UploadFile" id="txtUploadFile" value="Browse" class="btn btn-primary" />
+        <input type="file" name="images[]" accept="image/*" id="txtUploadFile" value="Browse" class="btn btn-primary" multiple />
         @Html.ValidationMessageFor(model => model.ImagePath, "", new { @class = "text-danger" })
         @ViewBag.FileStatus
     </td>

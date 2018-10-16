@@ -1224,6 +1224,9 @@
     <Content Include="Views\SouvenirRequest\_SouSettRequest.cshtml" />
     <Content Include="Views\DesignRequest\_ProductList.cshtml" />
     <Content Include="Views\DesignRequest\_EditList.cshtml" />
+    <Content Include="Views\SouvenirRequest\_SouSettReqItem.cshtml" />
+    <Content Include="Views\Promotion\_EditList.cshtml" />
+    <Content Include="Views\Promotion\_EditNo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdminLTE\dist\PromotionFile\" />

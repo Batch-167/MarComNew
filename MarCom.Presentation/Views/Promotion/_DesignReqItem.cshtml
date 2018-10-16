@@ -4,7 +4,7 @@
     <tr>
         <td>
             @Html.HiddenFor(model => item.M_Product_Id, new { @Id = "M_Product_Id" })
-
+            @Html.HiddenFor(model => item.T_Design_Item_Id, new { @Id = "T_Design_Item_Id" })
             @Html.EditorFor(model => item.ProductName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
             @Html.ValidationMessageFor(model => item.ProductName, "", new { @class = "text-danger" })
         </td>

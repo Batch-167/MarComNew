@@ -113,10 +113,27 @@ namespace MarCom.Presentation.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult SouSettRequest(SouvenirItemViewModel model)
+        {
+            ResultResponse result = SouvenirRequestRepo.UpdateQtyActual(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult SouSettRequest(int id)
         {
             SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
             return PartialView("_SouSettRequest", model);
+        }
+
+        public ActionResult SouSettReqItem(int id)
+        {
+            return PartialView("_SouSettReqItem", SouvenirRequestRepo.GetItem(id));
         }
 
         public ActionResult SouSettApproved(int id)
