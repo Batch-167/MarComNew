@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -20,10 +21,12 @@ namespace MarCom.ViewModel
 
         public int M_Souvenir_Id { get; set; }
 
+        [DisplayName("Souvenir Name")]
         public string SouvenirName { get; set; }
 
         public int? Qty { get; set; }
 
+        [DisplayName("Qty Actual")]
         public int? Qty_Settlement { get; set; }
 
         [Required]

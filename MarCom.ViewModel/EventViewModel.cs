@@ -29,12 +29,13 @@ namespace MarCom.ViewModel
 
         [DisplayName("Start Date")]
         [Required]
-        [DisplayFormat(ApplyFormatInEditMode =true, DataFormatString ="{0:dd-MM-yyyy}")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode =true, DataFormatString ="{0:MM-dd-yyyy}")]
         public DateTime? Start_Date { get; set; }
 
         [DisplayName("End Date")]
         [Required]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
         public DateTime? End_Date { get; set; }
 
         [StringLength(255)]
@@ -76,6 +77,8 @@ namespace MarCom.ViewModel
                 }
 
         [DisplayName("Request Date")]
+        [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
         public DateTime Request_Date { get; set; }
 
         public int? Approved_By { get; set; }

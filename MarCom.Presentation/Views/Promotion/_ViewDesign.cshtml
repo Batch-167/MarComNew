@@ -10,10 +10,10 @@
 
     <div class="form-horizontal">
         <div class="row">
-            <h5><span style="font-family:Arial;color:goldenrod"><b>DESSIGN HEADER INFROMATION - @Model.Code </b></span></h5>
+            <h5><span style="font-family:Arial;color:goldenrod"><b>DESIGN HEADER INFROMATION</b></span></h5>
             <hr />
 
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Code, "Design Code", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-6">
@@ -41,18 +41,23 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Request_Date, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-6">
-                        @Html.EditorFor(model => model.Request_Date, new { htmlAttributes = new { @Value = Model.Request_Date.ToString("dd-MM-yyyy"), @class = "form-control", @readonly = "readonly" } })
+                        @Html.EditorFor(model => model.Request_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.Request_Date, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
                 @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-6">
-                    @Html.TextAreaFor(model => model.Note, new { htmlAttributes = new {@readonly = "readonly" } })
+                    @Html.EditorFor(model => model.Note, new { htmlAttributes = new {@readonly="readonly"} })
                     @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
                 </div>
+            </div>
+
+
+            <div class="col-md-4">
+
             </div>
 
         </div>

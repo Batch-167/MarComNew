@@ -354,18 +354,19 @@ namespace MarCom.Repository
             {
                 result = (from pr in db.T_Promotion
                           join ev in db.T_Event on pr.T_Event_Id equals ev.Id
-                          join de in db.T_Design on pr.T_Design_Id equals de.Id
+                         // join de in db.T_Design on pr.T_Design_Id equals de.Id
                           join e in db.M_Employee on pr.Request_By equals e.Id
                           where pr.Id == id
                           select new PromotionViewModel
                           {
                               Id = pr.Id,
                               Code = pr.Code,
+                              Flag_Design = pr.Flag_Design,
                               Title = pr.Title,
                               T_Event_Id = pr.T_Event_Id,
                               EventCode = ev.Code,
                               T_Design_Id = pr.T_Design_Id,
-                              DesignCode = de.Code,
+                         //     DesignCode = de.Code,
                               Request_By = pr.Request_By,
                               RequestBy = e.First_Name + " " + e.Last_Name,
 
@@ -513,6 +514,39 @@ namespace MarCom.Repository
 
                 result.Success = false;
                 result.Message = ex.Message;
+            }
+            return result;
+        }
+
+        public static ResultResponse UploadItem(PromotionItemFileViewModel entity)
+        {
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new MarComContext())
+                {
+                    if (entity.Id==0)
+                    {
+                        T_Promotion_Item_File it = new T_Promotion_Item_File();
+                        it.Id = it.Id;
+                        it.Filename = it.Filename;
+                        it.Qty = it.Qty;
+                        it.Todo = it.Todo;
+                        it.Request_Due_Date = it.Request_Due_Date;
+                        it.Note = it.Note;
+
+                        it.Create_By = it.Create_By;
+                        it.Create_Date = DateTime.Now;
+
+                        db.T_Promotion_Item_File.Add(it);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
             return result;
         }

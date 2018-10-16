@@ -17,6 +17,8 @@ namespace MarCom.ViewModel
             Todo = 1;
             Qty = 1;
         }
+
+        public HttpPostedFileBase ImageFile { get; set; }
         public int Id { get; set; }
 
         public int T_Promotion_id { get; set; }

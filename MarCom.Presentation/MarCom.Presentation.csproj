@@ -1224,11 +1224,15 @@
     <Content Include="Views\SouvenirRequest\_SouSettRequest.cshtml" />
     <Content Include="Views\DesignRequest\_ProductList.cshtml" />
     <Content Include="Views\DesignRequest\_EditList.cshtml" />
+    <Content Include="Views\Promotion\_ApproveNo.cshtml" />
+    <Content Include="Views\Promotion\UploadIndex.cshtml" />
+    <Content Include="Views\Promotion\UploadSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdminLTE\dist\PromotionFile\" />
     <Folder Include="App_Data\Images\" />
     <Folder Include="Security\" />
+    <Folder Include="UploadImage\" />
     <Folder Include="Views\Ajax\" />
   </ItemGroup>
   <ItemGroup>

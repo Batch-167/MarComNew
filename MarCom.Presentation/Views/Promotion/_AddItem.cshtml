@@ -2,7 +2,7 @@
 
 <tr id="promotion-@Model.Id">
     <td>
-        <input type="file" name="UploadFile" id="txtUploadFile" value="Browse" class="btn btn-primary" />
+        <input type="file" name="ImageFile" required id="txtUploadFile" />
         @Html.ValidationMessageFor(model => model.ImagePath, "", new { @class = "text-danger" })
         @ViewBag.FileStatus
     </td>

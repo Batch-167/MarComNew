@@ -30,50 +30,9 @@ namespace MarCom.Presentation.Controllers
         public ActionResult AddItem(HttpPostedFileBase file)
         {
             //ViewBag.Promotion = new SelectList(PromotionRepo.Get(), "Id", "Name");
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    if (file != null)
-                    {
-                        string imagePath = Path.Combine(Server.MapPath("~/App_Data/Images"), Path.GetFileName(file.FileName));
-                        file.SaveAs(imagePath);
-                    }
-                    ViewBag.FileStatus = "File uploaded successfully.";
-                }
-                catch (Exception)
-                {
-                    ViewBag.FileStatus = "Error while uploading.";
-                }
-            }
-
             PromotionItemFileViewModel model = new PromotionItemFileViewModel();
             return PartialView("_AddItem", model);
         }
-
-        ////untuk Upload Coba2 Aja
-
-        //public ActionResult UploadFiles(HttpPostedFileBase file)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            if (file != null)
-        //            {
-        //                string imagePath = Path.Combine(Server.MapPath("~/App_Data/Images"), Path.GetFileName(file.FileName));
-        //                file.SaveAs(imagePath);
-        //            }
-        //            ViewBag.FileStatus = "File uploaded successfully.";
-        //        }
-        //        catch (Exception)
-        //        {
-        //            ViewBag.FileStatus = "Error while uploading.";
-        //        }
-        //    }
-        //    return View("_AddItem");
-        //}
 
         public ActionResult Create()
         {
@@ -104,9 +63,9 @@ namespace MarCom.Presentation.Controllers
             model.Request_By = model2.M_Employee_Id;
 
 
-            //untuk upload
-            //string fileName =Path.GetfileNameWithoutExtension(fileModel.imageFile.fileName)
 
+
+      
             ResultResponse result = PromotionRepo.Update(model, itemModel);
             ResultResponse result2 = PromotionRepo.UpdateFile(fileModel, model.Id);
             return Json(new
@@ -158,9 +117,23 @@ namespace MarCom.Presentation.Controllers
         //View Approve
         public ActionResult Approve(int id)
         {
-
+            PromotionViewModel model = PromotionRepo.GetById(id);
             ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "FullName");
-            return PartialView("_Approve", PromotionRepo.GetById(id));
+
+            if (model.FlagDesign == "Yes")
+            {
+                return PartialView("_Approve", model);
+            }
+            else
+            {
+                return PartialView("_ApproveNo", model);
+            }
+
+        }
+
+        public ActionResult ApproveNo(int id)
+        {
+            return PartialView("_ApproveNo", PromotionRepo.GetById(id));
         }
 
         [HttpPost]
@@ -230,10 +203,50 @@ namespace MarCom.Presentation.Controllers
 
 
         //UPLOAD IMAGE
-        [HttpGet]
-        public ActionResult UploadImage()
+
+        public ActionResult UploadIndex()
         {
             return View();
+        }
+
+        private bool isValidContentType(string contenttype)
+        {
+            return contenttype.Equals("image/png") ||  contenttype.Equals("image/jpg") || contenttype.Equals("image/jpeg") ||contenttype.Equals("image/gif");
+        }
+
+        private bool isValidSize(int ContentLength)
+        {
+            return ((ContentLength / 1024) / 1024) < 1; //1MB
+        }
+
+        [HttpPost]
+        public ActionResult UploadProcess(HttpPostedFileBase photo)
+        {
+            if (!isValidContentType(photo.ContentType))
+            {
+                ViewBag.Error = "Only JPG, JPEG, GIF files are allowed";
+                return View("UploadIndex");
+            }
+            else if (!isValidSize(photo.ContentLength))
+            {
+                ViewBag.Error = "Your file too large";
+                return View("UploadIndex");
+            }
+            else
+            {
+                if (photo.ContentLength>0)
+                {
+                    var fileName = Path.GetFileName(photo.FileName);
+                    var path = Path.Combine(Server.MapPath("~/UploadImage"), fileName);
+                    var extension = Path.GetExtension(photo.FileName);
+                    var size = photo.ContentLength;
+                    photo.SaveAs(path);
+                    ViewBag.fileName = photo.FileName;
+                }
+                 
+           
+            return View("UploadSuccess");
+            }
         }
     }
 }

@@ -481,11 +481,11 @@ namespace MarCom.DataModel
                 .Property(e => e.Update_By)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<T_Promotion>()
-                .HasMany(e => e.T_Promotion_Item_File)
-                .WithRequired(e => e.T_Promotion)
-                .HasForeignKey(e => e.T_Promotion_id)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<T_Promotion>()
+            //    .HasMany(e => e.T_Promotion_Item_File)
+            //    .WithRequired(e => e.T_Promotion)
+            //    .HasForeignKey(e => e.T_Promotion_id)
+            //    .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<T_Promotion>()
                 .HasMany(e => e.T_Promotion_Item)

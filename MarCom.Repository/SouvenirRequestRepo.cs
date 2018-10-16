@@ -51,6 +51,7 @@ namespace MarCom.Repository
                               M_Souvenir_Id = si.M_Souvenir_Id,
                               SouvenirName = s.Name,
                               Qty = si.Qty,
+                              Qty_Settlement=si.Qty_Settlement,
                               Note = si.Note,
                           }).ToList();
             }
