@@ -11,6 +11,9 @@
     @Styles.Render("~/AdminLTE/bootstrap/css")
     @Styles.Render("~/AdminLTE/dist/css")
     @Styles.Render("~/AdminLTE/dist/css/skins")
+    @Styles.Render("~/AdminLTE/dist/css/skins")
+    @Styles.Render("~/AdminLTE/plugins/datepicker/css");
+    
     @*@Styles.Render("~/Content/Custom")*@
 
 </head>
@@ -48,6 +51,7 @@
     @Scripts.Render("~/AdminLTE/plugins/fastclick/js")
     @Scripts.Render("~/Scripts/Shared/_Layout")
     @Scripts.Render("~/AdminLTE/dist/js")
+    @Scripts.Render("~/AdminLTE/plugins/datepicker/js");
     @RenderSection("scripts", required: false)
 </body>
 </html>

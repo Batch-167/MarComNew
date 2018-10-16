@@ -22,8 +22,6 @@ namespace MarCom.DataModel
         [StringLength(11)]
         public string Extention { get; set; }
 
-        public string ImagePath { get; set; }
-
         public DateTime? Start_Date { get; set; }
 
         public DateTime? End_Date { get; set; }

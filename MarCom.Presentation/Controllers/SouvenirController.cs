@@ -38,7 +38,7 @@ namespace MarCom.Presentation.Controllers
         {
             UserViewModel model = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             ViewBag.Souvenir = new SelectList(UnitRepo.Get(), "Id", "Name");
-            if (model.Role == "Staff")
+            if (model.Role == "Staff" || model.Role == "Admin")
             {
                 return PartialView("_Create", new SouvenirViewModel());
             }
@@ -52,15 +52,21 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Create(SouvenirViewModel model)
         {
-            model.Create_By = User.Identity.Name;
-            ResultResponse result = SouvenirRepo.Update(model);
-            return Json(new
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
-            //return RedirectToAction("index");
+                model.Create_By = User.Identity.Name;
+                ResultResponse result = SouvenirRepo.Update(model);
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return RedirectToAction("index");
+            }
         }
 
         public ActionResult Edit(int id)
@@ -68,7 +74,7 @@ namespace MarCom.Presentation.Controllers
             UserViewModel model2 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             ViewBag.Unit = new SelectList(UnitRepo.Get(), "Id", "Name");
             SouvenirViewModel model = SouvenirRepo.GetById(id);
-            if (model2.Role == "Staff")
+            if (model2.Role == "Staff" || model2.Role == "Admin")
             {
                 return PartialView("_Edit", model);
             }
@@ -120,7 +126,7 @@ namespace MarCom.Presentation.Controllers
         {
             if (SouvenirRepo.Delete(id))
             {
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true, }, JsonRequestBehavior.AllowGet);
             }
             else
             {

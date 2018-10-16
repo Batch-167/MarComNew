@@ -62,7 +62,7 @@ namespace MarCom.ViewModel
                 }
                 else
                 {
-                    return "Rejected";
+                    return "Nothin Happen";
                 }
             }
         }

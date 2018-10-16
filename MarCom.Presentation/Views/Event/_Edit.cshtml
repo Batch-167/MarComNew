@@ -62,7 +62,7 @@
                     <span>Event Start Date</span>
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                    @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @class = "form-control datepicker"} })
                     @Html.ValidationMessageFor(model => model.Start_Date)
                 </td>
                 <td class="col-lg-1"></td>
@@ -70,7 +70,7 @@
                     <span>Event End Date</span>
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.End_Date, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.End_Date, new { htmlAttributes = new { @class = "form-control datepicker" } })
                 </td>
             </tr>
             <tr></tr>
@@ -105,3 +105,8 @@
     </div>
 
 }
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker({ format: 'dd-mm-yyyy' });
+    });
+</script>

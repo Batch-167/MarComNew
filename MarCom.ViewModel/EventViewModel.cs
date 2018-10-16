@@ -15,7 +15,6 @@ namespace MarCom.ViewModel
         {
             Is_Delete = false;
             Request_Date = DateTime.Now;
-            Status = 1;
         }
         public int Id { get; set; }
 
@@ -30,11 +29,12 @@ namespace MarCom.ViewModel
 
         [DisplayName("Start Date")]
         [Required]
-       // [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode =true, DataFormatString ="{0:dd-MM-yyyy}")]
         public DateTime? Start_Date { get; set; }
 
         [DisplayName("End Date")]
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime? End_Date { get; set; }
 
         [StringLength(255)]
