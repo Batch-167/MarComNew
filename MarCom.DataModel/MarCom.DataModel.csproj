@@ -54,7 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="C__MigrationHistory.cs" />
     <Compile Include="MarComContext.cs" />
     <Compile Include="M_Company.cs" />
     <Compile Include="M_Employee.cs" />

@@ -28,9 +28,9 @@ namespace MarCom.DataModel
 
         public int? Request_By { get; set; }
 
-        public DateTime? Request_Due_Date { get; set; }
-
         public DateTime? Request_Date { get; set; }
+
+        public DateTime? Request_Due_Date { get; set; }
 
         public int? Approved_By { get; set; }
 

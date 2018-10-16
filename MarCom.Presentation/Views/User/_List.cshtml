@@ -40,6 +40,7 @@
                     @(row += 1)
                 </td>
                 <td>
+                    @Html.HiddenFor(modeItem => item.Fullname, new { @id="employee"})
                     @Html.DisplayFor(modelItem => item.Fullname)
                 </td>
                 <td>
@@ -49,6 +50,7 @@
                     @Html.DisplayFor(modelItem => item.Company)
                 </td>
                 <td>
+                    @Html.HiddenFor(modelItem => item.Username, new { @id="username" })
                     @Html.DisplayFor(modelItem => item.Username)
                 </td>
                 <td>
@@ -76,7 +78,11 @@
 
 <script type="text/javascript">
     $(".btn-edit").click(function () {
-        $(".modal-title").html("Edit User");
+        var data = {
+            fullname: $("#employee").val(),
+            username: $("#username").val()
+        };
+        $("#title-panel").html("Edit User - "+ data.fullname +" ( "+data.username+" )");
         $.ajax({
             url: '@Url.Action("Edit", "User")',
             type: 'get',

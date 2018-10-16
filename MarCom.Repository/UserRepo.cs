@@ -118,6 +118,28 @@ namespace MarCom.Repository
             return result;
         }
 
+        public static UserViewModel GetIdByName(string name)
+        {
+            UserViewModel result = new UserViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from u in db.M_User
+                          join e in db.M_Employee
+                          on u.M_Employee_Id equals e.Id
+                          join r in db.M_Role on u.M_Role_Id equals r.Id
+                          where name == u.UserName
+                          select new UserViewModel
+                          {
+                              Id = u.Id,
+                              Password = u.PasswordHash,
+                              M_Employee_Id = u.M_Employee_Id,
+                              Fullname = e.First_Name + " " + e.Last_Name,
+                              Role = r.Name
+                          }).FirstOrDefault();
+            }
+            return result;
+        }
+
         public static bool Delete(int id)
         {
             bool result = true;
@@ -152,7 +174,7 @@ namespace MarCom.Repository
                           em.M_Company_Id equals c.Id
                           join ro in db.M_Role on
                           us.M_Role_Id equals ro.Id
-                          where em.Id== entity.Id || ro.Id == entity.Id || c.Id == entity.Id || us.UserName.Contains(entity.Username) || (us.Create_Date.ToString()).Contains(entity.Create_Date.ToString()) || us.Create_By.Contains(entity.Create_By)
+                          where em.Id == entity.Id || ro.Id == entity.Id || c.Id.ToString() == entity.Company || us.UserName.Contains(entity.Username) || (us.Create_Date.ToString()).Contains(entity.Create_Date.ToString()) || us.Create_By.Contains(entity.Create_By)
                           select new UserViewModel
                           {
                               M_Employee_Id = us.M_Employee_Id,

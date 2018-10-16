@@ -76,8 +76,8 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-4" })
                                 <div class="col-md-5">
-                                    @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.StatusName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.StatusName, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </td>
@@ -87,8 +87,7 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Assign_To, htmlAttributes: new { @class = "control-label col-md-4" })
                                 <div class="col-md-5">
-                                    @Html.DropDownListFor(model => model.Assign_To, (IEnumerable<SelectListItem>)
-ViewBag.Employee, "Select Menu Name", new { @class = "form-control", @id = "assignto" })
+                                    @Html.EditorFor(model => model.Assign_To, new { @class = "form-control", @id = "assignto", @readonly = "readonly" })
                                     @Html.ValidationMessageFor(model => model.Assign_To, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -96,41 +95,36 @@ ViewBag.Employee, "Select Menu Name", new { @class = "form-control", @id = "assi
                     </tr>
                 </table>
 
-                <div class="col-lg-12" id="productitem-list">
-                    <h3>Loading...</h3>
+                <div class="row">
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td><b>Product Name</b></td>
+                                    <td><b>Product Description</b></td>
+                                    <td><b>Title</b></td>
+                                    <td><b>Request PIC</b></td>
+                                    <td><b>Due Date</b></td>
+                                    <td><b>Start Date</b></td>
+                                    <td><b>End Date</b></td>
+                                    <td><b>Note</b></td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody id="close-item-body"></tbody>
+                        </table>
+                    </div>
                 </div>
 
+
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="button" value="Approve" class="btn btn-primary" onclick="Approve(2)" />
-                        <input type="button" value="Reject" class="btn btn-danger" data-toggle="modal" data-target="#reason-input" />
-                        <input type="button" value="Cancel" class="btn btn-default" data-dismiss="modal" />
+                    <div class="col-md-offset-9 col-md-3">
+                        <input type="submit" value="Close Request" class="btn btn-primary" />
+                        <input type="button" value="Cancel" class="btn btn-warning" data-dismiss="modal" />
                     </div>
                 </div>
             </div>
         }
     </div>
 </div>
-
-
-
-<div class="modal fade" tabindex="-1" role="dialog" id="reason-input">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-red">
-                <span class="midtext text-bold text-black">&nbsp;Reason Reject</span>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <textarea cols="30" rows="5" id="reject-reason"></textarea>
-                    <input type="button" value="Reject" class="btn btn-danger" onclick="Approve(0)" />
-                    <input type="button" value="Cancel" class="btn btn-default" data-dismiss="modal" />
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
