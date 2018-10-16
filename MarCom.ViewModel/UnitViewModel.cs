@@ -36,8 +36,7 @@ namespace MarCom.ViewModel
         [StringLength(50)]
         public string Create_By { get; set; }
 
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode =true, DataFormatString ="{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode =true, DataFormatString ="{0:MM/dd/yyyy}")]
         [Display(Name = "Create Date")]
         public DateTime Create_Date { get; set; }
 

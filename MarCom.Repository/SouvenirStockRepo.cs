@@ -119,8 +119,8 @@ namespace MarCom.Repository
                                     }
                                 }
                             }
-                            db.SaveChanges();
                         }
+                        db.SaveChanges();
                     }
                 }
             }
@@ -167,6 +167,7 @@ namespace MarCom.Repository
                           {
                               Id = i.Id,
                               M_Souvenir_Id = s.Id,
+                              SouvenirName = s.Name,
                               Qty = i.Qty,
                               Note = i.Note
                           }).ToList();

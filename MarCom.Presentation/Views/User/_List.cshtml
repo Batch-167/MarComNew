@@ -40,7 +40,6 @@
                     @(row += 1)
                 </td>
                 <td>
-                    @Html.HiddenFor(modeItem => item.Fullname, new { @id="employee"})
                     @Html.DisplayFor(modelItem => item.Fullname)
                 </td>
                 <td>
@@ -50,7 +49,6 @@
                     @Html.DisplayFor(modelItem => item.Company)
                 </td>
                 <td>
-                    @Html.HiddenFor(modelItem => item.Username, new { @id="username" })
                     @Html.DisplayFor(modelItem => item.Username)
                 </td>
                 <td>
@@ -60,13 +58,13 @@
                     @Html.DisplayFor(modelItem => item.Create_Date)
                 </td>
                 <td>
-                    <button type="button" class="btn btn-details" data-id="@item.Id" title="Details">
+                    <button type="button" class="btn btn-details" data-id="@item.Id" title="Details" onclick="action('Details', @item.Id,'@item.Fullname' , '@item.Username')">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-edit" data-id="@item.Id" title="Edit">
+                    <button type="button" class="btn btn-edit" data-id="@item.Id" title="Edit" onclick="action('Edit', @item.Id,'@item.Fullname' , '@item.Username')">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </button>
-                    <button type="button" class="btn btn-delete" data-id="@item.Id" title="Delete">
+                    <button type="button" class="btn btn-delete" data-id="@item.Id" title="Delete" onclick="action('Delete', @item.Id,'@item.Fullname' , '@item.Username')">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </button>
                 </td>
@@ -74,49 +72,3 @@
         }
     </tbody>
 </table>
-
-
-<script type="text/javascript">
-    $(".btn-edit").click(function () {
-        var data = {
-            fullname: $("#employee").val(),
-            username: $("#username").val()
-        };
-        $("#title-panel").html("Edit User - "+ data.fullname +" ( "+data.username+" )");
-        $.ajax({
-            url: '@Url.Action("Edit", "User")',
-            type: 'get',
-            data: { id: $(this).attr('data-id') },
-            success: function (result) {
-                $(".modal-body").html(result);
-                $(".modal").modal("show");
-            }
-        });
-    });
-
-    $(".btn-details").click(function () {
-        $(".modal-title").html("Details User");
-        $.ajax({
-            url: '@Url.Action("Details", "User")',
-            type: 'get',
-            data: { id: $(this).attr('data-id') },
-            success: function (result) {
-                $(".modal-body").html(result);
-                $(".modal").modal("show");
-            }
-        });
-    });
-
-    $(".btn-delete").click(function () {
-        $(".modal-title").html("Delete User");
-        $.ajax({
-            url: '@Url.Action("Delete", "User")',
-            type: 'get',
-            data: { id: $(this).attr('data-id') },
-            success: function (result) {
-                $(".modal-body").html(result);
-                $(".modal").modal("show");
-            }
-        });
-    });
-</script>

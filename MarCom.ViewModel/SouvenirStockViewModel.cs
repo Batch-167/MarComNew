@@ -40,7 +40,7 @@ namespace MarCom.ViewModel
 
         [Display(Name = "Create Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Create_Date { get; set; }
 
         public bool Is_Delete { get; set; }

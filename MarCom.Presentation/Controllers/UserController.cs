@@ -60,7 +60,6 @@ namespace MarCom.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Add(RegisterViewModel model)
             {
-
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date, M_Role_Id = model.RoleId };
@@ -118,13 +117,24 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult DeleteConfirm(int id)
         {
+            bool result = UserRepo.Delete(id);
             if (UserRepo.Delete(id))
             {
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = result,
+                    entity = "",
+                    message = "Delete Success"
+                }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = result,
+                    entity = "",
+                    message = "Delete Failed"
+                }, JsonRequestBehavior.AllowGet);
             }
         }
 

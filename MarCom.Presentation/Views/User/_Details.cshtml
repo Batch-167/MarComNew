@@ -34,7 +34,7 @@
             @Html.DisplayFor(model => model.Fullname)
         </dd>
     </dl>
-    @using (Html.BeginForm("Details", "User", FormMethod.Post, new { id = "form-details", name = "form-details" }))
+    @using (Html.BeginForm("Details", "User", FormMethod.Post, new { @id="input-form"}))
     {
         @Html.AntiForgeryToken()
 

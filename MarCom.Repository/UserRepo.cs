@@ -73,6 +73,7 @@ namespace MarCom.Repository
                                 user.PasswordHash = entity.Password;
                             }
                             user.M_Employee_Id = entity.M_Employee_Id;
+                            user.M_Role_Id = entity.M_Role_Id;
                             user.Is_Delete = entity.Is_Delete;
 
                             user.Update_By = "Admin";

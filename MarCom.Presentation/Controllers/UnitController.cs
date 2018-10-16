@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
@@ -34,7 +35,15 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Add()
         {
+            UserViewModel result = UserRepo.GetIdByName(User.Identity.Name);
+            if (result.Role=="Staff" || result.Role=="Admin")
+            {
             return View("_Add", new UnitViewModel());
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         [HttpPost]

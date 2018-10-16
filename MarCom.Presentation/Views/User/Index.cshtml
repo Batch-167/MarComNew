@@ -3,8 +3,6 @@
 @{
     ViewBag.Title = "User";
 }
-
-@Styles.Render("~/AdminLTE/plugins/datatables/css")
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="row">
@@ -63,7 +61,7 @@
     </div>
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog">
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-blue">
@@ -77,7 +75,6 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 @section Scripts{
-    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
     <script type="text/javascript">
         $(document).ready(function () {
             GetList();
@@ -129,6 +126,44 @@
                     $("#table-list").html(err);
                 }
             });
+        });
+
+        function action(act, id, fullname, username) {
+            $.ajax({
+                url: '/User/' + act,
+                type: 'get',
+                data: { id: id },
+                dataType: 'html',
+                success: function (result) {
+                    $('#modal-input').find('.modal-body').html(result);
+                    $('#title-panel').html(act + " User - " + fullname + " (" + username + " )");
+                    $('#modal-input').modal('show');
+                },
+                error: function (err) {
+                    $('#table-list').html(err);
+                }
+            });
+        }
+
+        $('#modal-input').on("submit", "#input-form", function () {
+            var vUrl = $(this).attr('action');
+            var vMethod = $(this).attr('method');
+            var vData = $(this).serialize();
+            $.ajax({
+                url: vUrl,
+                type: vMethod,
+                data: vData,
+                success: function (result) {
+                    if (result.success) {
+                        alert("Data: " + result.entity.username + " has been saved");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error! User has not been saved. \n " + result.message);
+                    }
+                }
+            });
+            return false;
         });
 
     </script>

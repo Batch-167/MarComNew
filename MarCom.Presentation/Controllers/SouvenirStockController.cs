@@ -84,6 +84,13 @@ namespace MarCom.Presentation.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+
+        public ActionResult DetailItem(int id)
+        {
+            List<SouvenirItemViewModel> model = SouvenirStockRepo.GetItem(id);
+            return PartialView("_DetailItem", model);
+        }
+
         public ActionResult Details(int id)
         {
             SouvenirStockViewModel model = SouvenirStockRepo.GetById(id);
