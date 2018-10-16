@@ -1209,7 +1209,6 @@
     <Content Include="Views\SouvenirRequest\_List.cshtml" />
     <Content Include="Views\SouvenirRequest\_Add.cshtml" />
     <Content Include="Views\SouvenirRequest\_AddItem.cshtml" />
-    <Content Include="Views\Event\_ApproveCp.cshtml" />
     <Content Include="Views\DesignRequest\_AddItem.cshtml" />
     <Content Include="Views\SouvenirStock\_AddItem.cshtml" />
     <Content Include="Views\SouvenirRequest\_Edit.cshtml" />
@@ -1239,6 +1238,10 @@
     <Content Include="Views\DesignRequest\_ProductList.cshtml" />
     <Content Include="Views\DesignRequest\_EditList.cshtml" />
     <Content Include="Views\SouvenirRequest\_DetailItem.cshtml" />
+    <Content Include="Views\DesignRequest\_Close.cshtml" />
+    <Content Include="Views\DesignRequest\_CloseList.cshtml" />
+    <Content Include="Views\SouvenirRequest\_Approve.cshtml" />
+    <Content Include="Views\SouvenirRequest\_ApproveList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdminLTE\dist\PromotionFile\" />

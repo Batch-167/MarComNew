@@ -114,6 +114,8 @@ namespace MarCom.Repository
 
                                         tsouvItem.Update_By = entity.Update_By;
                                         tsouvItem.Update_Date = DateTime.Now;
+
+                                        db.T_Souvenir_Item.Add(tsouvItem);
                                     }
                                 }
                             }
@@ -193,6 +195,42 @@ namespace MarCom.Repository
                 }
             }
             return newRef;
+        }
+
+        public static void DeleteItem(int id)
+        {
+            using (var db = new MarComContext())
+            {
+                foreach (var item in db.T_Souvenir_Item)
+                {
+                    if (item.T_Souvenir_Id == id)
+                    {
+                        db.T_Souvenir_Item.Remove(item);
+                    }
+                }
+                db.SaveChanges();
+            }
+        }
+
+        public static List<SouvenirStockViewModel> Filter(SouvenirStockViewModel entity)
+        {
+            List<SouvenirStockViewModel> result = new List<SouvenirStockViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from ss in db.T_Souvenir
+                          where ss.Code.Contains(entity.Code) || ss.Received_By == entity.Received_By ||
+                         (ss.Received_Date.ToString()).Contains(entity.Received_Date.ToString()) || (ss.Create_Date.ToString()).Contains(entity.Create_Date.ToString()) || ss.Create_By.Contains(entity.Create_By)
+                          where ss.Status == null
+                          select new SouvenirStockViewModel
+                          {
+                              Code = ss.Code,
+                              Received_By = ss.Received_By,
+                              Received_Date = ss.Received_Date,
+                              Create_Date = ss.Create_Date,
+                              Create_By = ss.Create_By
+                          }).ToList();
+            }
+            return result;
         }
     }
 }

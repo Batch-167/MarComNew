@@ -1,4 +1,5 @@
-﻿@{
+﻿@model MarCom.ViewModel.DesignRequestViewModel
+@{
     ViewBag.Title = "List Design Request";
 }
 
@@ -17,34 +18,35 @@
                     </tr>
                     <tr>
                         <td class="col-lg-2">
-                            <input name="Code" type="text" class="form-control text-box single-line" placeholder="Transaction Code" />
+                            <input id="Code" name="Code" type="text" class="form-control text-box single-line" placeholder="Transaction Code" />
                         </td>
                         <td class="col-lg-2">
-                            <input name="Request_By" type="text" class="form-control text-box single-line" placeholder="Request By" />
+                            <input id="Request_By" name="Request_By" type="text" class="form-control text-box single-line" placeholder="Request By" />
                         </td>
                         <td class="col-lg-2">
                             <div class="input-group">
-                                <input class="form-control datepicker" name="Date" placeholder="Request Date" type="date" value="Request Date" />
+                                <input class="form-control datepicker" id="Request_Date" name="Date" placeholder="Request Date" type="date" value="Request Date" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
                         </td>
                         <td class="col-lg-2">
-                            <input name="Assign_To" type="text" class="form-control text-box single-line" placeholder="Assign To" />
+                            @Html.DropDownListFor(model => model.Assign_To, (IEnumerable<SelectListItem>)ViewBag.Assign, "-Select Assign To-", new { @id = "Assign", @class = "form-control lg-2" })
+                           
                         </td>
                         <td class="col-lg-2">
-                            <input name="Status" type="text" class="form-control text-box single-line" placeholder="Status" />
+                            <input id="Status" name="Status" type="text" class="form-control text-box single-line" placeholder="Status" />
                         </td>
                         <td class="col-lg-1">
                             <div class="input-group">
-                                <input class="form-control datepicker" placeholder="Created" type="date" />
+                                <input id="Date" class="form-control datepicker" placeholder="Created" type="date" />
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                             </div>
                         </td>
                         <td class="col-lg-1">
-                            <input name="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
+                            <input id="Created_By" name="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
                         </td>
                         <td>
-                            <button type="button" id="btn-new" class="btn btn-warning btn-sm">Search</button>
+                            <button type="button" id="btn-search" class="btn btn-warning btn-sm">Search</button>
                         </td>
                     </tr>
                 </table>
@@ -89,6 +91,30 @@
                 }
             });
         });
+
+
+        $("#btn-search").click(function Search() {
+            var data = {
+                code: $("#Code").val(),
+                request_by: $("#Request_By").val(),
+                request_date: $("#Request_Date").val(),
+                assign_to: $("#Assign").val(),
+                status: $("#Status").val(),
+                create_date: $("#Date").val(),
+                create_by: $("#Created_By").val(),
+            };
+            $.ajax({
+                url: '@Url.Action("Filter", "DesignRequest")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    $("#table-list").html(result);
+                },
+                error: function (err) {
+                    $("#table-list").tml(err);
+                }
+            });
+        })
 
         function GetList() {
             console.log('masuk');
@@ -160,6 +186,21 @@
         }
 
         function action(act, id, code) {
+        function GetCloseList(id) {
+            $.ajax({
+                url: '@Url.Action("CloseList", "DesignRequest")',
+                type: 'get',
+                data: { id: id },
+                success: function (result) {
+                    $("#close-item-body").html(result);
+                },
+                error: function (err) {
+                    $("#close-item-body").html(result);
+                },
+            });
+        }
+
+        function action(act, id) {
             $.ajax({
                 url: '/DesignRequest/' + act,
                 type: 'get',
@@ -175,6 +216,9 @@
                     if (act == "Approve") {
                         GetItemList(id);
                     };
+                    if (act == "Close") {
+                        GetCloseList(id)
+                    };
                 },
                 error: function (err) {
                     $("#table-list").html(err);
@@ -188,7 +232,7 @@
             var vData = {  Id : $(this).find("#Id").val(), Code: $(this).find("#Code").val(), T_Event_Id: $(this).find("#T_Event_Id").val(), Title_Header: $(this).find("#Title_Header").val(), Request_By: $(this).find("#Request_By").val(), Request_Date: $(this).find("#Request_Date").val(), Note: $(this).find("#Note").val() };
             var vItems = [];
             $("#item-body").find('tr').each(function (index) {
-                var vItem = { Id: $(this).find("#Id").val(), M_Product_Id: $(this).find("#M_Product_Id").val(), Title_Item: $(this).find("#Title_Item").val(), Request_Pic: $(this).find("#Request_Pic").val(), Request_Due_Date: $(this).find("#Request_Due_Date").val(), Note: $(this).find("#Note").val() };
+                var vItem = { Id: $(this).find("#Id").val(), M_Product_Id: $(this).find("#M_Product_Id").val(), Title_Item: $(this).find("#Title_Item").val(), Request_Pic: $(this).find("#Request_Pic").val(), Request_Due_Date: $(this).find("#Request_Due_Date").val(), Start_Date: $(this).find("#Start_Date").val(), End_Date: $(this).find("#End_Date").val(), Note: $(this).find("#Note").val() };
                 vItems.push(vItem);
             })
             $.ajax({

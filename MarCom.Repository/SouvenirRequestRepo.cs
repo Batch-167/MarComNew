@@ -241,6 +241,38 @@ namespace MarCom.Repository
             }
         }
 
+
+        public static ResultResponse Approve(SouvenirRequestViewModel entity)
+        {
+            int? stat = entity.Status;
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new MarComContext())
+                {
+                    T_Souvenir souv = db.T_Souvenir.Where(s => s.Id == entity.Id).FirstOrDefault();
+                    if (souv != null)
+                    {
+                        souv.Reject_Reason = entity.Reject_Reason;
+                        souv.Status = stat;
+
+                        if (entity.Status == 2)
+                        {
+                            souv.Approved_Date = DateTime.Now;
+                            souv.Approved_By = entity.Approved_By;
+                        }
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+
         public static ResultResponse Received(SouvenirRequestViewModel entity)
         {
             ResultResponse result = new ResultResponse();

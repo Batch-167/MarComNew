@@ -231,6 +231,21 @@
             });
         }
 
+
+        function GetApproveItem(id) {
+            $.ajax({
+                url: '@Url.Action("ApproveList", "SouvenirRequest")',
+                type: 'get',
+                data: { id: id },
+                success: function (result) {
+                    $("#approve-item-body").html(result);
+                },
+                error: function (err) {
+                    $("#approve-item-body").html(err);
+                },
+            });
+        }
+
         function AddItem() {
             $.ajax({
                 url: '@Url.Action("AddItem", "SouvenirRequest")',
@@ -289,6 +304,8 @@
                     };
                     SouSettItemApproved(id);
                     if (act == "Received" && act == "Settled") {
+                    GetApproveItem(id)
+                    if (act=="Received") {
                         RemoveAdditem();
                     }
                 },
@@ -372,6 +389,29 @@
                 }
             });
         }
+
+        //var value;
+        function Approve(value) {
+            var data = {
+                status: value,
+                reject_reason: $('#reject-reason').val(),
+                id: $('#request-id').val(),
+            };
+            $.ajax({
+                url: '@Url.Action("Approve","SouvenirRequest")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    if (result.success) {
+                        $("#reason-input").modal("hide");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error")
+                    }
+                }
+            });
+        };
 
         var value;
         function Approved(value) {

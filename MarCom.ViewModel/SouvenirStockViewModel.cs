@@ -29,9 +29,8 @@ namespace MarCom.ViewModel
         public string R_Name { get; set; }
 
         [Display(Name = "Received Date")]
-        [DataType(DataType.Date)]
         [Required]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? Received_Date { get; set; }
 
         [Display(Name = "Create By")]
@@ -62,5 +61,7 @@ namespace MarCom.ViewModel
         [Required]
         [StringLength(255)]
         public string Note_Item { get; set; }
+
+        public string Uname { get; set; }
     }
 }
