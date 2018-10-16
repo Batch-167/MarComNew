@@ -21,7 +21,7 @@ namespace MarCom.Presentation.Controllers
             UserViewModel currentuser = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             if (currentuser.Role == "Staff" || currentuser.Role == "Admin")
             {
-                return View();
+                return View(SouvenirRequestRepo.Get());
             }
             else
             {
@@ -124,9 +124,9 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Received(int id)
         {
-            UserViewModel result = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
+            UserViewModel currentUser = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
-            if (result.Role == "Staff" || result.Role == "Admin")
+            if (currentUser.Role == "Requester" || currentUser.Role == "Admin")
             {
                 return PartialView("_Received", model);
             }
