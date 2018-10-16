@@ -1,65 +1,131 @@
-﻿
+﻿@model IEnumerable<MarCom.ViewModel.SouvenirRequestViewModel>
 @{
     ViewBag.Title = "List Souvenir Request";
 }
 
 @Scripts.Render("~/AdminLTE/plugins/datatables/css")
 
-<div class="panel panel-warning">
+<div class="panel panel-info">
     <div class="panel-heading">
         <div class="row">
-            <div class="col-lg-12">
-                <table>
-                    <tr>
-                        <td colspan="7"></td>
-                        <td>
-                            <button type="button" id="btn-new" class="btn btn-primary btn-sm" title="Add New">Add</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-offset-2">
-                            <input name="Code" type="text" class="form-control text-box single-line" placeholder="Transaction Code" />
-                        </td>
-                        <td class="col-md-offset-2">
-                            <input name="Request_By" type="text" class="form-control text-box single-line" placeholder="Request By" />
-                        </td>
-                        <td class="col-md-offset-2">
-                            <div class="input-group class=" col-md-offset-2"">
-                                <input class="form-control datepicker" placeholder="Request Date" type="date" />
-                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </td>
-                        <td class="col-md-offset-2">
-                            <div class="input-group class=" col-md-offset-2"">
-                                <input class="form-control datepicker" placeholder="Due Date" type="date" />
-                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </td>
-                        <td class="col-md-offset-2">
-                            <input name="Status" type="text" class="form-control text-box single-line" placeholder="Status" />
-                        </td>
-                        <td class="col-md-offset-2">
-                            <input name="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
-                        </td>
-                        <td class="col-md-offset-2">
-                            <div class="input-group class=" col-md-offset-2"">
-                                <input class="form-control datepicker" placeholder="Created" type="date" />
-                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </td>
-                        <td>
-                            <button type="button" id="btn-search" class="btn btn-warning btn-sm" title="Search">Search</button>
-                        </td>
-                    </tr>
+            <div>
+                <table class="table table-bordered table-striped" id="example1">
+                    <thead id="tb-input">
+                        <tr>
+                            <td colspan="8"></td>
+                            <td>
+                                <button type="button" id="btn-new" class="btn btn-primary btn-sm" title="Add New">Add</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                @Html.TextBox("Code", null, new { @class = "form-control column_filter", @id = "col1_filter", @data = "1" ,placeholder="Trancsaction Code" })
+                            </td>
+                            <td>
+                                @Html.TextBox("Request_By", null, new { @class = "form-control column_filter", @id = "col2_filter", @data = "2", placeholder = "Request By" })
+                            </td>
+                            <td class="col-md-offset-2">
+                                <div class="input-group class=" col-md-offset-2"">
+                                    <input type="text" class="form-control column_filter datepicker" id="col3_filter" data="3" placeholder="Request Date" />
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </td>
+                            <td class="col-md-offset-2">
+                                <div class="input-group class=" col-md-offset-2"">
+                                    <input class="form-control column_filter datepicker" placeholder="Due Date" type="text" id="col4_filter" data="4" />
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </td>
+                            <td>
+                                @Html.TextBox("Status", null, new { @class = "form-control column_filter", @id = "col5_filter", @data = "5", placeholder = "Status" })
+                            </td>
+                            <td>
+                                @Html.TextBox("Created_By", null, new { @class = "form-control column_filter", @id = "col6_filter", @data = "6", placeholder = "Created By" })
+                            </td>
+                            <td class="col-md-offset-2">
+                                <div class="input-group class=" col-md-offset-2"">
+                                    <input type="text" class="form-control column_filter datepicker" id="col7_filter" data="7" placeholder="Created" />
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </td>
+                            
+                            <td>
+                                <button type="button" id="btn-search" class="btn btn-warning btn-sm" title="Search">Search</button>
+                            </td>
+                        </tr>
+                        @*<tr>
+                            <td class="col-md-offset-2">
+                                <input name="Code" type="text" class="form-control text-box single-line" placeholder="Transaction Code" />
+                            </td>
+                            <td class="col-md-offset-2">
+                                <input name="Request_By" type="text" class="form-control text-box single-line" placeholder="Request By" />
+                            </td>
+                            <td class="col-md-offset-2">
+                                <div class="input-group class=" col-md-offset-2"">
+                                    <input class="form-control datepicker" placeholder="Request Date" type="date" />
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </td>
+                            <td class="col-md-offset-2">
+                                <div class="input-group class=" col-md-offset-2"">
+                                    <input class="form-control datepicker" placeholder="Due Date" type="date" />
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </td>
+                            <td class="col-md-offset-2">
+                                <input name="Status" type="text" class="form-control text-box single-line" placeholder="Status" />
+                            </td>
+                            <td class="col-md-offset-2">
+                                <input name="Created_By" type="text" class="form-control text-box single-line" placeholder="Created By" />
+                            </td>
+                            <td class="col-md-offset-2">
+                                <div class="input-group class=" col-md-offset-2"">
+                                    <input class="form-control datepicker" placeholder="Created" type="date" />
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </td></tr>*@
+                        <tr class="text-bold text-center bg-blue">
+                            <td>
+                                No.
+                            </td>
+                            <td class="col-md-offset-2">
+                                @Html.DisplayNameFor(model => model.Code)
+                            </td>
+                            <td class="col-md-offset-2">
+                                @Html.DisplayNameFor(model => model.Request_By)
+                            </td>
+                            <td class="col-md-offset-2">
+                                @Html.DisplayNameFor(model => model.Request_Date)
+                            </td>
+                            <td class="col-md-offset-2">
+                                @Html.DisplayNameFor(model => model.Request_Due_Date)
+                            </td>
+                            <td class="col-md-offset-2">
+                                @Html.DisplayNameFor(model => model.Status)
+                            </td>
+                            <td class="col-md-offset-1">
+                                @Html.DisplayNameFor(model => model.Create_By)
+                            </td>
+                            <td class="col-md-offset-2">
+                                @Html.DisplayNameFor(model => model.Create_Date)
+                            </td>
+                            <td>
+                                Action
+                            </td>
+                        </tr>
+                    </thead>
+
+                    <tbody id="table-list">
+                        @Html.Partial("_List", Model)
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
 
-<div class="col-lg-12" id="table-list">
-    <h3>Loading...</h3>
-</div>
+
 
 
 
@@ -79,8 +145,37 @@
 @section Scripts{
     @Scripts.Render("~/AdminLTE/plugins/datatables/js")
     <script type="text/javascript">
+        //$(document).ready(function () {
+        //    GetList();
+        //});
+
         $(document).ready(function () {
-            GetList();
+            $('#example1').DataTable({
+                'sDom': 'tip',
+                ordering: false
+            });
+            $("#tb-input").find(".column_filter").on("keyup click", function () {
+                filterColumn($(this).attr("data-column"));
+            });
+
+        });
+
+        function filterColumn(i) {
+            $("#example1").DataTable().column(i).search(
+                $("#col" + i + "_filter").val()
+                ).draw();
+        }
+
+        $("#btn-search").click(function () {
+            $("#tb-input .form-control").each(function (i) {
+                filterColumn($(this).attr('data'));
+            })
+
+        })
+
+        $("#tb-input").find(".datepicker").datepicker({
+            format: "mm/dd/yyyy",
+            autoclose: true,
         });
 
         $("#btn-new").click(function () {
@@ -136,6 +231,21 @@
             });
         }
 
+
+        function GetApproveItem(id) {
+            $.ajax({
+                url: '@Url.Action("ApproveList", "SouvenirRequest")',
+                type: 'get',
+                data: { id: id },
+                success: function (result) {
+                    $("#approve-item-body").html(result);
+                },
+                error: function (err) {
+                    $("#approve-item-body").html(err);
+                },
+            });
+        }
+
         function AddItem() {
             $.ajax({
                 url: '@Url.Action("AddItem", "SouvenirRequest")',
@@ -184,7 +294,7 @@
                 //dataType: 'html',
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
-                    $("#title-panel").html(act + " Souvenir Request - "+Code);
+                    $("#title-panel").html(act + " Souvenir Request - " + Code);
                     $('#modal-input').modal('show');
                     if (act == "Edit") {
                         GetListItem(id);
@@ -193,7 +303,9 @@
                         GetDetailItem(id);
                     };
                     SouSettItemApproved(id);
-                    if (act=="Received" && act=="Settled") {
+                    if (act == "Received" && act == "Settled") {
+                    GetApproveItem(id)
+                    if (act=="Received") {
                         RemoveAdditem();
                     }
                 },
@@ -202,7 +314,6 @@
                 }
             });
         }
-
 
         $("#modal-input").on("submit", "#input-form", function () {
             var vUrl = $(this).attr('action');
@@ -279,6 +390,29 @@
             });
         }
 
+        //var value;
+        function Approve(value) {
+            var data = {
+                status: value,
+                reject_reason: $('#reject-reason').val(),
+                id: $('#request-id').val(),
+            };
+            $.ajax({
+                url: '@Url.Action("Approve","SouvenirRequest")',
+                type: 'post',
+                data: data,
+                success: function (result) {
+                    if (result.success) {
+                        $("#reason-input").modal("hide");
+                        $("#modal-input").modal("hide");
+                        GetList();
+                    } else {
+                        alert("Error")
+                    }
+                }
+            });
+        };
+
         var value;
         function Approved(value) {
             var data = {
@@ -303,5 +437,6 @@
                 }
             });
         };
+
     </script>
 }

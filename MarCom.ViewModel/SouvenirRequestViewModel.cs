@@ -33,10 +33,13 @@ namespace MarCom.ViewModel
         public int? Request_By { get; set; }
 
         [DisplayName("Request Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? Request_Date { get; set; }
 
         [DisplayName("Due Date")]
         [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? Request_Due_Date { get; set; }
 
         public int? Approved_By { get; set; }
@@ -70,6 +73,7 @@ namespace MarCom.ViewModel
         public string Create_By { get; set; }
 
         [DisplayName("Create Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Create_Date { get; set; }
 
         public string Update_By { get; set; }

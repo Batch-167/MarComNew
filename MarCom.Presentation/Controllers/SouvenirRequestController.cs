@@ -21,7 +21,7 @@ namespace MarCom.Presentation.Controllers
             UserViewModel currentuser = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             if (currentuser.Role == "Staff" || currentuser.Role == "Admin")
             {
-                return View();
+                return View(SouvenirRequestRepo.Get());
             }
             else
             {
@@ -124,9 +124,9 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Received(int id)
         {
-            UserViewModel result = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
+            UserViewModel currentUser = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
             SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
-            if (result.Role == "Staff" || result.Role == "Admin")
+            if (currentUser.Role == "Requester" || currentUser.Role == "Admin")
             {
                 return PartialView("_Received", model);
             }
@@ -150,6 +150,38 @@ namespace MarCom.Presentation.Controllers
         public ActionResult SouSettItemApproved(int id)
         {
             return PartialView("_SouSettItemApproved", SouvenirRequestRepo.GetItem(id));
+        }
+
+
+        //APPROVE
+        public ActionResult Approve(int id)
+        {
+            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
+            SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
+            return PartialView("_Approve", model);
+        }
+
+        //APPROVE LIST ITEM
+        public ActionResult ApproveList(int id)
+        {
+            ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
+            List<SouvenirItemViewModel> model = SouvenirRequestRepo.GetItem(id);
+            return PartialView("_ApproveList", SouvenirRequestRepo.GetItem(id));
+        }
+
+        //APPROVE POST
+        [HttpPost]
+        public ActionResult Approve(SouvenirRequestViewModel model)
+        {
+            UserViewModel model2 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
+            model.Approved_By = model2.M_Employee_Id;
+            ResultResponse result = SouvenirRequestRepo.Approve(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult DetailItem(int id)
