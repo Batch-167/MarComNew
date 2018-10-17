@@ -431,7 +431,6 @@ namespace MarCom.Repository
                               Code = pr.Code,
                               Flag_Design = pr.Flag_Design,
                               Title = pr.Title,
-                              Flag_Design=pr.Flag_Design,
                               T_Event_Id = pr.T_Event_Id,
                               EventCode = ev.Code,
                               T_Design_Id = pr.T_Design_Id,

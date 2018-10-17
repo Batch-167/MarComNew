@@ -64,14 +64,7 @@ namespace MarCom.Presentation.Controllers
             UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
             model.Create_By = User.Identity.Name;
             model.Request_By = model2.M_Employee_Id;
-            
-
-
-
-
-      
-            ResultResponse result = PromotionRepo.Update(model, itemModel);
-            ResultResponse result2 = PromotionRepo.UpdateFile(fileModel, model.Id);
+           
             ResultResponse result = PromotionRepo.Update(model, itemModel, fileModel);
             return Json(new
             {
