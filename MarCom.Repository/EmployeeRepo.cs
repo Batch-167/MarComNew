@@ -14,6 +14,7 @@ namespace MarCom.Repository
         {
             return Get(true);
         }
+
         public static List<EmployeeViewModel> Get(bool yes)
         {
             List<EmployeeViewModel> result = new List<EmployeeViewModel>();

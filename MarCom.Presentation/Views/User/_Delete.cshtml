@@ -3,32 +3,14 @@
 <h3>Delete Data?</h3>
 <div>
 
-    @using (Html.BeginForm("Delete", "User", FormMethod.Post, new { id = "form-delete", name = "form-delete" }))
+    @using (Html.BeginForm("DeleteConfirm", "User", FormMethod.Post, new {@id="input-form"}))
     {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
+            <input type="hidden" name="id" value="@Model.Id" />
             <input type="button" value="Cancel" class="btn btn-warning" data-dismiss="modal" />
             <input type="submit" id="btn-delete" value="Delete" class="btn btn-primary" data-id="@Model.Id" />
         </div>
     }
 </div>
-
-<script type="text/javascript">
-    $("#btn-delete").click(function () {
-        $.ajax({
-            url: '@Url.Action("DeleteConfirm","User")',
-            type: 'post',
-            data: { id: $(this).attr('data-id') },
-            success: function (result) {
-                if (result.success) {
-                    $(".modal").modal("hide");
-                    alert("Data has been deleted");
-                    GetList();
-                } else {
-                    alert("Error! Data hasn't been deleted")
-                }
-            }
-        })
-    })
-</script>

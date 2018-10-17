@@ -1,4 +1,5 @@
-﻿using MarCom.Presentation.Models;
+﻿using MarCom.DataModel;
+using MarCom.Presentation.Models;
 using MarCom.Repository;
 using MarCom.ViewModel;
 using Microsoft.AspNet.Identity;
@@ -13,24 +14,24 @@ using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class UserController : Controller
     {
         private ApplicationUserManager _userManager;
         // GET: User
         public ActionResult Index()
         {
-            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
-            ViewBag.Role = new SelectList(RoleRepo.Get(), "Id", "Name");
-            ViewBag.Company = new SelectList(CompanyRepo.Get(), "Id", "Name");
-            return View();
+            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "FullName", "FullName");
+            ViewBag.Role = new SelectList(RoleRepo.Get(), "Name", "Name");
+            ViewBag.Company = new SelectList(CompanyRepo.Get(), "Name", "Name");
+            return View(UserRepo.Get());
         }
 
-        [HttpPost]
-        public ActionResult Filter(UserViewModel model)
-        {
-            return PartialView("_List", UserRepo.Filter(model));
-        }
+        //[HttpPost]
+        //public ActionResult Filter(UserViewModel model)
+        //{
+        //    return PartialView("_List", UserRepo.Filter(model));
+        //}
 
         public ActionResult List()
         {
@@ -41,16 +42,16 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Add()
         {
             UserViewModel result = UserRepo.GetIdByName(User.Identity.Name);
-            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
+            ViewBag.Employee = new SelectList(UserRepo.GetEmp(), "Id", "Full_Name");
             ViewBag.Role = new SelectList(RoleRepo.Get(), "Id", "Name");
-            //if (result.Role == "Admin")
-            //{
-            return PartialView("_Add", new RegisterViewModel());
-            //}
-            //else
-            //{
-            //    return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
-            //}
+            if (result.Role == "Admin")
+            {
+                return PartialView("_Add", new RegisterViewModel());
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         //
@@ -60,11 +61,12 @@ namespace MarCom.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Add(RegisterViewModel model)
             {
-
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, M_Employee_Id = model.M_Employee_Id, Is_Delete = model.Is_Delete, Create_By = model.Create_By, Create_Date = model.Create_Date, M_Role_Id = model.RoleId };
                 var result = await UserManager.CreateAsync(user, model.Password);
+               // UserViewModel model1 = new UserViewModel();
+                ResultResponse result2 = UpdateEm(model);
                 //if (result.Succeeded)
                 //{
                 //   // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -93,13 +95,28 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Edit(UserViewModel model)
         {
-            ResultResponse result = UserRepo.Update(model);
-            return Json(new
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
+                ResultResponse result = UserRepo.Update(model);
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                ResultResponse result = UserRepo.Update(model);
+                result.Success = false;
+                result.Message = "Please fill data correctly!";
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult Delete(int id)
@@ -118,13 +135,24 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult DeleteConfirm(int id)
         {
+            bool result = UserRepo.Delete(id);
             if (UserRepo.Delete(id))
             {
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = result,
+                    entity = "",
+                    message = "Delete Success"
+                }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = result,
+                    entity = "",
+                    message = "Delete Failed"
+                }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -170,6 +198,31 @@ namespace MarCom.Presentation.Controllers
 
                     db.M_User_Role.Add(userRole);
                     db.SaveChanges();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+
+        public static ResultResponse UpdateEm(RegisterViewModel entity)
+        {
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new MarComContext())
+                {
+
+                    M_Employee employee = db.M_Employee.Where(c => c.Id == entity.M_Employee_Id).FirstOrDefault();
+                    if (employee != null)
+                    {
+                        employee.Em_Role = entity.RoleId;
+                        db.SaveChanges();
+                    }
 
                 }
             }

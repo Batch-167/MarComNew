@@ -1,0 +1,22 @@
+﻿@model IEnumerable<MarCom.ViewModel.SouvenirItemViewModel>
+
+@foreach (var item in Model)
+{
+    <tr>
+        @Html.HiddenFor(model => item.Id, new { @Id = "Id" })
+    <td>
+        @Html.EditorFor(model => item.SouvenirName, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
+        @Html.ValidationMessageFor(model => item.SouvenirName, "", new { @class = "text-danger" })
+    </td>
+
+    <td>
+        @Html.EditorFor(model => item.Qty, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
+        @Html.ValidationMessageFor(model => item.Qty, "", new { @class = "text-danger" })
+    </td>
+
+    <td>
+        @Html.EditorFor(model => item.Note, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
+        @Html.ValidationMessageFor(model => item.Note, "", new { @class = "text-danger" })
+    </td>
+</tr>
+}

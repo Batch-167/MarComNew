@@ -48,12 +48,11 @@ namespace MarCom.ViewModel
         public bool Is_Delete { get; set; }
 
         [Display(Name = "Create By")]
-        [Required]
         [StringLength(50)]
         public string Create_By { get; set; }
 
         [Display(Name = "Create Date")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Create_Date { get; set; }
     }
 }

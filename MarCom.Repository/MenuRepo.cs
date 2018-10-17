@@ -71,33 +71,51 @@ namespace MarCom.Repository
                 {
                     if (entity.Id == 0)
                     {
-                        M_Menu menu = new M_Menu();
-                        menu.Code = entity.Code;
-                        menu.Name = entity.Name;
-                        menu.Controller = entity.Controller;
-                        menu.Parent_Id = entity.Parent_Id;
-                        menu.Is_Delete = entity.Is_Delete;
+                        bool notExist = db.M_Menu.Any(mm => mm.Name.Equals(entity.Name));
+                        if (notExist)
+                        {
+                            result.Success = false;
+                            result.Message = "Souvenir with name " + entity.Name + " already Exist !";
+                        }
+                        else
+                        {
+                            M_Menu menu = new M_Menu();
+                            menu.Code = entity.Code;
+                            menu.Name = entity.Name;
+                            menu.Controller = entity.Controller;
+                            menu.Parent_Id = entity.Parent_Id;
+                            menu.Is_Delete = entity.Is_Delete;
 
-                        menu.Create_By = entity.Create_By;
-                        menu.Create_Date = DateTime.Now;
+                            menu.Create_By = entity.Create_By;
+                            menu.Create_Date = DateTime.Now;
 
-                        db.M_Menu.Add(menu);
-                        db.SaveChanges();
+                            db.M_Menu.Add(menu);
+                            db.SaveChanges();
+                        }
                     }
                     else
                     {
                         M_Menu menu = db.M_Menu.Where(m => m.Id == entity.Id).FirstOrDefault();
                         if (menu != null)
                         {
-                            menu.Code = entity.Code;
-                            menu.Name = entity.Name;
-                            menu.Controller = entity.Controller;
-                            menu.Parent_Id = entity.Parent_Id;
+                            bool notExist = db.M_Menu.Any(mm => mm.Name.Equals(entity.Name) && mm.Code != entity.Code);
+                            if (notExist)
+                            {
+                                result.Success = false;
+                                result.Message = "Souvenir with name " + entity.Name + " already Exist !";
+                            }
+                            else
+                            {
+                                menu.Code = entity.Code;
+                                menu.Name = entity.Name;
+                                menu.Controller = entity.Controller;
+                                menu.Parent_Id = entity.Parent_Id;
 
-                            menu.Update_By = entity.Update_By;
-                            menu.Update_Date = DateTime.Now;
+                                menu.Update_By = entity.Update_By;
+                                menu.Update_Date = DateTime.Now;
 
-                            db.SaveChanges();
+                                db.SaveChanges();
+                            }
                         }
                     }
                 }
@@ -133,9 +151,9 @@ namespace MarCom.Repository
             return result;
         }
 
-        public static bool Delete(int id)
+        public static ResultResponse Delete(int id)
         {
-            bool result = true;
+            ResultResponse result = new ResultResponse();
             try
             {
                 using (var db = new MarComContext())
@@ -145,12 +163,14 @@ namespace MarCom.Repository
                     {
                         menu.Is_Delete = true;
                         db.SaveChanges();
+                        result.Message = "Data Deleted ! Data menu with code " + menu.Code + " has been deleted";
                     }
                 }
             }
             catch (Exception)
             {
-                return false;
+                result.Success = false;
+                result.Message = "Delete data not success";
             }
             return result;
         }
@@ -180,18 +200,11 @@ namespace MarCom.Repository
 
         public static List<MenuViewModel> Filter(MenuViewModel entity)
         {
-            string date = entity.Create_Date.ToString();
-            string[] olddate = date.Split(' ');
-            string date1 = olddate[0];
-            string[] datenew = date1.Split('/');
-            string date2 = datenew[0];
-            string date3 = (int.Parse(datenew[1])).ToString("D2");
-            string datenew1 = datenew[2]+'-'+date2+'-'+date3;
             List<MenuViewModel> result = new List<MenuViewModel>();
             using (var db = new MarComContext())
             {
                 result = (from m in db.M_Menu
-                          where m.Code == entity.Code || m.Name == entity.Name || m.Create_Date.ToString().Contains(datenew1) || m.Create_By.Contains(entity.Create_By)
+                          where m.Code == entity.Code || m.Name == entity.Name || m.Create_Date == entity.Create_Date || m.Create_By.Contains(entity.Create_By)
                           select new MenuViewModel
                           {
                               Code = m.Code,

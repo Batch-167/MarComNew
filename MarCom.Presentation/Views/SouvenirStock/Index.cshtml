@@ -30,7 +30,7 @@
                     <input id="Code" type="text" class="form-control" placeholder="Transaction Code" />
                 </td>
                 <td class="col-lg-3">
-                    @Html.DropDownListFor(model => model.Received_By, (IEnumerable<SelectListItem>)ViewBag.Received, "Received By", new { @id ="Received", @class = "form-control" })
+                    @Html.DropDownListFor(model => model.Received_By, (IEnumerable<SelectListItem>)ViewBag.Received, "Received By", new { @id = "Received", @class = "form-control" })
                 </td>
                 <td class="col-lg-2">
                     <div class="input-group">
@@ -122,7 +122,7 @@
             $.ajax({
                 url: '@Url.Action("ListItem", "SouvenirStock")',
                 type: 'get',
-                data: { id: id},
+                data: { id: id },
                 success: function (result) {
                     $("#item-body").append(result);
                 },
@@ -130,6 +130,20 @@
                     $("#item-body").html(err);
                 }
             });
+        }
+
+        function GetDetailItem(id) {
+            $.ajax({
+                url: '@Url.Action("DetailItem", "SouvenirStock")',
+                type: 'get',
+                data: { id: id },
+                success: function (result) {
+                    $("#item-body").append(result);
+                },
+                error: function (err) {
+                    $("#item-body").html(err);
+                }
+            })
         }
 
         $("#btn-new").click(function () {
@@ -144,7 +158,7 @@
             });
         });
 
-        function AddItem() { 
+        function AddItem() {
             $.ajax({
                 url: '@Url.Action("AddItem", "SouvenirStock")',
                 type: 'get',
@@ -177,7 +191,12 @@
                     $('#modal-input').find('.modal-body').html(result);
                     $("#title-panel").html(act + " Souvenir Stock " + code);
                     $('#modal-input').modal('show');
-                    GetListItem(id);
+                    if (act == "Edit") {
+                        GetListItem(id);
+                    }
+                    if (act == "Details") {
+                        GetDetailItem(id);
+                    };
                 },
                 error: function (err) {
                     $('#table-list').html(err);
