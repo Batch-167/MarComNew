@@ -5,10 +5,13 @@ namespace MarCom.DataModel
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Web;
 
     public partial class T_Design_Item_File
     {
         public int Id { get; set; }
+
+
 
         public int T_Design_Item_Id { get; set; }
 

@@ -10,6 +10,24 @@ namespace MarCom.Repository
 {
     public class SouvenirRequestRepo
     {
+        public static List<SouvenirViewModel> GetStock()
+        {
+            List<SouvenirViewModel> result = new List<SouvenirViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from s in db.M_Souvenir
+                          join u in db.M_Unit on s.M_Unit_Id equals u.Id
+                          //join si in db.T_Souvenir_Item on s.Id equals si.M_Souvenir_Id
+                          //where si.Qty >= 0
+                          select new SouvenirViewModel
+                          {
+                              Id = s.Id,
+                              Name = s.Name,                                                         
+
+                          }).ToList();
+            }
+            return result;
+        }
         public static List<SouvenirRequestViewModel> Get()
         {
             List<SouvenirRequestViewModel> result = new List<SouvenirRequestViewModel>();
@@ -29,7 +47,7 @@ namespace MarCom.Repository
                               Is_Delete = sr.Is_Delete,
 
                               Create_Date = sr.Create_Date,
-                              Create_By = "Administrator"
+                              Create_By = sr.Create_By,
                           }).ToList();
             }
             return result;
@@ -50,7 +68,10 @@ namespace MarCom.Repository
                               T_Souvenir_Id = si.T_Souvenir_Id,
                               M_Souvenir_Id = si.M_Souvenir_Id,
                               SouvenirName = s.Name,
+                              Create_By = si.Create_By,
+                              Create_Date = si.Create_Date,
                               Qty = si.Qty,
+                              Qty_Settlement=si.Qty_Settlement,
                               Note = si.Note,
                           }).ToList();
             }
@@ -60,48 +81,15 @@ namespace MarCom.Repository
         public static ResultResponse Update(SouvenirRequestViewModel entity, List<SouvenirItemViewModel> entityitem)
         {
             ResultResponse result = new ResultResponse();
-            using (var db = new MarComContext())
+            try
             {
-                if (entity.Id == 0)
+                using (var db = new MarComContext())
                 {
-                    T_Souvenir t_Souv = new T_Souvenir();
-                    t_Souv.Code = entity.Code;
-                    t_Souv.Type = "Additional";
-                    t_Souv.T_Event_Id = entity.T_Event_Id;
-                    t_Souv.Request_By = entity.Request_By;
-                    t_Souv.Request_Date = entity.Request_Date;
-                    t_Souv.Request_Due_Date = entity.Request_Due_Date;
-                    t_Souv.Note = entity.Note;
-                    t_Souv.Status = 1;
-
-                    t_Souv.Create_By = entity.Create_By;
-                    t_Souv.Create_Date = DateTime.Now;
-
-                    db.T_Souvenir.Add(t_Souv);
-
-                    foreach (var item in entityitem)
+                    if (entity.Id == 0)
                     {
-                        T_Souvenir_Item t_SouvItem = new T_Souvenir_Item();
-                        t_SouvItem.T_Souvenir_Id = entity.Id;
-                        t_SouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
-                        t_SouvItem.Qty = item.Qty;
-                        t_SouvItem.Note = item.Note;
-                        t_SouvItem.Is_Delete = item.Is_Delete;
-
-                        t_SouvItem.Create_By = entity.Create_By;
-                        t_SouvItem.Create_Date = DateTime.Now;
-
-                        db.T_Souvenir_Item.Add(t_SouvItem);
-                    }
-                    db.SaveChanges();
-                    result.Message = "Data Saved ! Transaction Souvenir Request has been add with code " + entity.Code;
-                }
-                else
-                {
-                    T_Souvenir t_Souv = db.T_Souvenir.Where(ts => ts.Id == entity.Id).FirstOrDefault();
-                    if (t_Souv != null)
-                    {
+                        T_Souvenir t_Souv = new T_Souvenir();
                         t_Souv.Code = entity.Code;
+                        t_Souv.Type = "Additional";
                         t_Souv.T_Event_Id = entity.T_Event_Id;
                         t_Souv.Request_By = entity.Request_By;
                         t_Souv.Request_Date = entity.Request_Date;
@@ -109,12 +97,46 @@ namespace MarCom.Repository
                         t_Souv.Note = entity.Note;
                         t_Souv.Status = 1;
 
-                        t_Souv.Update_By = entity.Update_By;
-                        t_Souv.Update_Date = DateTime.Now;
+                        t_Souv.Create_By = entity.Create_By;
+                        t_Souv.Create_Date = DateTime.Now;
+
+                        db.T_Souvenir.Add(t_Souv);
+                        db.SaveChanges();
 
                         foreach (var item in entityitem)
                         {
-                            if (item.Id == 0)
+                            T_Souvenir_Item t_SouvItem = new T_Souvenir_Item();
+                            t_SouvItem.T_Souvenir_Id = t_Souv.Id;
+                            t_SouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
+                            t_SouvItem.Qty = item.Qty;
+                            t_SouvItem.Note = item.Note;
+                            t_SouvItem.Is_Delete = item.Is_Delete;
+
+                            t_SouvItem.Create_By = entity.Create_By;
+                            t_SouvItem.Create_Date = DateTime.Now;
+
+                            db.T_Souvenir_Item.Add(t_SouvItem);
+                            db.SaveChanges();
+                        }
+                        result.Message = "Data Saved ! Transaction Souvenir Request has been add with code " + entity.Code;
+                    }
+                    else
+                    {
+                        T_Souvenir t_Souv = db.T_Souvenir.Where(ts => ts.Id == entity.Id).FirstOrDefault();
+                        if (t_Souv != null)
+                        {
+                            t_Souv.Code = entity.Code;
+                            t_Souv.T_Event_Id = entity.T_Event_Id;
+                            t_Souv.Request_By = entity.Request_By;
+                            t_Souv.Request_Date = entity.Request_Date;
+                            t_Souv.Request_Due_Date = entity.Request_Due_Date;
+                            t_Souv.Note = entity.Note;
+                            t_Souv.Status = 1;
+
+                            t_Souv.Update_By = entity.Update_By;
+                            t_Souv.Update_Date = DateTime.Now;
+
+                            foreach (var item in entityitem)
                             {
                                 T_Souvenir_Item t_SouvItem = new T_Souvenir_Item();
                                 t_SouvItem.T_Souvenir_Id = entity.Id;
@@ -123,38 +145,36 @@ namespace MarCom.Repository
                                 t_SouvItem.Note = item.Note;
                                 t_SouvItem.Is_Delete = item.Is_Delete;
 
-                                t_SouvItem.Create_By = entity.Update_By;
-                                t_SouvItem.Create_Date = DateTime.Now;
-
-                                db.T_Souvenir_Item.Add(t_SouvItem);
-                            }
-                            else
-                            {
-                                T_Souvenir_Item t_SouvItem = db.T_Souvenir_Item.Where(si => si.Id == item.Id).FirstOrDefault();
-                                if (t_SouvItem != null)
+                                if (item.Id == 0)
                                 {
-
-                                    t_SouvItem.T_Souvenir_Id = entity.Id;
-                                    t_SouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
-                                    t_SouvItem.Qty = item.Qty;
-                                    t_SouvItem.Note = item.Note;
-                                    t_SouvItem.Is_Delete = item.Is_Delete;
-
+                                    t_SouvItem.Create_By = entity.Update_By;
+                                    t_SouvItem.Create_Date = DateTime.Now;
+                                }
+                                else
+                                {
+                                    t_SouvItem.Create_By = item.Create_By;
+                                    t_SouvItem.Create_Date = item.Create_Date;
                                     t_SouvItem.Update_By = entity.Update_By;
                                     t_SouvItem.Update_Date = DateTime.Now;
-
-                                    db.T_Souvenir_Item.Add(t_SouvItem);
-
                                 }
+                                db.T_Souvenir_Item.Add(t_SouvItem);
                             }
+                            db.SaveChanges();
                         }
+                        result.Message = "Data Update ! Transaction Souvenir Request with code " + entity.Code + " has been update";
                     }
-                    db.SaveChanges();
-                    result.Message = "Data Update ! Transaction Souvenir Request with code " + entity.Code + " has been update";
                 }
+            }
+            catch (Exception ex)
+            {
+                throw;
+                result.Success = false;
+                result.Message = ex.Message;
             }
             return result;
         }
+
+
 
         public static string GetNewCode()
         {
@@ -260,7 +280,7 @@ namespace MarCom.Repository
 
                         if (entity.Status == 2)
                         {
-                            souv.Approved_Date = DateTime.Now;
+                            souv.Approve_Date = DateTime.Now;
                             souv.Approved_By = entity.Approved_By;
                             result.Message = "Data Approved !! Transaction Souvenir Request with code " + entity.Code + " has been approved.";
                         }
@@ -292,7 +312,39 @@ namespace MarCom.Repository
                         t_Souv.Received_Date = DateTime.Now;
                     }
                     db.SaveChanges();
-                    result.Message = "Data Updated !! Transaction Souvenir Request with code" + entity.Code +"has been Received By Requester";
+                    result.Message = "Data Updated !! Transaction Souvenir Request with code" + entity.Code + "has been Received By Requester";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+
+        public static ResultResponse Settlement(SouvenirRequestViewModel entity, List<SouvenirItemViewModel> entityItem)
+        {
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new MarComContext())
+                {
+                    T_Souvenir so = db.T_Souvenir.Where(sou => sou.Id == entity.Id).FirstOrDefault();
+                    if (so != null)
+                    {
+                        so.Status = 4;
+                        so.Settlement_By = entity.Settlement_By;
+                        so.Settlement_Date = DateTime.Now;
+
+                        foreach (var item in entityItem)
+                        {
+                            T_Souvenir_Item si = db.T_Souvenir_Item.Where(s => s.Id == item.Id).FirstOrDefault();
+                            si.Qty_Settlement = item.Qty_Settlement;
+                        }
+                    db.SaveChanges();
+                        result.Message = "Data Updated !! Transaction Souvenir Request with code" + entity.Code + "has been Settled By Requester";
+                    }
                 }
             }
             catch (Exception ex)
@@ -316,7 +368,7 @@ namespace MarCom.Repository
                     {
                         so.Reject_Reason = entity.Reject_Reason;
                         so.Status = entity.Status;
-                       
+
                         if (entity.Status == 2)
                         {
                             so.Settlement_Approved_By = entity.Settlement_Approved_By;

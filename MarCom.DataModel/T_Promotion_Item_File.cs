@@ -5,10 +5,12 @@ namespace MarCom.DataModel
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Web;
 
     public partial class T_Promotion_Item_File
     {
         public int Id { get; set; }
+
 
         public int T_Promotion_id { get; set; }
 
@@ -20,8 +22,6 @@ namespace MarCom.DataModel
 
         [StringLength(11)]
         public string Extention { get; set; }
-
-        public string ImagePath { get; set; }
 
         public DateTime? Start_Date { get; set; }
 

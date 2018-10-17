@@ -59,7 +59,7 @@
 
 
 <div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" style="width:1250px" role="document">
         <div class="modal-content">
             <div class="modal-header bg-blue">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -92,9 +92,6 @@
             });
         });
 
-        
-
-
          function GetList() {
             $.ajax({
                 url: '@Url.Action("List", "Promotion")',
@@ -108,6 +105,7 @@
             });
         }
 
+        //untuk create
         //untuk nambahin add item dari promotion
         function AddItem() {
             $.ajax({
@@ -156,6 +154,7 @@
             $(obj).closest('tr').remove();
         }
 
+        //untuk Approval
         //fungsi untuk menampilkan design
         function getDesignView(id) {
             $.ajax({
@@ -204,7 +203,6 @@
 
         //untuk edit design request
         function getEditDesignReq(id) {
-            debugger
             $.ajax({
                 url: '@Url.Action("EditDesign", "Promotion")',
                 type: 'get',
@@ -225,10 +223,25 @@
                 type: 'get',
                 data: { id: id },
                 success: function (result) {
-                    $("#Editdesignitem-req").html(result);
+                    $("#designitem-req").html(result);
                 },
                 error: function (err) {
-                    $("#Editdesignitem-req").html(result);
+                    $("#designitem-req").html(result);
+                },
+            });
+        }
+
+        function editList(id) {
+            debugger
+            $.ajax({
+                url: '@Url.Action("EditList", "Promotion")',
+                type: 'get',
+                data: { id: id },
+                success: function (result) {
+                    $("#promotion-file").html(result);
+                },
+                error: function (err) {
+                    $("#promotion-file").html(result);
                 },
             });
         }
@@ -242,12 +255,16 @@
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
                     $('#modal-input').modal('show');
-                    getEditDesignReq(id);
-                    getEditDesignItemReq(id);
-
-                    getDesignView(id); //agar view design dapat tampil ketika menekan button approve
-                    getDesignItemView(id); //agar view design item dapat tampil ketika menekan button approve
-                    getPromotionFile(id); //agar view promotion file dapat tampil ketika menekan button approve
+                    if (act=="edit") {
+                        getEditDesignReq(id);
+                        getEditDesignItemReq(id);
+                        editList(id);
+                    } else {
+                        getDesignView(id); //agar view design dapat tampil ketika menekan button approve
+                        getDesignItemView(id); //agar view design item dapat tampil ketika menekan button approve
+                        getPromotionFile(id); //agar view promotion file dapat tampil ketika menekan button approve
+                    }
+                    
                 },
                 error: function (err) {
                     $("#table-list").html(err);
@@ -264,7 +281,7 @@
 
             var vItems = [];
             $('#designitem-req').find('tr').each(function (index) {
-                var vItem = { Id : $(this).find("#Id").val(), T_Design_Item_Id: $(this).find('T_Design_Item_Id').val(), M_Product_Id: $(this).find('#M_Product_Id').val(), Title: $(this).find('#Title').val(), Qty: $(this).find('#Qty').val(), Todo: $(this).find('#Todo').val(), Request_Due_Date: $(this).find('#Request_Due_Date').val(), Note: $(this).find('#Note').val() };
+                var vItem = { Id : $(this).find("#Id").val(), T_Design_Item_Id: $(this).find('#T_Design_Item_Id').val(), M_Product_Id: $(this).find('#M_Product_Id').val(), Title: $(this).find('#Title').val(), Qty: $(this).find('#Qty').val(), Todo: $(this).find('#Todo').val(), Request_Due_Date: $(this).find('#Request_Due_Date').val(), Note: $(this).find('#Note').val() };
                 vItems.push(vItem);
             });
 
@@ -291,13 +308,15 @@
             return false;
         });
 
-
         function create2() {
             var designID = $('#T_Design_Id').val();
+            var eventID = $('#T_Event_Id').val();
+            //console.log(designID);
+            debugger
             $.ajax({
                 url: '@Url.Action("Create2","Promotion")',
                 type: 'get',
-                data: { designid: designID },
+                data: { designid: designID, eventid: eventID },
                 success: function (result) {
                     $(".modal-body").html(result);
                     $(".modal").modal("show");
@@ -308,11 +327,12 @@
         }
 
         function create3() {
-            //var eventID = $('T_Event_Id').val();
+            var eventID = $('#T_Event_Id').val();
+            //console.log(eventID);
             $.ajax({
                 url: '@Url.Action("Create3","Promotion")',
                 type: 'get',
-                //data:{eventid: eventID},
+                data:{eventid: eventID},
                 success: function (result) {
                     $(".modal-body").html(result);
                     $(".modal").modal("show");
@@ -320,6 +340,8 @@
                 }
             });
         }
+
+
 
         var value;
         function Approve(value) {

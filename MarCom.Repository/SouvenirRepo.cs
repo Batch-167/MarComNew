@@ -20,7 +20,7 @@ namespace MarCom.Repository
             using (var db = new MarComContext())
             {
                 result = (from s in db.M_Souvenir
-                          join u in db.M_Unit on s.M_Unit_Id equals u.Id 
+                          join u in db.M_Unit on s.M_Unit_Id equals u.Id
                           select new SouvenirViewModel
                           {
                               Id = s.Id,
@@ -29,7 +29,7 @@ namespace MarCom.Repository
                               Description = s.Description,
                               Quantity = s.Quantity,
                               M_Unit_Id = s.M_Unit_Id,
-                              Unit = u.Name,                              
+                              Unit = u.Name,
                               Is_Delete = s.Is_Delete,
 
                               Create_By = s.Create_By,
@@ -46,42 +46,63 @@ namespace MarCom.Repository
 
         public static ResultResponse Update(SouvenirViewModel entity)
         {
-            ResultResponse result = new ResultResponse();            
+            ResultResponse result = new ResultResponse();
             try
             {
                 using (var db = new MarComContext())
                 {
                     if (entity.Id == 0)
                     {
-                        M_Souvenir souvenir = new M_Souvenir();
-                        souvenir.Code = entity.Code;
-                        souvenir.Name = entity.Name;
-                        souvenir.Description = entity.Description;
-                        souvenir.Quantity = entity.Quantity;
-                        souvenir.M_Unit_Id = entity.M_Unit_Id;
-                        souvenir.Is_Delete = entity.Is_Delete;
+                        bool notExist = db.M_Souvenir.Any(ms => ms.Name.Equals(entity.Name));
+                        if (notExist)
+                        {
+                            result.Success = false;
+                            result.Message = "Souvenir with name " + entity.Name + " already Exist !";
+                        }
+                        else
+                        {
+                            M_Souvenir souvenir = new M_Souvenir();
+                            souvenir.Code = entity.Code;
+                            souvenir.Name = entity.Name;
+                            souvenir.Description = entity.Description;
+                            souvenir.Quantity = entity.Quantity;
+                            souvenir.M_Unit_Id = entity.M_Unit_Id;
+                            souvenir.Is_Delete = entity.Is_Delete;
 
-                        souvenir.Create_By = entity.Create_By;
-                        souvenir.Create_Date = DateTime.Now;
+                            souvenir.Create_By = entity.Create_By;
+                            souvenir.Create_Date = DateTime.Now;
 
-                        db.M_Souvenir.Add(souvenir);
-                        db.SaveChanges();
+                            db.M_Souvenir.Add(souvenir);
+
+                            db.SaveChanges();
+                            result.Message = "Data Saved ! New Souvenier has been add with code " + entity.Code;
+                        }
                     }
                     else
                     {
                         M_Souvenir souvenir = db.M_Souvenir.Where(s => s.Id == entity.Id).FirstOrDefault();
                         if (souvenir != null)
                         {
-                            souvenir.Name = entity.Name;
-                            souvenir.Description = entity.Description;
-                            souvenir.Quantity = entity.Quantity;
-                            souvenir.M_Unit_Id = entity.M_Unit_Id;
-                            //souvenir.Is_Delete = entity.Is_Delete;
+                            bool notExist = db.M_Souvenir.Any(ms => ms.Name.Equals(entity.Name) && ms.Code != entity.Code);
+                            if (notExist)
+                            {
+                                result.Success = false;
+                                result.Message = "Souvenir with name " + entity.Name + " already Exist !";
+                            }
+                            else
+                            {
+                                souvenir.Name = entity.Name;
+                                souvenir.Description = entity.Description;
+                                souvenir.Quantity = entity.Quantity;
+                                souvenir.M_Unit_Id = entity.M_Unit_Id;
+                                //souvenir.Is_Delete = entity.Is_Delete;
 
-                            souvenir.Update_By = entity.Update_By;
-                            souvenir.Update_Date = DateTime.Now;
+                                souvenir.Update_By = entity.Update_By;
+                                souvenir.Update_Date = DateTime.Now;
 
-                            db.SaveChanges();
+                                db.SaveChanges();
+                                result.Message = "Data Update ! Data Souvenir has been updated";
+                            }
                         }
                     }
                 }
@@ -109,7 +130,7 @@ namespace MarCom.Repository
                               Name = s.Name,
                               Description = s.Description,
                               Quantity = s.Quantity,
-                              M_Unit_Id = s.M_Unit_Id,              
+                              M_Unit_Id = s.M_Unit_Id,
                               Unit = u.Name,
                               Is_Delete = s.Is_Delete,
                               Create_By = s.Create_By,
@@ -119,9 +140,9 @@ namespace MarCom.Repository
             return result;
         }
 
-        public static bool Delete(int id)
+        public static ResultResponse Delete(int id)
         {
-            bool result = true;
+            ResultResponse result = new ResultResponse();
             try
             {
                 using (var db = new MarComContext())
@@ -131,18 +152,20 @@ namespace MarCom.Repository
                     {
                         souvenir.Is_Delete = true;
                         db.SaveChanges();
+                        result.Message = "Data Deleted ! Data souvenir with code " + souvenir.Code + " has been deleted";
                     }
                 }
             }
             catch (Exception)
             {
-                return false;
+                result.Success = false;
+                result.Message = "Delete Data not success";
             }
             return result;
         }
 
         public static string GetNewCode()
-        {            
+        {
             string newRef = "SV";
             using (var db = new MarComContext())
             {

@@ -47,7 +47,7 @@ namespace MarCom.Presentation.Controllers
         {
             UserViewModel result = UserRepo.GetIdByName(User.Identity.Name);
             ViewBag.Panel = "Approval Design Request";
-            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
+            ViewBag.Employee = new SelectList(DesignApproveRepo.GetAssign(), "Id", "Full_Name");
             DesignApproveViewModel model = DesignApproveRepo.GetById(id);
             if (result.Role == "Admin")
             {

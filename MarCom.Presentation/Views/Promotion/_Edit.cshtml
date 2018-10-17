@@ -2,8 +2,6 @@
 
 <div class="panel panel-primary">
     <div class="panel-body">
-
-
         @using (Html.BeginForm("Edit", "Promotion", FormMethod.Post, new { @id = "input-form" }))
         {
             @Html.AntiForgeryToken()
@@ -14,9 +12,10 @@
                         @Html.HiddenFor(model => model.Id)
 
                         <div class="form-group">
+                            @Html.HiddenFor(model => model.T_Design_Id)
                             @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @id= "Code" } })
                                 @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -25,7 +24,7 @@
                             @Html.LabelFor(model => model.EventCode, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.HiddenFor(model => model.T_Event_Id)
-                                @Html.EditorFor(model => model.EventCode, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.EventCode, new { htmlAttributes = new { @class = "form-control", @id= "T_Event_Id" } })
                                 @Html.ValidationMessageFor(model => model.EventCode, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -43,7 +42,7 @@
                             @Html.LabelFor(model => model.RequestBy, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.HiddenFor(model => model.Request_By)
-                                @Html.EditorFor(model => model.RequestBy, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.EditorFor(model => model.RequestBy, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "Request_By" } })
                                 @Html.ValidationMessageFor(model => model.RequestBy, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -51,7 +50,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.Request_Date, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.Request_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @type = "date" } })
+                                @Html.EditorFor(model => model.Request_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "Date" } })
                                 @Html.ValidationMessageFor(model => model.Request_Date, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -67,7 +66,8 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.HiddenFor(model => model.Status)
+                                @Html.EditorFor(model => model.StatusCondt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-body">
-                        <div class="col-lg-12" id="design-req">
+                        <div class="col-lg-12" id="Editdesign-req">
                             <h3>Loading...</h3>
                         </div>
                     </div>
@@ -125,8 +125,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 <div class="panel panel primary">
                     <div class="panel-body">
                         <div class="col-lg-12">

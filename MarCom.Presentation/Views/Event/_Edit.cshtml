@@ -37,7 +37,7 @@
                     <span>Request Date</span>
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.Request_Date, new { htmlAttributes = new { @Value= Model.Request_Date.ToString("dd-MM-yyyy"), @class = "form-control", @readonly = "readonly" } })
+                    @Html.EditorFor(model => model.Request_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 </td>
             </tr>
             <tr></tr>
@@ -107,6 +107,6 @@
 }
 <script type="text/javascript">
     $(function () {
-        $('.datepicker').datepicker({ format: 'dd-mm-yyyy' });
+        $('.datepicker').datepicker({ format: 'mm-dd-yyyy' });
     });
 </script>

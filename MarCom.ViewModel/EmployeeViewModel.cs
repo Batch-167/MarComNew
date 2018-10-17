@@ -13,6 +13,7 @@ namespace MarCom.ViewModel
         public EmployeeViewModel()
         {
             Is_Delete = false;
+            Em_Role = 0;
         }
         public int Id { get; set; }
 
@@ -64,5 +65,7 @@ namespace MarCom.ViewModel
         public string Update_By { get; set; }
 
         public DateTime? Update_Date { get; set; }
+
+        public int Em_Role { get; set; }
     }
 }

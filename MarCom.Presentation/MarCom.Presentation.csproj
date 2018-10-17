@@ -711,6 +711,16 @@
     <Content Include="AdminLTE\plugins\datatables\js\extensions\TableTools\swf\copy_csv_xls_pdf.swf" />
     <Content Include="AdminLTE\plugins\datatables\js\jquery.dataTables.js" />
     <Content Include="AdminLTE\plugins\datatables\js\jquery.dataTables.min.js" />
+    <Content Include="AdminLTE\plugins\datepicker\css\bootstrap-datepicker.css" />
+    <Content Include="AdminLTE\plugins\datepicker\css\bootstrap-datepicker.min.css" />
+    <Content Include="AdminLTE\plugins\datepicker\css\bootstrap-datepicker.standalone.css" />
+    <Content Include="AdminLTE\plugins\datepicker\css\bootstrap-datepicker.standalone.min.css" />
+    <Content Include="AdminLTE\plugins\datepicker\css\bootstrap-datepicker3.css" />
+    <Content Include="AdminLTE\plugins\datepicker\css\bootstrap-datepicker3.min.css" />
+    <Content Include="AdminLTE\plugins\datepicker\css\bootstrap-datepicker3.standalone.css" />
+    <Content Include="AdminLTE\plugins\datepicker\css\bootstrap-datepicker3.standalone.min.css" />
+    <Content Include="AdminLTE\plugins\datepicker\css\dataTables.bootstrap.css" />
+    <Content Include="AdminLTE\plugins\datepicker\css\dataTables.bootstrap.min.css" />
     <Content Include="AdminLTE\plugins\datepicker\css\datepicker3.css" />
     <Content Include="AdminLTE\plugins\datepicker\js\bootstrap-datepicker.js" />
     <Content Include="AdminLTE\plugins\datepicker\js\locales\bootstrap-datepicker.ar.js" />
@@ -945,6 +955,10 @@
     <Content Include="AdminLTE\plugins\ionslider\js\ion.rangeSlider.min.js" />
     <Content Include="AdminLTE\plugins\jquery-ui\js\jquery-ui.js" />
     <Content Include="AdminLTE\plugins\jquery-ui\js\jquery-ui.min.js" />
+    <Content Include="AdminLTE\plugins\datepicker\css\bootstrap-datepicker.css.map" />
+    <Content Include="AdminLTE\plugins\datepicker\css\bootstrap-datepicker.standalone.css.map" />
+    <Content Include="AdminLTE\plugins\datepicker\css\bootstrap-datepicker3.css.map" />
+    <Content Include="AdminLTE\plugins\datepicker\css\bootstrap-datepicker3.standalone.css.map" />
     <None Include="AdminLTE\plugins\jquery-validate\js\jquery.validate-vsdoc.js" />
     <Content Include="AdminLTE\plugins\jquery-validate\js\jquery.validate.js" />
     <Content Include="AdminLTE\plugins\jquery-validate\js\jquery.validate.min.js" />
@@ -1167,7 +1181,7 @@
     <Content Include="Views\Employee\_Edit.cshtml" />
     <Content Include="Views\Employee\_Delete.cshtml" />
     <Content Include="Views\Employee\_View.cshtml" />
-    <Content Include="Views\_Create.cshtml" />
+    <Content Include="Views\User\_Create.cshtml" />
     <Content Include="Views\MenuAccess\Index.cshtml" />
     <Content Include="Views\User\_Add.cshtml" />
     <Content Include="Views\SouvenirStock\Index.cshtml" />
@@ -1223,6 +1237,12 @@
     <Content Include="Views\SouvenirRequest\_SouSettRequest.cshtml" />
     <Content Include="Views\DesignRequest\_ProductList.cshtml" />
     <Content Include="Views\DesignRequest\_EditList.cshtml" />
+    <Content Include="Views\Promotion\_ApproveNo.cshtml" />
+    <Content Include="Views\Promotion\UploadIndex.cshtml" />
+    <Content Include="Views\Promotion\UploadSuccess.cshtml" />
+    <Content Include="Views\SouvenirRequest\_SouSettReqItem.cshtml" />
+    <Content Include="Views\Promotion\_EditList.cshtml" />
+    <Content Include="Views\Promotion\_EditNo.cshtml" />
     <Content Include="Views\SouvenirRequest\_DetailItem.cshtml" />
     <Content Include="Views\DesignRequest\_Close.cshtml" />
     <Content Include="Views\DesignRequest\_CloseList.cshtml" />
@@ -1233,6 +1253,7 @@
     <Folder Include="AdminLTE\dist\PromotionFile\" />
     <Folder Include="App_Data\Images\" />
     <Folder Include="Security\" />
+    <Folder Include="UploadImage\" />
     <Folder Include="Views\Ajax\" />
   </ItemGroup>
   <ItemGroup>

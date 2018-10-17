@@ -1,7 +1,7 @@
 ﻿@model MarCom.ViewModel.UserViewModel
 
 
-@using (Html.BeginForm("Edit", "User", FormMethod.Post, new { id = "form-edit", name = "form-edit" }))
+@using (Html.BeginForm("Edit", "User", FormMethod.Post, new { @id="input-form"}))
 {
     @Html.AntiForgeryToken()
     
@@ -56,28 +56,3 @@
         </div>
     </div>
 }
-
-
-@Scripts.Render("~/bundles/jqueryval")
-
-<script type="text/javascript">
-    $("#form-edit").submit(function () {
-        $.ajax({
-            url: '@Url.Action("Edit", "User")',
-            type: this.method,
-            data: $(this).serialize(),
-            success: function (result) {
-                if (result.success) {
-                    alert("Succesful! " + result.entity.Username + " has been saved")
-                    $(".modal").modal("hide");
-                    GetList();
-                }
-                else {
-                    alert("Error! User has not been saved. \n" + result.message);
-                }
-            }
-        });
-        return false;
-    });
-</script>
-

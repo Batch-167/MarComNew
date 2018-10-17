@@ -300,7 +300,9 @@ namespace MarCom.Presentation
                                          "~/AdminLTE/plugins/datepicker/js/locales/bootstrap-datepicker*"));
 
             bundles.Add(new StyleBundle("~/AdminLTE/plugins/datepicker/css").Include(
-                                        "~/AdminLTE/plugins/datepicker/css/datepicker3.css"));
+                                        "~/AdminLTE/plugins/datepicker/css/datepicker3.css",
+                                        "~/AdminLTE/plugins/datepicker/css/bootstrap-datepicker.min.css",
+                                        "~/AdminLTE/plugins/datepicker/css/dataTables.bootstrap.min.css"));
 
             // plugins | daterangepicker
             bundles.Add(new ScriptBundle("~/AdminLTE/plugins/daterangepicker/js").Include(

@@ -1,58 +1,74 @@
-﻿@model MarCom.ViewModel.CompanyViewModel
+﻿@model IEnumerable<MarCom.ViewModel.CompanyViewModel>
+
 @{
     ViewBag.Title = "Company";
 }
 
 @Styles.Render("~/AdminLTE/plugins/datatables/css")
 <div class="panel panel-info">
-    <div class="panel-heading">
+    <div class="panel-heading bg-blue">
         <div>
             <div>
-                <table>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td col-lg-11></td>
-                        <td>
-                            <button type="button" id="btn-new" class="btn btn-primary btn-sm" style="width:60px">Add</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="col-lg-2">
-                            @Html.DropDownListFor(model => model.Name, (IEnumerable<SelectListItem>)ViewBag.Company, "-Select Company Code-", new { @id = "Code", @class = "form-control" })
-                        </td>
-                        <td class="col-lg-3">
-                            @Html.DropDownListFor(model => model.Name, (IEnumerable<SelectListItem>)ViewBag.Company1, "-Select Company Name-", new { @id = "Name", @class = "form-control" })
-                        </td>
-                        <td class="col-lg-3">
-                            <div class="input-group">
-                                <input class="form-control datepicker" id="Date" type="date" value="Created" />
-                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </td>
-                        <td class="col-lg-3">
-                            <input id="Create" name="CompCreate" type="text" class="form-control text-box single-line" placeholder="Created By" />
-                        </td>
-                        <td>
-                            <button type="button" id="btn-search" onclick="Search()" class="btn btn-default btn-sm" style="width:60px">Search</button>
-                        </td>
-                    </tr>
-                </table>
+                List Company
+                </div>
             </div>
         </div>
-    </div>
+                <div class="panel-body">
 
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-lg-12" id="table-list">
-                <h3>  Loading... </h3>
+                <table class="table table-striped" id="example1" >
+                    <thead id="tb-input">
+                        <tr>
+                            <td colspan="5"></td>
+                            <td>
+                                <button type="button" id="btn-new" class="btn btn-primary btn-sm" style="width:60px">Add</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="col-md-offset-3">
+                                @Html.DropDownList("Code", (IEnumerable<SelectListItem>)ViewBag.Company, "-Select Company Code-", new { @id = "col1_filter", @class = "form-control column_filter", @data = "1" })
+                            </td>
+                            <td class="col-md-offset-3">
+                                @Html.DropDownList("Name", (IEnumerable<SelectListItem>)ViewBag.Company1, "-Select Company Name-", new { @id = "col2_filter", @class = "form-control column_filter", @data = "2" })
+                            </td>
+                            <td class="col-md-offset-3">
+                                <div class="input-group class="col-md-offset-2"">
+                                    <input type="text" class="form-control column_filter datepicker" id="col3_filter" data="3" placeholder="Create Date" />
+                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </td>
+                            <td class="col-md-offset-3">
+                                @Html.TextBox("Create_By", null, new { @class = "form-control column_filter", @id = "col4_filter", @data = "4", @placeholder = "Create By"})
+                            </td>
+                            <td>
+                                <button type="button" id="btn-search" onclick="Search()" class="btn btn-default btn-sm" style="width:60px">Search</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                No
+                            </td>
+                            <td class="col-md-offset-3">
+                                @Html.DisplayNameFor(model => model.Code)
+                            </td>
+                            <td class="col-md-offset-3">
+                                @Html.DisplayNameFor(model => model.Name)
+                            </td>
+                            <td class="col-md-offset-3">
+                                @Html.DisplayNameFor(model => model.Create_Date)
+                            </td>
+                            <td class="col-md-offset-3">
+                                @Html.DisplayNameFor(model => model.Create_By)
+                            </td>
+                            <td class="col-md-offset-3">Action</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @Html.Partial("_List", Model)
+                    </tbody>
+                </table>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -75,10 +91,40 @@
 @section Scripts{
     @Scripts.Render("~/AdminLTE/plugins/datatables/js")
     <script type="text/javascript">
-        $(document).ready(function () {
-            //   alert('Hi, this is me')
-            GetList();
+        //$(document).ready(function () {
+        //    //   alert('Hi, this is me')
+        //    GetList();
 
+        //});
+
+
+        $(document).ready(function () {
+            $('#example1').DataTable({
+                'sDom': 'tip',
+                ordering: false
+            });
+            $("#tb-input").find(".column_filter").on("keyup click", function () {
+                filterColumn($(this).attr("data-column"));
+            });
+
+        });
+
+        function filterColumn(i) {
+            $("#example1").DataTable().column(i).search(
+                $("#col" + i + "_filter").val()
+                ).draw();
+        }
+
+        $("#btn-search").click(function () {
+            $("#tb-input .form-control").each(function (i) {
+                filterColumn($(this).attr('data'));
+            })
+
+        })
+
+        $("#tb-input").find(".datepicker").datepicker({
+            format: "mm-dd-yyyy",
+            autoclose: true,
         });
 
         $("#btn-new").click(function () {
@@ -94,7 +140,7 @@
             });
         });
 
-        $("#btn-search").click(function Search() {
+        @*$("#btn-search").click(function Search() {
             var data = {
                 code: $("#Code").val(),
                 name: $("#Name").val(),
@@ -113,7 +159,7 @@
                     $("table-list").html(result);
                 }
             });
-        });
+        });*@
 
         function GetList() {
             $.ajax({
@@ -137,7 +183,7 @@
                 dataType: 'html',
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
-                    $('#title-panel').html(act+" Company "+code);
+                    $('#title-panel').html(act + " Company " + code);
                     $('#modal-input').modal('show');
                 },
 
@@ -148,20 +194,20 @@
         }
 
         $('#modal-input').on('submit', '#input-form', function () {
-            var vUrl= $(this).attr('action');
-            var vMethod= $(this).attr('method');
-            var vData= $(this).serialize();
+            var vUrl = $(this).attr('action');
+            var vMethod = $(this).attr('method');
+            var vData = $(this).serialize();
             $.ajax({
                 url: vUrl,
                 type: vMethod,
                 data: vData,
                 success: function (result) {
                     if (result.success) {
-                        alert("Data change for "+result.entity.Name+" been saved!");
+                        alert(result.message);
                         $('#modal-input').modal('hide');
                         GetList();
                     } else {
-                        alert("Error! Change has not been saved. \n" + result.message);
+                        alert(result.message);
                     }
                 }
             });

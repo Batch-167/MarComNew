@@ -113,5 +113,7 @@ namespace MarCom.DataModel
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_Souvenir> T_Souvenir4 { get; set; }
+
+        public int Em_Role { get; set; }
     }
 }

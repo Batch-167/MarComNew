@@ -1,90 +1,73 @@
 ﻿@model IEnumerable<MarCom.ViewModel.SouvenirRequestViewModel>
-
-<table class="table">
+@{
+    int row = 0;
+}
+@foreach (var item in Model)
+{
     <tr>
-        <td class="col-md-offset-2">
-            @Html.DisplayNameFor(model => model.Code)
-        </td>
-        <td class="col-md-offset-2">
-            @Html.DisplayNameFor(model => model.Request_By)
-        </td>
-        <td class="col-md-offset-2">
-            @Html.DisplayNameFor(model => model.Request_Date)
-        </td>
-        <td class="col-md-offset-2">
-            @Html.DisplayNameFor(model => model.Request_Due_Date)
-        </td>
-        <td class="col-md-offset-2">
-            @Html.DisplayNameFor(model => model.Status)
+        <td class="col-md-offset-1">
+            @(row += 1)
         </td>
         <td class="col-md-offset-1">
-            @Html.DisplayNameFor(model => model.Create_By)
+            @Html.HiddenFor(modelItem => item.Code, new { @id = "code-id" })
+            @Html.DisplayFor(modelItem => item.Code)
+        </td>
+        <td class="col-md-offset-1">
+            @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td class="col-md-offset-2">
-            @Html.DisplayNameFor(model => model.Create_Date)
+            @Html.DisplayFor(modelItem => item.Request_Date)
         </td>
-        <th>Action</th>
+        <td class="col-md-offset-2">
+            @Html.DisplayFor(modelItem => item.Request_Due_Date)
+        </td>
+        <td class="col-md-offset-1">
+            @Html.HiddenFor(modelItem => item.Status, new { @id = "status-id" })
+            @Html.DisplayFor(modelItem => item.StatusName)
+        </td>
+        <td class="col-md-offset-1">
+            @Html.DisplayFor(modelItem => item.Create_By)
+        </td>
+        <td class="col-md-offset-2">
+            @Html.DisplayFor(modelItem => item.Create_Date)
+        </td>
+        <td class="col-md-offset-1">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-view" data-id="@item.Id" hidden="hidden" title="View" onclick="action('Details', @item.Id)">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+                @{
+                    if (item.Status == 1)
+                    {
+                        <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" onclick="action('Edit', @item.Id, '@item.Code')">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-approve" data-id="@item.Id" title="Approve" onclick="action('Approve', @item.Id,'@item.Code')">
+                            <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                        </button>
+                    }
+                    else if (item.Status == 2)
+                    {
+                        <button type="button" class="btn btn-danger btn-received" data-id="@item.Id" title="Received" onclick="action('Received',@item.Id,'@item.Code')">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        </button>
+                    }
+                    else if (item.Status == 3)
+                    {
+                        <button type="button" class="btn btn-primary btn-settlement" data-id="@item" title="Settlement" onclick="action('SouSettRequest', @item.Id,'@item.Code')">
+                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                        </button>
+                    }
+                    else if (item.Status == 4)
+                    {
+                        <button type="button" class="btn btn-danger btn-settlementapprove" data-id="@item" title="Settlement Approved" onclick="action('SouSettApproved', @item.Id,'@item.Code')">
+                            <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
+                        </button>
+                    }
+                }
+            </div>
+        </td>
     </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.HiddenFor(modelItem => item.Code, new { @id = "code-id" })
-                @Html.DisplayFor(modelItem => item.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Request_Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Request_Due_Date)
-            </td>
-            <td>
-                @Html.HiddenFor(modelItem => item.Status, new { @id = "status-id" })
-                @Html.DisplayFor(modelItem => item.StatusName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Create_By)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Create_Date)
-            </td>
-            <td>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-view" data-id="@item.Id" hidden="hidden" title="View" onclick="action('Details', @item.Id)">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                    </button>
-                    @{
-                        if (item.Status == 1)
-                        {
-                            <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" onclick="action('Edit', @item.Id, '@item.Code')">
-                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-approve" data-id="@item.Id" title="Approve" onclick="action('Approve', @item.Id,'@item.Code')">
-                                <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-                            </button>
-                        }
-                        else if (item.Status == 2)
-                        {
-                            <button type="button" class="btn btn-danger btn-received"  data-id="@item.Id" title="Received" onclick="action('Received',@item.Id,'@item.Code')">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                            </button>
-                        }
-                        else if (item.Status == 3)
-                        {
-                            <button type="button" class="btn btn-primary btn-settlement" data-id="@item" title="Settlement" onclick="action('h', @item.Id,'@item.Code')">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                            </button>
-                        }
-                        else if (item.Status == 4)
-                        {
-                            <button type="button" class="btn btn-danger btn-settlementapprove" data-id="@item" title="Settlement Approved" onclick="action('SouSettApproved', @item.Id,'@item.Code')">
-                                <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
-                            </button>
-                        }
                     }
                   
                 </div>

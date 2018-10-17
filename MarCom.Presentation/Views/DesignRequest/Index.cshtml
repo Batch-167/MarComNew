@@ -202,6 +202,32 @@
 
         function action(act, id, code) {
             var Code = code;
+            $.ajax({
+                url: '/DesignRequest/' + act,
+                type: 'get',
+                data: { id: id },
+                dataType: 'html',
+                success: function (result) {
+                    $('#modal-input').find('.modal-body').html(result);
+                    $("#title-panel").html(act+" Design Request - "+code);
+                    $('#modal-input').modal('show');
+                    if (act == "Edit") {
+                        GetEditList(id);
+                    };
+                    if (act == "Approve") {
+                        GetItemList(id);
+                    };
+                    if (act == "Close") {
+                        GetCloseList(id)
+                    };
+                },
+                error: function (err) {
+                    $("#table-list").html(err);
+                }
+            });
+        }
+        function action(act, id, code) {
+            var Code = code;
                 $.ajax({
                     url: '/DesignRequest/' + act,
                     type: 'get',

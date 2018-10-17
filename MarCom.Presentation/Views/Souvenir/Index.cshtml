@@ -1,65 +1,97 @@
 ﻿@model MarCom.ViewModel.SouvenirViewModel
 
-
 @*@Styles.Render("~/AdminLTE/plugins/datatables/css")*@
-<div class="panel panel-info">
+<div class="panel panel-primary">
     <div class="panel-heading">
         <div class="row">
             <div class="col-lg-12">
-                <table>
-                    <tr>
-                        <td colspan="5"></td>
-                        <td class="col-lg-1">
-                            <button type="button" id="btn-new" class="btn btn-primary btn-sm">ADD</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-2">
-                            @Html.DropDownListFor(model => model.Code, (IEnumerable<SelectListItem>)
-               ViewBag.Souv1, "-Code-", new { @id = "Code", @class = "form-control lg-2" })
-                        </td>
-                        <td class="col-md-2">
-                            @Html.DropDownListFor(model => model.Name, (IEnumerable<SelectListItem>)
-               ViewBag.Souv2, "-Name-", new { @id = "Name", @class = "form-control lg-2" })
-                        </td>
-                        <td class="col-lg-2">
-                            @Html.DropDownListFor(model => model.M_Unit_Id, (IEnumerable<SelectListItem>)
-               ViewBag.Souv3, "-Unit-", new { @id = "Unit", @class = "form-control lg-2" })
-                        </td>
-                        <td class="col-md-2">
-                            @*@Html.EditorFor(model => model.M_Unit_Id, new { htmlAttributes = new { @type = "date", @class = "form-control datepicker", @placeholder = "Created", @name = "Date" } })*@
-                            <div class="input-group">
-                                <input id="Date" name="Date" class="form-control datepicker" placeholder="Created" type="date" value="Created" />
-                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </td>
-                        <td class="col-md-offset-2">
-                            @*@Html.EditorFor(model => model.Create_By, new { htmlAttributes = new { @class = "form-control", @placeholder = "Created By", @name = "Create-by" } })*@
-                            <input id="Create" name="Create" type="text" class="form-control text-box single-line" placeholder="Create By" />
-                        </td>
-                        <td class="col-lg-1">
-                            <button id="btn-search" type="button" class="btn btn-warning btn-sm">Search</button>
-                        </td>
-                    </tr>
-                </table>
+                List Souvenir
             </div>
         </div>
     </div>
     <div class="panel-body">
+        <ol class="breadcrumb">
+            <li><a href="Home">Home</a></li>
+            <li><a>Master</a></li>
+            <li class="active">List Souvenir</li>
+        </ol>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td colspan="6"></td>
+                    <td>
+                        <button type="button" id="btn-new" class="btn btn-primary btn-sm">ADD</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.TextBox("Code", null, new { @id = "Code", @class = "form-control lg-2", @placeholder = "Souvenir Code" })
+                    </td>
+                    <td>
+                        @Html.TextBox("Name", null, new { @id = "Code", @class = "form-control lg-2", @placeholder = "Souvenir Name" })
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(model => model.M_Unit_Id, (IEnumerable<SelectListItem>)
+               ViewBag.Souv3, "-Unit-", new { @id = "Unit", @class = "form-control lg-2" })
+                    </td>
+                    <td class="col-md-2">
+                        @*@Html.EditorFor(model => model.M_Unit_Id, new { htmlAttributes = new { @type = "date", @class = "form-control datepicker", @placeholder = "Created", @name = "Date" } })*@
+                        <div class="input-group">
+                            <input id="Date" name="Date" class="form-control datepicker" placeholder="Created" type="date" value="Created" />
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </td>
+                    <td>
+                        @*@Html.EditorFor(model => model.Create_By, new { htmlAttributes = new { @class = "form-control", @placeholder = "Created By", @name = "Create-by" } })*@
+                        <input id="Create" name="Create" type="text" class="form-control text-box single-line" placeholder="Create By" />
+                    </td>
+                    <td>
+                        <button id="btn-search" type="button" class="btn btn-warning btn-sm" onclick="Search()">Search</button>
+                    </td>
+                </tr>
+                <tr class="text-bold bg-blue text-center">
+                    <td>
+                        <span>No</span>
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Unit)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Create_By)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Create_Date)
+                    </td>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="table-list" class="table-striped"></tbody>
+        </table>
+    </div>
+</div>
+@*<div class="panel-body">
         <div class="row">
             <div class="col-lg-12" id="table-list">
                 <h3>Loading . . .</h3>
             </div>
         </div>
-    </div>
-</div>
+    </div>*@
 
 <div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-blue">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
+                <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
@@ -129,24 +161,7 @@
             });
         }
 
-        //function Search(obj) {
-        //    var tr = $(obj).closest("tr");
-        //    var code = $(tr).find("Input[name=Code]").val();
-        //    Alert(code);
-        //    $.ajax({
-        //        url: vUrl,
-        //        type: vMethod,
-        //        data: vData,
-        //        success: function (result) {
-        //            $("table-list").html(result);
-        //        },
-        //        error: function (err) {
-        //            $("#table-list").html(err);
-        //        }
-        //    });
-        //}
-
-        function Action(act, id) {
+        function Action(act, id, name, code) {
             $.ajax({
                 url: '/Souvenir/' + act,
                 type: 'get',
@@ -155,6 +170,11 @@
                 success: function (result) {
                     $('#modal-input').find('.modal-body').html(result);
                     $('#modal-input').modal('show');
+                    if (act == "Delete") {
+                        $(".modal-title").html(act + " Souvenir");
+                    } else {
+                        $(".modal-title").html(act + " Souvenir - " + name + " ( " + code + " )");
+                    }
                 },
             })
         }
@@ -163,19 +183,18 @@
             var vUrl = $(this).attr('action');
             var vMethod = $(this).attr('method');
             var vData = $(this).serialize();
-            var info = $(this).attr('name');
             $.ajax({
                 name: name,
                 url: vUrl,
                 method: vMethod,
                 data: vData,
                 success: function (result) {
-                    if (result) {
-                        alert(info);
+                    if (result.success) {
+                        alert(result.message);
                         $('#modal-input').modal('hide');
                         GetList();
                     } else {
-                        alert("Error ")
+                        alert(result.message);
                     }
                 }
             });

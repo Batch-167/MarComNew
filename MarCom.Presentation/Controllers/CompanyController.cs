@@ -7,10 +7,11 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
-    
+    [Authorize]
     public class CompanyController : Controller
     {
         // GET: Company
@@ -18,7 +19,7 @@ namespace MarCom.Presentation.Controllers
         {
             ViewBag.Company = new SelectList(CompanyRepo.Get(), "Code", "Code");
             ViewBag.Company1 = new SelectList(CompanyRepo.Get(), "Name", "Name");
-            return View();
+            return View(CompanyRepo.Get());
         }
 
         [HttpPost]
@@ -35,79 +36,155 @@ namespace MarCom.Presentation.Controllers
         //GET
         public ActionResult Create()
         {
-            return PartialView("_Create", new CompanyViewModel());
+            UserViewModel model = CompanyRepo.GetIdByName(User.Identity.Name);
+
+            if (model.Role == "Admin")
+            {
+                return PartialView("_Create", new CompanyViewModel());
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
+
         }
 
         //POST
         [HttpPost]
         public ActionResult Create(CompanyViewModel model)
         {
-            model.Create_By = User.Identity.Name;
-            ResultResponse result = CompanyRepo.Update(model);
-            return Json(new
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
+                ResultResponse result = CompanyRepo.Update(model);
+                model.Create_By = User.Identity.Name;
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                ResultResponse result = new ResultResponse();
+                result.Success = false;
+                result.Message = "Theres blank column, Please fill data correctly !";
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+
         }
 
         //GET
 
         public ActionResult Edit(int id)
         {
-            CompanyViewModel model = CompanyRepo.GetById(id);
-            return PartialView("_Edit", model);
+            UserViewModel modul = CompanyRepo.GetIdByName(User.Identity.Name);
+            if (modul.Role == "Admin")
+            {
+                CompanyViewModel model = CompanyRepo.GetById(id);
+                return PartialView("_Edit", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         //POST
         [HttpPost]
         public ActionResult Edit(CompanyViewModel model)
         {
-            ResultResponse result = CompanyRepo.Update(model);
-            return Json(new
+
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
+                model.Update_By = User.Identity.Name;
+                ResultResponse result = CompanyRepo.Update(model);
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                ResultResponse result = new ResultResponse();
+                result.Success = false;
+                result.Message = "Theres blank column, Please fill data correctly !";
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
 
         }
 
         public ActionResult Delete(int id)
         {
-            CompanyViewModel model = CompanyRepo.GetById(id);
-            return PartialView("_Delete", model);
+            UserViewModel modul = CompanyRepo.GetIdByName(User.Identity.Name);
+            if (modul.Role == "Admin")
+            {
+                CompanyViewModel model = CompanyRepo.GetById(id);
+                return PartialView("_Delete", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         [HttpPost]
         public ActionResult Delete(CompanyViewModel model)
         {
-            return RedirectToAction("Index");
+            UserViewModel modul = CompanyRepo.GetIdByName(User.Identity.Name);
+            if (modul.Role == "Admin")
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         [HttpPost]
         public ActionResult DeleteConfirm(int id)
         {
             bool result = ProductRepo.Delete(id);
-            if (CompanyRepo.Delete(id))
+
+            UserViewModel modul = CompanyRepo.GetIdByName(User.Identity.Name);
+            if (modul.Role == "Admin")
             {
-                return Json(new
+                if (CompanyRepo.Delete(id))
                 {
-                    success = result,
-                    entity = "",
-                    message = "delete success"
-                }, JsonRequestBehavior.AllowGet);
+                    return Json(new
+                    {
+                        success = result,
+                        entity = "",
+                        message = "delete success"
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        success = result,
+                        entity = "",
+                        message = "delete fail"
+                    }, JsonRequestBehavior.AllowGet);
+
+                }
             }
             else
             {
-                return Json(new
-                {
-                    success = result,
-                    entity = "",
-                    message = "delete fail"
-                }, JsonRequestBehavior.AllowGet);
-
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
             }
         }
 
