@@ -1181,7 +1181,7 @@
     <Content Include="Views\Employee\_Edit.cshtml" />
     <Content Include="Views\Employee\_Delete.cshtml" />
     <Content Include="Views\Employee\_View.cshtml" />
-    <Content Include="Views\_Create.cshtml" />
+    <Content Include="Views\User\_Create.cshtml" />
     <Content Include="Views\MenuAccess\Index.cshtml" />
     <Content Include="Views\User\_Add.cshtml" />
     <Content Include="Views\SouvenirStock\Index.cshtml" />
@@ -1240,6 +1240,9 @@
     <Content Include="Views\Promotion\_ApproveNo.cshtml" />
     <Content Include="Views\Promotion\UploadIndex.cshtml" />
     <Content Include="Views\Promotion\UploadSuccess.cshtml" />
+    <Content Include="Views\SouvenirRequest\_SouSettReqItem.cshtml" />
+    <Content Include="Views\Promotion\_EditList.cshtml" />
+    <Content Include="Views\Promotion\_EditNo.cshtml" />
     <Content Include="Views\SouvenirRequest\_DetailItem.cshtml" />
     <Content Include="Views\DesignRequest\_Close.cshtml" />
     <Content Include="Views\DesignRequest\_CloseList.cshtml" />

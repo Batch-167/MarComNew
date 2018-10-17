@@ -22,7 +22,7 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Approve(int id)
         {
-            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
+            ViewBag.Employee = new SelectList(EventApproveRepo.GetEmp(), "Id", "Full_Name");
             EventApproveViewModel model = EventApproveRepo.GetById(id);
             return PartialView("_Approve", model);
         }

@@ -14,6 +14,7 @@ namespace MarCom.Repository
         {
             return Get(true);
         }
+
         public static List<EmployeeViewModel> Get(bool yes)
         {
             List<EmployeeViewModel> result = new List<EmployeeViewModel>();
@@ -28,13 +29,13 @@ namespace MarCom.Repository
                               First_Name = e.First_Name,
                               Last_Name = e.Last_Name,
                               M_Company_Id = e.M_Company_Id,
-                              CompanyName=c.Name,
+                              CompanyName = c.Name,
                               Email = e.Email,
                               Is_Delete = e.Is_Delete,
                               Create_By = e.Create_By,
                               Create_Date = DateTime.Now
                           })
-                          .Where(e=>e.Is_Delete== yes? e.Is_Delete : true)
+                          .Where(e => e.Is_Delete == yes ? e.Is_Delete : true)
                           .ToList();
             }
             return result;
@@ -50,7 +51,6 @@ namespace MarCom.Repository
                     if (entity.Id == 0)
                     {
                         M_Employee employee = new M_Employee();
-                        
                         employee.Employee_Number = entity.Employee_Number;
                         employee.First_Name = entity.First_Name;
                         employee.Last_Name = entity.Last_Name;
@@ -62,11 +62,12 @@ namespace MarCom.Repository
 
                         db.M_Employee.Add(employee);
                         db.SaveChanges();
+                        result.Message = "Data Employee" + entity.FullName + "has been saved";
                     }
                     else
                     {
                         M_Employee employee = db.M_Employee.Where(c => c.Id == entity.Id).FirstOrDefault();
-                        if (employee != null) 
+                        if (employee != null)
                         {
                             employee.First_Name = entity.First_Name;
                             employee.Last_Name = entity.Last_Name;
@@ -77,6 +78,8 @@ namespace MarCom.Repository
                             employee.Update_Date = DateTime.Now;
 
                             db.SaveChanges();
+                            result.Message = "Data Employee" + entity.FullName + "has been edited";
+
                         }
                     }
                 }
@@ -100,11 +103,11 @@ namespace MarCom.Repository
                           select new EmployeeViewModel
                           {
                               Id = e.Id,
-                              Employee_Number=e.Employee_Number,
+                              Employee_Number = e.Employee_Number,
                               First_Name = e.First_Name,
                               Last_Name = e.Last_Name,
                               M_Company_Id = e.M_Company_Id,
-                              CompanyName=c.Name,
+                              CompanyName = c.Name,
                               Email = e.Email
                           }).FirstOrDefault();
             }
@@ -144,10 +147,10 @@ namespace MarCom.Repository
             {
                 var result = (from e in db.M_Employee
                               where e.Employee_Number.Contains(newRef)
-                              select new {employee_number = e.Employee_Number })
+                              select new { employee_number = e.Employee_Number })
                               .OrderByDescending(o => o.employee_number)
                               .FirstOrDefault();
-                if (result !=null)
+                if (result != null)
                 {
                     string[] oldRef = result.employee_number.Split('.');
                     newRef += (int.Parse(oldRef[3]) + 1).ToString("D2");
@@ -176,9 +179,9 @@ namespace MarCom.Repository
                           select new EmployeeViewModel
                           {
                               Id = e.Id,
-                              Employee_Number=e.Employee_Number,
-                              First_Name=e.First_Name,
-                              Last_Name=e.Last_Name,
+                              Employee_Number = e.Employee_Number,
+                              First_Name = e.First_Name,
+                              Last_Name = e.Last_Name,
                               M_Company_Id = e.M_Company_Id,
                               CompanyName = c.Name,
                               Create_By = e.Create_By,

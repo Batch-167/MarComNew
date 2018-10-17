@@ -3,16 +3,17 @@
 
 <div class="panel panel-primary">
     <div class="panel-body">
-        @using (Html.BeginForm("Edit", "SouvenirRequest", FormMethod.Post, new { @id = "input-form" }))
+        @using (Html.BeginForm("SouSettRequest", "SouvenirRequest", FormMethod.Post, new { @id = "input-form" }))
         {
             @Html.AntiForgeryToken()
-
+            
             <div class="form-horizontal">
+                @Html.HiddenFor(model => model.Id, new { @Id = "Id" })
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-3" })
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
                         @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -21,7 +22,7 @@
                     @Html.LabelFor(model => model.CodeEvent, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-4">
                         @Html.HiddenFor(model => model.T_Event_Id)
-                        @Html.EditorFor(model => model.CodeEvent, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.CodeEvent, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.CodeEvent, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -30,7 +31,7 @@
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-3" })
                     <div class="col-md-4">
                         @Html.HiddenFor(model => model.Request_By)
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -38,7 +39,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Request_Date, htmlAttributes: new { @class = "control-label col-md-3" })
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.Request_Date, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Request_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.Request_Date, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -46,7 +47,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Request_Due_Date, htmlAttributes: new { @class = "control-label col-md-3" })
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.Request_Due_Date, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Request_Due_Date, new { htmlAttributes = new { @class = "form-control", @type="date", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.Request_Due_Date, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -54,7 +55,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-3" })
                     <div class="col-md-4">
-                        @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -63,7 +64,7 @@
                     @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-3" })
                     <div class="col-md-4">
                         @Html.HiddenFor(model => model.Status)
-                        @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.StatusName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -79,6 +80,9 @@
                                     <th class="col-lg-2">
                                         <span>Qty</span>
                                     </th>
+                                    <th class="col-lg-2">
+                                        <span>Qty Actual</span>
+                                    </th>
                                     <th class="col-lg-4">
                                         <span>Note</span>
                                     </th>
@@ -86,7 +90,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody id="item-body"></tbody>
+                            <tbody id="QtyActual"></tbody>
                         </table>
                     </div>
                 </div>
@@ -110,7 +114,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <input type="submit" value="Settled" class="btn btn-danger" />
+                    <input type="button" value="Settled" class="btn btn-danger" onclick="SettlementReq(4)"/>
                     <input type="button" value="Cancel" class="btn btn-default" data-dismiss="modal" />
                 </div>
             </div>

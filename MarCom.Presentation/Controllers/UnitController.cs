@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
@@ -18,14 +19,14 @@ namespace MarCom.Presentation.Controllers
         {
             ViewBag.Unit1 = new SelectList(UnitRepo.Get(), "Code", "Code");
             ViewBag.Unit2 = new SelectList(UnitRepo.Get(), "Name", "Name");
-            return View();
+            return View(UnitRepo.Get());
         }
 
-        [HttpPost]
-        public ActionResult Filter(UnitViewModel model)
-        {
-            return PartialView("_List", UnitRepo.Filter(model));
-        }
+        //[HttpPost]
+        //public ActionResult Filter(UnitViewModel model)
+        //{
+        //    return PartialView("_List", UnitRepo.Filter(model));
+        //}
 
         public ActionResult List()
         {
@@ -34,20 +35,44 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Add()
         {
+            UserViewModel result = UserRepo.GetIdByName(User.Identity.Name);
+            if (result.Role=="Staff" || result.Role=="Admin")
+            {
             return View("_Add", new UnitViewModel());
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         [HttpPost]
         public ActionResult Add(UnitViewModel model)
         {
-            model.Create_By = User.Identity.Name;
-            ResultResponse result = UnitRepo.Update(model);
-            return Json(new
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
+                model.Create_By = User.Identity.Name;
+                ResultResponse result = UnitRepo.Update(model);
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                ResultResponse result = UnitRepo.Update(model);
+                result.Success = false;
+                result.Message = "Please fill data correctly!";
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+
         }
 
         public ActionResult Edit(int id)
@@ -59,14 +84,29 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Edit(UnitViewModel model)
         {
-            model.Create_By = User.Identity.Name;
-            ResultResponse result = UnitRepo.Update(model);
-            return Json(new
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
+                model.Update_By = User.Identity.Name;
+                ResultResponse result = UnitRepo.Update(model);
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                ResultResponse result = UnitRepo.Update(model);
+                result.Success = false;
+                result.Message = "Please fill data correctly!";
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult Delete(int id)

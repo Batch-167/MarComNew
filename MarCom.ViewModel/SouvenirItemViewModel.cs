@@ -31,7 +31,6 @@ namespace MarCom.ViewModel
         [DisplayName("Qty Actual")]
         public int? Qty_Settlement { get; set; }
 
-        [Required]
         [StringLength(255)]
         public string Note { get; set; }
 

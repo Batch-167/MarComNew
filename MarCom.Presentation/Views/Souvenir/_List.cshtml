@@ -1,73 +1,43 @@
 ﻿@model IEnumerable<MarCom.ViewModel.SouvenirViewModel>
 
-@{ 
+@{
     int no = 0;
 }
-
-
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>
-                <span>No</span>
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Unit)
-            </th>            
-            <th>
-                @Html.DisplayNameFor(model => model.Create_By)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Create_Date)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                @Html.HiddenFor(model => item.Name, new { @id = "Name" })
-                <td>
-                    <span>@(no += 1)</span>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Code)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Unit)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Create_By)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Create_Date)
-                </td>
-                <td>
-                    <div class="btn-group btn-group-sm">
-                        <button type="button" class="btn btn-success btn-search" data-id="@item.Id" title="Details" onclick="Action('Show',@item.Id,'@item.Name','@item.Code')">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" onclick="Action('Edit',@item.Id,'@item.Name','@item.Code')">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-delete" data-id="@item.Id" title="Delete" onclick="Action('Delete',@item.Id,'','')">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
+@foreach (var item in Model)
+{
+    <tr>
+        @Html.HiddenFor(model => item.Name, new { @id = "Name" })
+        <td>
+            <span>@(no += 1)</span>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Unit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Create_By)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Create_Date)
+        </td>
+        <td>
+            <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-success btn-search" data-id="@item.Id" title="Details" onclick="Action('Show',@item.Id,'@item.Name','@item.Code')">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" onclick="Action('Edit',@item.Id,'@item.Name','@item.Code')">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="btn btn-danger btn-delete" data-id="@item.Id" title="Delete" onclick="Action('Delete',@item.Id,'','')">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </button>
+            </div>
+        </td>
+    </tr>
+}
 

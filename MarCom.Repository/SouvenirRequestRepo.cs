@@ -10,6 +10,24 @@ namespace MarCom.Repository
 {
     public class SouvenirRequestRepo
     {
+        public static List<SouvenirViewModel> GetStock()
+        {
+            List<SouvenirViewModel> result = new List<SouvenirViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from s in db.M_Souvenir
+                          join u in db.M_Unit on s.M_Unit_Id equals u.Id
+                          //join si in db.T_Souvenir_Item on s.Id equals si.M_Souvenir_Id
+                          //where si.Qty >= 0
+                          select new SouvenirViewModel
+                          {
+                              Id = s.Id,
+                              Name = s.Name,                                                         
+
+                          }).ToList();
+            }
+            return result;
+        }
         public static List<SouvenirRequestViewModel> Get()
         {
             List<SouvenirRequestViewModel> result = new List<SouvenirRequestViewModel>();
@@ -29,7 +47,7 @@ namespace MarCom.Repository
                               Is_Delete = sr.Is_Delete,
 
                               Create_Date = sr.Create_Date,
-                              Create_By = "Administrator"
+                              Create_By = sr.Create_By,
                           }).ToList();
             }
             return result;
@@ -50,6 +68,8 @@ namespace MarCom.Repository
                               T_Souvenir_Id = si.T_Souvenir_Id,
                               M_Souvenir_Id = si.M_Souvenir_Id,
                               SouvenirName = s.Name,
+                              Create_By = si.Create_By,
+                              Create_Date = si.Create_Date,
                               Qty = si.Qty,
                               Qty_Settlement=si.Qty_Settlement,
                               Note = si.Note,
@@ -132,6 +152,8 @@ namespace MarCom.Repository
                                 }
                                 else
                                 {
+                                    t_SouvItem.Create_By = item.Create_By;
+                                    t_SouvItem.Create_Date = item.Create_Date;
                                     t_SouvItem.Update_By = entity.Update_By;
                                     t_SouvItem.Update_Date = DateTime.Now;
                                 }
@@ -145,11 +167,14 @@ namespace MarCom.Repository
             }
             catch (Exception ex)
             {
+                throw;
                 result.Success = false;
                 result.Message = ex.Message;
             }
             return result;
         }
+
+
 
         public static string GetNewCode()
         {
@@ -287,6 +312,38 @@ namespace MarCom.Repository
                     }
                     db.SaveChanges();
                     result.Message = "Data Updated !! Transaction Souvenir Request with code" + entity.Code + "has been Received By Requester";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+
+        public static ResultResponse Settlement(SouvenirRequestViewModel entity, List<SouvenirItemViewModel> entityItem)
+        {
+            ResultResponse result = new ResultResponse();
+            try
+            {
+                using (var db = new MarComContext())
+                {
+                    T_Souvenir so = db.T_Souvenir.Where(sou => sou.Id == entity.Id).FirstOrDefault();
+                    if (so != null)
+                    {
+                        so.Status = 4;
+                        so.Settlement_By = entity.Settlement_By;
+                        so.Settlement_Date = DateTime.Now;
+
+                        foreach (var item in entityItem)
+                        {
+                            T_Souvenir_Item si = db.T_Souvenir_Item.Where(s => s.Id == item.Id).FirstOrDefault();
+                            si.Qty_Settlement = item.Qty_Settlement;
+                        }
+                    db.SaveChanges();
+                        result.Message = "Data Updated !! Transaction Souvenir Request with code" + entity.Code + "has been Settled By Requester";
+                    }
                 }
             }
             catch (Exception ex)

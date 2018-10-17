@@ -75,14 +75,13 @@
 
 <script type="text/javascript">
     $(".btn-add").submit(function () {
-        debugger;
         $.ajax({
             url: '@Url.Action("Add", "User")',
             type: this.method,
             data: $(this).serialize(),
             success: function (result) {
                 if (result.success) {
-                    alert("Succesful! " + result.entity.Username + " has been saved")
+                    alert("Successful! " + result.entity.Username + " has been saved")
                     $(".modal").modal("hide");
                     GetList();
                 }

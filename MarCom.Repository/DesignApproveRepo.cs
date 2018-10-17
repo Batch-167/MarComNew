@@ -10,6 +10,23 @@ namespace MarCom.Repository
 {
     public class DesignApproveRepo
     {
+        public static List<EmployeeViewModel> GetAssign()
+        {
+            List<EmployeeViewModel> result = new List<EmployeeViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from e in db.M_Employee
+                          join u in db.M_User on e.Id equals u.M_Employee_Id
+                          join r in db.M_Role on u.M_Role_Id equals r.Id
+                          where r.Name == "Staff"
+                          select new EmployeeViewModel
+                          {
+                              Id = e.Id,
+                              Full_Name = e.First_Name + " " + e.Last_Name,
+                          }).ToList();
+            }
+            return result;
+        }
         public static ResultResponse Approve(DesignApproveViewModel entity)
         {
             ResultResponse result = new ResultResponse();

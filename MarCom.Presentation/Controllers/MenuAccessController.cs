@@ -29,13 +29,15 @@ namespace MarCom.Presentation.Controllers
         {
             ViewBag.RoleMenu = new SelectList(RoleRepo.Get(), "Id", "Name");
             ViewBag.ListMenu = new SelectList(MenuRepo.Get(), "Id", "Name");
-            return PartialView("_Create", new MenuAccessViewModel());
+            MenuAccessViewModel model = new MenuAccessViewModel();
+            return PartialView("_Create", model);
         }
 
         //POST: Create
         [HttpPost]
         public ActionResult Create(MenuAccessViewModel model)
         {
+            model.Create_By = User.Identity.Name;
             ResultResponse result = MenuAccessRepo.Update(model);
             return Json(new
             {
@@ -59,6 +61,8 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Edit(MenuAccessViewModel model)
         {
+            model.Create_By = User.Identity.Name;
+            model.Update_By = User.Identity.Name;
             ResultResponse result = MenuAccessRepo.Update(model);
             return Json(new
             {

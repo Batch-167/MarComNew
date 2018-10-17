@@ -58,23 +58,27 @@ namespace MarCom.Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-            model.Create_By = User.Identity.Name;
-            ResultResponse result = SouvenirRequestRepo.Update(model, item);
-            return Json(new
+                model.Create_By = User.Identity.Name;
+                ResultResponse result = SouvenirRequestRepo.Update(model, item);
+                return Json(new
+                {
+                    success = result.Success,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
-            } else
-            {
-                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "SouvenirRequest", action = "Index" }));
+                return Json(new
+                {
+                    success = false,
+                    message = "A Required data is still blank, Please fill correctly"
+                }, JsonRequestBehavior.AllowGet);
             }
         }
 
         public ActionResult AddItem()
         {
-            ViewBag.Souvenir = new SelectList(SouvenirRepo.Get(), "Id", "Name");
+            ViewBag.Souvenir = new SelectList(SouvenirRequestRepo.GetStock(), "Id", "Name");
             SouvenirItemViewModel model = new SouvenirItemViewModel();
             return PartialView("_AddItem", model);
         }
@@ -111,7 +115,11 @@ namespace MarCom.Presentation.Controllers
             }
             else
             {
-                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "SouvenirRequest", action = "Index" }));
+                return Json(new
+                {
+                    success = false,
+                    message = "A Required data is still blank, Please fill correctly"
+                }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -136,10 +144,31 @@ namespace MarCom.Presentation.Controllers
             }
         }
 
+        //GET: Settlement Request
         public ActionResult SouSettRequest(int id)
         {
             SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
             return PartialView("_SouSettRequest", model);
+        }
+        //List Settlement Request
+        public ActionResult SouSettReqItem(int id)
+        {
+            return PartialView("_SouSettReqItem", SouvenirRequestRepo.GetItem(id));
+        }
+        //POST: Settlement Request
+        [HttpPost]
+        public ActionResult SouSettRequest(SouvenirRequestViewModel model,List<SouvenirItemViewModel> itemFile)
+        {
+            UserViewModel model2 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
+            model.Settlement_By = model2.M_Employee_Id;
+            model.Settlement_Date = DateTime.Now;
+            ResultResponse result = SouvenirRequestRepo.Settlement(model, itemFile);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult SouSettApproved(int id)
@@ -194,15 +223,15 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Received(SouvenirRequestViewModel model)
         {
-                UserViewModel model2 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
-                model.Received_By = model2.M_Employee_Id;
-                ResultResponse result = SouvenirRequestRepo.Received(model);
-                return Json(new
-                {
-                    success = result.Success,
-                    entity = model,
-                    message = result.Message
-                }, JsonRequestBehavior.AllowGet);
+            UserViewModel model2 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
+            model.Received_By = model2.M_Employee_Id;
+            ResultResponse result = SouvenirRequestRepo.Received(model);
+            return Json(new
+            {
+                success = result.Success,
+                entity = model,
+                message = result.Message
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

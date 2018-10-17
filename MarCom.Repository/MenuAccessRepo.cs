@@ -29,7 +29,7 @@ namespace MarCom.Repository
 
                               Is_Delete = ma.Is_Delete,
 
-                              Create_By = "Princess",
+                              Create_By = ma.Create_By,
                               Create_Date = DateTime.Now
                           }).ToList();
             }
@@ -52,12 +52,12 @@ namespace MarCom.Repository
                             menuaccess.M_Menu_Id = item.M_Menu_Id;
                             menuaccess.Is_Delete = entity.Is_Delete;
 
-                            menuaccess.Create_By = "Princess";
+                            menuaccess.Create_By = entity.Create_By;
                             menuaccess.Create_Date = DateTime.Now;
 
                             db.M_Menu_Access.Add(menuaccess);
                         }
-                        db.SaveChanges();
+                            db.SaveChanges();
                     }
                     else
                     {
@@ -67,7 +67,7 @@ namespace MarCom.Repository
                             menuaccess.M_Role_Id = entity.M_Role_Id;
                             menuaccess.M_Menu_Id = entity.M_Menu_Id;
 
-                            menuaccess.Update_By = "Princess";
+                            menuaccess.Update_By = entity.Update_By;
                             menuaccess.Update_Date = DateTime.Now;
 
                             db.SaveChanges();
@@ -82,30 +82,6 @@ namespace MarCom.Repository
             }
             return result;
         }
-
-        //public static List<MenuViewModel> GetMenu1()
-        //{
-        //    List<MenuViewModel> result = new List<MenuViewModel>();
-        //    using (var db = new MarComContext())
-        //    {
-        //        result = (from m in db.M_Menu
-        //                  where m.Parent_Id != null
-        //                  select new MenuViewModel
-        //                  {
-        //                      Id = m.Id,
-        //                      Code = m.Code,
-        //                      Name = m.Name,
-        //                      Controller = m.Controller,
-        //                      Parent_Id = m.Parent_Id,
-        //                      Is_Delete = m.Is_Delete,
-
-        //                      Create_By = "Admin",
-        //                      Create_Date = m.Create_Date,
-        //                  })
-        //                  .ToList();
-        //    }
-        //    return result;
-        //}
 
         public static MenuAccessViewModel GetById(int id)
         {

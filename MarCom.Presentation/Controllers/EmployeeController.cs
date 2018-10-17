@@ -16,7 +16,7 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Index()
         {
             ViewBag.CompanyName = new SelectList(CompanyRepo.Get(), "Name", "Name");
-            return View();
+            return View(EmployeeRepo.Get());
         }
 
         [HttpPost]

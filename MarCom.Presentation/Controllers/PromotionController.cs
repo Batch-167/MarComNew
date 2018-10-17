@@ -9,6 +9,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
@@ -26,9 +27,10 @@ namespace MarCom.Presentation.Controllers
         {
             return PartialView("_List", PromotionRepo.Get());
         }
-
-        public ActionResult AddItem(HttpPostedFileBase file)
+        
+        public ActionResult AddItem()
         {
+
             //ViewBag.Promotion = new SelectList(PromotionRepo.Get(), "Id", "Name");
             PromotionItemFileViewModel model = new PromotionItemFileViewModel();
             return PartialView("_AddItem", model);
@@ -42,7 +44,7 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_Create", model);
         }
 
-        public ActionResult Create2(int designid)
+        public ActionResult Create2(int designid, int eventid)
         {
             ViewBag.EventCode = new SelectList(EventRepo.Get(), "id", "Code");
             ViewBag.DesignCode = new SelectList(DesignRequestRepo.Get(), "id", "Code");
@@ -52,6 +54,7 @@ namespace MarCom.Presentation.Controllers
             PromotionViewModel model = new PromotionViewModel();
             model.RequestBy = model2.Fullname;
             model.T_Design_Id = designid;
+            model.T_Event_Id = eventid;
             return PartialView("_Create2", model);
         }
 
@@ -61,6 +64,7 @@ namespace MarCom.Presentation.Controllers
             UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
             model.Create_By = User.Identity.Name;
             model.Request_By = model2.M_Employee_Id;
+            
 
 
 
@@ -68,6 +72,7 @@ namespace MarCom.Presentation.Controllers
       
             ResultResponse result = PromotionRepo.Update(model, itemModel);
             ResultResponse result2 = PromotionRepo.UpdateFile(fileModel, model.Id);
+            ResultResponse result = PromotionRepo.Update(model, itemModel, fileModel);
             return Json(new
             {
                 success = result.Success,
@@ -77,13 +82,14 @@ namespace MarCom.Presentation.Controllers
         }
 
         //Get Create 3
-        public ActionResult Create3()
+        public ActionResult Create3(int eventid)
         {
             UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
 
+            ViewBag.EventCode = new SelectList(EventRepo.Get(), "id", "Code");
             PromotionViewModel model = new PromotionViewModel();
             model.RequestBy = model2.Fullname;
-            //model.T_Event_Id = eventid;
+            model.T_Event_Id = eventid;
             return PartialView("_Create3", model);
         }
 
@@ -91,7 +97,11 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Create3(PromotionViewModel model, List<PromotionItemFileViewModel> fileModel)
         {
+            UserViewModel model2 = PromotionRepo.GetIdByName(User.Identity.Name);
+            model.Create_By = User.Identity.Name;
+            model.Request_By = model2.M_Employee_Id;
             ResultResponse result = PromotionRepo.UpdateCreate3(model, fileModel, model.Id);
+            
             return Json(new
             {
                 success = result.Success,
@@ -119,6 +129,7 @@ namespace MarCom.Presentation.Controllers
         {
             PromotionViewModel model = PromotionRepo.GetById(id);
             ViewBag.Employee = new SelectList(PromotionRepo.GetStaff(), "Id", "Full_Name");
+            UserViewModel currentuser = PromotionRepo.GetIdByName(User.Identity.Name);
 
             if (model.FlagDesign == "Yes")
             {
@@ -129,6 +140,16 @@ namespace MarCom.Presentation.Controllers
                 return PartialView("_ApproveNo", model);
             }
 
+            if (currentuser.Role=="Admin")
+            {
+                ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "FullName");
+                return PartialView("_Approve", PromotionRepo.GetById(id));
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
+            
         }
 
         public ActionResult ApproveNo(int id)
@@ -171,7 +192,15 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Edit(int id)
         {
             PromotionViewModel model = PromotionRepo.GetById(id);
-            return PartialView("_Edit", model);
+            if (model.Flag_Design=="1")
+            {
+                return PartialView("_Edit", model);
+            }
+            else
+            {
+                return PartialView("_EditNo", model);
+            }
+            
         }
 
         //View Design, untuk Edit
@@ -186,19 +215,37 @@ namespace MarCom.Presentation.Controllers
             List<PromotionItemViewModel> model = PromotionRepo.GetItemId(id);
             return PartialView("_EditDesignItem", model);
         }
+
+        public ActionResult EditList(int id)
+        {
+            List<PromotionItemFileViewModel> model = PromotionRepo.GetIdFile(id);
+            return PartialView("_EditList", model);
+        }
         //POST: Edit
         [HttpPost]
         public ActionResult Edit(PromotionViewModel model, List<PromotionItemViewModel> itemModel, List<PromotionItemFileViewModel> fileModel)
         {
             model.Update_By = User.Identity.Name;
-            ResultResponse result = PromotionRepo.Update(model, itemModel);
-            ResultResponse result2 = PromotionRepo.UpdateFile(fileModel, model.Id);
-            return Json(new
+            if (model.Flag_Design=="1")
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
+                ResultResponse result = PromotionRepo.Update(model, itemModel, fileModel);
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                ResultResponse result2 = PromotionRepo.UpdateCreate3(model, fileModel, model.Id);
+                return Json(new
+                {
+                    success = result2.Success,
+                    entity = model,
+                    message = result2.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
 
 

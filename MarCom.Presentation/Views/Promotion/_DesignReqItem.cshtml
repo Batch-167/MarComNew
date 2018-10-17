@@ -4,7 +4,7 @@
     <tr>
         <td>
             @Html.HiddenFor(model => item.M_Product_Id, new { @Id = "M_Product_Id" })
-
+            @Html.HiddenFor(model => item.T_Design_Item_Id, new { @Id = "T_Design_Item_Id" })
             @Html.EditorFor(model => item.ProductName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
             @Html.ValidationMessageFor(model => item.ProductName, "", new { @class = "text-danger" })
         </td>
@@ -25,15 +25,15 @@
             @Html.ValidationMessageFor(model => item.Todo, "", new { @class = "text-danger" })
         </td>
         <td>
-            @Html.EditorFor(model => item.Request_Due_Date, new { htmlAttributes = new { @class = "form-control", @type = "date", @Id = "Request_Due_Date" } })
+            @Html.EditorFor(model => item.Request_Due_Date, new { htmlAttributes = new { @class = "form-control datepicker", @Id = "Request_Due_Date" } })
             @Html.ValidationMessageFor(model => item.Request_Due_Date, "", new { @class = "text-danger" })
         </td>
         <td>
-            @Html.EditorFor(model => item.Start_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.EditorFor(model => item.Start_Date, new { htmlAttributes = new { @class = "form-control datepicker", @readonly = "readonly" } })
             @Html.ValidationMessageFor(model => item.Start_Date, "", new { @class = "text-danger" })
         </td>
         <td>
-            @Html.EditorFor(model => item.End_Date, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.EditorFor(model => item.End_Date, new { htmlAttributes = new { @class = "form-control datepicker", @readonly = "readonly" } })
             @Html.ValidationMessageFor(model => item.End_Date, "", new { @class = "text-danger" })
         </td>
         <td>
@@ -45,3 +45,9 @@
         </td>
     </tr>
 }
+
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker({format:'mm-dd-yyyy'});
+    });
+</script>

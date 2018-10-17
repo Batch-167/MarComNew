@@ -28,9 +28,11 @@ namespace MarCom.ViewModel
         [StringLength(255)]
         public string Description { get; set; }
 
+        [Required]
         public int? Quantity { get; set; }
 
         [DisplayName("Unit Name")]
+        [Required]
         public int M_Unit_Id { get; set; }
         public string Unit { get; set; }
         public bool Is_Delete { get; set; }

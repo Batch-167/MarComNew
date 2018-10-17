@@ -1,0 +1,27 @@
+﻿@model IEnumerable<MarCom.ViewModel.SouvenirItemViewModel>
+
+@foreach (var item in Model)
+{
+    <tr>
+    @Html.HiddenFor(model => item.Id, new { @Id = "Id" })
+        <td>
+
+            @Html.HiddenFor(model => item.M_Souvenir_Id, new { @Id= "M_Souvenir_Id" })
+            @Html.HiddenFor(model=>item.T_Souvenir_Id, new { @Id= "T_Souvenir_Id" })
+            @Html.EditorFor(model => item.SouvenirName, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
+            @Html.ValidationMessageFor(model => item.SouvenirName, "", new { @class = "text-danger" })
+        </td>
+        <td>
+            @Html.EditorFor(model => item.Qty, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => item.Qty, "", new { @class = "text-danger" })
+        </td>
+        <td>
+            @Html.EditorFor(model => item.Qty_Settlement, new { htmlAttributes = new { @class = "form-control", @Id= "Qty_Settlement" } })
+            @Html.ValidationMessageFor(model => item.Qty_Settlement, "", new { @class = "text-danger" })
+        </td>
+        <td>
+            @Html.EditorFor(model => item.Note, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @Id="Note" } })
+            @Html.ValidationMessageFor(model => item.Note, "", new { @class = "text-danger" })
+        </td>
+    </tr>
+}

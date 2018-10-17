@@ -23,12 +23,15 @@ namespace MarCom.ViewModel
 
         public int T_Promotion_id { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString ="{0:MM-dd-yyyy}")]
         [DisplayName("Start Date")]
         public DateTime? Start_Date { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
         [DisplayName("End Date")]
         public DateTime? End_Date { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
         [DisplayName("Request Due Date")]
         public DateTime? Request_Due_Date { get; set; }
 
@@ -94,7 +97,8 @@ namespace MarCom.ViewModel
 
         [StringLength(11)]
         public string Extention { get; set; }
-        //public HttpPostedFileBase ImageFile { get; set; }
+
+        //public HttpPostedFileBase MyProperty { get; set; }
 
     }
 }

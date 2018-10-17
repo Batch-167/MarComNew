@@ -16,7 +16,7 @@ namespace MarCom.Repository
             using (var db = new MarComContext())
             {
                 result = (from u in db.M_Unit
-                          //where u.Is_Delete == false
+                              //where u.Is_Delete == false
                           select new UnitViewModel
                           {
                               Id = u.Id,
@@ -39,17 +39,28 @@ namespace MarCom.Repository
                 {
                     if (entity.Id == 0)
                     {
-                        M_Unit unit = new M_Unit();
-                        unit.Code = entity.Code;
-                        unit.Name = entity.Name;
-                        unit.Description = entity.Description;
-                        unit.Is_Delete = entity.Is_Delete;
-                        unit.Create_By = entity.Create_By;
-                        
-                        unit.Create_Date = DateTime.Now;
+                        bool nameExists = db.M_Unit.Any(nm => nm.Name.Equals(entity.Name));
+                        if (nameExists)
+                        {
+                            result.Success = false;
+                            result.Message = "Unit with name " + entity.Name + " already Exists!";
+                        }
+                        else
+                        {
+                            M_Unit unit = new M_Unit();
+                            unit.Code = entity.Code;
+                            unit.Name = entity.Name;
+                            unit.Description = entity.Description;
+                            unit.Is_Delete = entity.Is_Delete;
+                            unit.Create_By = entity.Create_By;
 
-                        db.M_Unit.Add(unit);
-                        db.SaveChanges();
+                            unit.Create_Date = DateTime.Now;
+
+                            db.M_Unit.Add(unit);
+                            db.SaveChanges();
+
+                            result.Message = "Data Saved with code " + entity.Code;
+                        }
 
                     }
                     else
@@ -57,13 +68,23 @@ namespace MarCom.Repository
                         M_Unit unit = db.M_Unit.Where(u => u.Id == entity.Id).FirstOrDefault();
                         if (unit != null)
                         {
-                            unit.Code = entity.Code;
-                            unit.Name = entity.Name;
-                            unit.Description = entity.Description;
+                            bool nameExists = db.M_Unit.Any(nm => nm.Name.Equals(entity.Name) && nm.Code != entity.Code);
+                            if (nameExists)
+                            {
+                                result.Message = "Unit with name " + entity.Name + " already exists";
+                            }
+                            else
+                            {
+                                unit.Code = entity.Code;
+                                unit.Name = entity.Name;
+                                unit.Description = entity.Description;
 
-                            unit.Update_By = entity.Update_By;
-                            unit.Update_Date = DateTime.Now;
-                            db.SaveChanges();
+                                unit.Update_By = entity.Update_By;
+                                unit.Update_Date = DateTime.Now;
+                                db.SaveChanges();
+
+                                result.Message = "Data Update with code " + entity.Code;
+                            }
                         }
                     }
                 }
@@ -116,11 +137,11 @@ namespace MarCom.Repository
             }
             return result;
         }
-        
+
         public static string GetNewCode()
         {
             string newRef = "UN";
-            using (var db =  new MarComContext())
+            using (var db = new MarComContext())
             {
                 var result = (from u in db.M_Unit
                               where u.Code.Contains(newRef)
@@ -140,22 +161,29 @@ namespace MarCom.Repository
             return newRef;
         }
 
-        public static List<UnitViewModel> Filter(UnitViewModel entity)
-        {
-            List<UnitViewModel> result = new List<UnitViewModel>();
-            using (var db = new MarComContext())
-            {
-                result = (from u in db.M_Unit
-                          where u.Code == entity.Code || u.Name == entity.Name ||(u.Create_Date.ToString()).Contains(entity.Create_Date.ToString()) || u.Create_By.Contains(entity.Create_By) 
-                          select new UnitViewModel
-                          {
-                              Code = u.Code,
-                              Name = u.Name,
-                              Create_By = u.Create_By,
-                              Create_Date = u.Create_Date
-                          }).ToList();
-            }
-            return result;
-        }
+        //public static List<UnitViewModel> Filter(UnitViewModel entity)
+        //{
+        //    string date = entity.Create_Date.ToString();
+        //    string[] olddate = date.Split(' ');
+        //    string date1 = olddate[0];
+        //    string[] datenew = date1.Split('/');
+        //    string date2 = datenew[0];
+        //    string date3 = (int.Parse(datenew[1])).ToString("D2");
+        //    string datenew1 = datenew[2] + '-' + date2 + '-' + date3;
+        //    List<UnitViewModel> result = new List<UnitViewModel>();
+        //    using (var db = new MarComContext())
+        //    {
+        //        result = (from u in db.M_Unit
+        //                  where u.Code == entity.Code || u.Name == entity.Name ||(u.Create_Date.ToString()).Contains(datenew1) || u.Create_By.Contains(entity.Create_By) 
+        //                  select new UnitViewModel
+        //                  {
+        //                      Code = u.Code,
+        //                      Name = u.Name,
+        //                      Create_By = u.Create_By,
+        //                      Create_Date = u.Create_Date
+        //                  }).ToList();
+        //    }
+        //    return result;
+        //}
     }
 }

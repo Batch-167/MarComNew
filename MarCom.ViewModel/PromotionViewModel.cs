@@ -15,7 +15,6 @@ namespace MarCom.ViewModel
             Is_Delete = false;
             Request_Date = DateTime.Now;
             Flag_Design = "0";
-           
             Assign_To = 1;
         }
 
