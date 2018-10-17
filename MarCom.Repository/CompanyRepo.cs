@@ -62,6 +62,16 @@ namespace MarCom.Repository
                     if (entity.Id == 0)
                     {
                         M_Company comp = new M_Company();
+                        bool nameExists = db.M_Company.Any(nm => nm.Name.Equals(entity.Name));
+                        if (nameExists)
+                        {
+                            result.Success = false;
+                            result.Message = "Company with name " + entity.Name + " Already Exist!";
+                        }
+
+                        else
+                        {
+
                         comp.Code = entity.Code;
                         comp.Name = entity.Name;
                         comp.Address = entity.Address;
@@ -76,23 +86,35 @@ namespace MarCom.Repository
                         db.M_Company.Add(comp);
                         db.SaveChanges();
 
+                            result.Message = "Data Saved! Company has been add with code " + entity.Code;
+
+                        }
                     }
                     else
                     {
                         M_Company comp = db.M_Company.Where(c => c.Id == entity.Id).FirstOrDefault();
                         if (comp != null)
                         {
-                            comp.Code = entity.Code;
-                            comp.Name = entity.Name;
-                            comp.Address = entity.Address;
-                            comp.Email = entity.Email;
-                            comp.Phone = entity.Phone;
+                            bool nameExists = db.M_Company.Any(nm => nm.Name.Equals(entity.Name) && nm.Code!=entity.Code );
+                            if (nameExists)
+                            {
+                                result.Message = "Company with name " + entity.Name + " Already Exist!";
+                            }
+                            else
+                            {
+                                comp.Code = entity.Code;
+                                comp.Name = entity.Name;
+                                comp.Address = entity.Address;
+                                comp.Email = entity.Email;
+                                comp.Phone = entity.Phone;
 
-                            comp.Update_By = entity.Update_By;
-                            comp.Update_Date = DateTime.Now;
+                                comp.Update_By = entity.Update_By;
+                                comp.Update_Date = DateTime.Now;
 
-                            db.SaveChanges();
-
+                                db.SaveChanges();
+                                result.Message = "Data Update! Company with code " + entity.Code+" has been Updated";
+                            }
+                        
                         }
                     }
 
@@ -165,6 +187,7 @@ namespace MarCom.Repository
                           where c.Code == entity.Code || c.Name == entity.Name || c.Create_By.Contains(entity.Create_By) || c.Create_Date == entity.Create_Date
                           select new CompanyViewModel
                           {
+                              Id =c.Id,
                               Code = c.Code,
                               Name = c.Name,
                               Create_By =c.Create_By,
@@ -175,6 +198,28 @@ namespace MarCom.Repository
             }
             return result;
                   
+        }
+
+        public static UserViewModel GetIdByName(string name)
+        {
+            UserViewModel result = new UserViewModel();
+            using (var db = new MarComContext())
+            {
+                result = (from u in db.M_User
+                          join e in db.M_Employee
+                          on u.M_Employee_Id equals e.Id
+                          join r in db.M_Role on u.M_Role_Id equals r.Id
+                          where name == u.UserName
+                          select new UserViewModel
+                          {
+                              Id = u.Id,
+                              Password = u.PasswordHash,
+                              M_Employee_Id = u.M_Employee_Id,
+                              Fullname = e.First_Name + " " + e.Last_Name,
+                              Role = r.Name
+                          }).FirstOrDefault();
+            }
+            return result;
         }
 
     }

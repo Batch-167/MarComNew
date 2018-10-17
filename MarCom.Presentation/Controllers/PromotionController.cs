@@ -118,7 +118,7 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Approve(int id)
         {
             PromotionViewModel model = PromotionRepo.GetById(id);
-            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "FullName");
+            ViewBag.Employee = new SelectList(PromotionRepo.GetStaff(), "Id", "Full_Name");
 
             if (model.FlagDesign == "Yes")
             {

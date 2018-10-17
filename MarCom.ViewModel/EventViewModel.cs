@@ -29,7 +29,6 @@ namespace MarCom.ViewModel
 
         [DisplayName("Start Date")]
         [Required]
-        [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode =true, DataFormatString ="{0:MM-dd-yyyy}")]
         public DateTime? Start_Date { get; set; }
 

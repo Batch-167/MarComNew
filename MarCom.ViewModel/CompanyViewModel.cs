@@ -19,23 +19,25 @@ namespace MarCom.ViewModel
         public int Row { get; set; }
         public int Id { get; set; }
 
-        [Required]
         [StringLength(50)]
         [DisplayName("Company Code")]
         public string Code { get; set; }
 
         [DisplayName("Company Name")]
-        [Required]
         [StringLength(50)]
+        [Required]
         public string Name { get; set; }
 
         [StringLength(255)]
+        [Required]
         public string Address { get; set; }
 
         [StringLength(50)]
+        [Required]
         public string Phone { get; set; }
 
         [StringLength(50)]
+        [Required]
         public string Email { get; set; }
 
         public bool Is_Delete { get; set; }
@@ -43,11 +45,12 @@ namespace MarCom.ViewModel
         [DisplayName("Create By")]
         public string Create_By { get; set; }
 
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
         [DisplayName("Create Date")]
         public DateTime Create_Date { get; set; }
         public string Update_By { get; set; }
+
+        public DateTime? Update_Date { get; set; }
 
     }
 }
