@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
@@ -34,8 +35,16 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Menu = new SelectList(MenuRepo.GetMenu(), "Id", "Controller");
-            return PartialView("_Create", new MenuViewModel());
+            UserViewModel currentuser = UserRepo.GetIdByName(User.Identity.Name);
+            if (currentuser.Role == "Staff" || currentuser.Role == "Admin")
+            {
+                ViewBag.Menu = new SelectList(MenuRepo.GetMenu(), "Id", "Controller");
+                return PartialView("_Create", new MenuViewModel());
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         //POS        
@@ -43,13 +52,23 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Create(MenuViewModel model)
         {
             model.Create_By = User.Identity.Name;
-            ResultResponse result = MenuRepo.Update(model);
-            return Json(new
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
+                ResultResponse result = MenuRepo.Update(model);
+                return Json(new
+                {
+                    success = result.Success,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "A required data is still blank, Please fill Correctly"
+                }, JsonRequestBehavior.AllowGet);
+            }
             //return RedirectToAction("index");
         }
 
@@ -64,14 +83,24 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Edit(MenuViewModel model)
         {
-            model.Update_By = User.Identity.Name;
-            ResultResponse result = MenuRepo.Update(model);
-            return Json(new
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
+                model.Update_By = User.Identity.Name;
+                ResultResponse result = MenuRepo.Update(model);
+                return Json(new
+                {
+                    success = result.Success,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "A required data is still blank, Please fill Correctly"
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult Show(int id)
@@ -98,23 +127,21 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult DeleteConfirm(int id)
         {
-            bool result = MenuRepo.Delete(id);
-            if (result)
+            ResultResponse result = MenuRepo.Delete(id);
+            if (result.Success)
             {
                 return Json(new
                 {
-                    success = result,
-                    entity = "",
-                    message = "delete success"
+                    success = result.Success,
+                    message = result.Message
                 }, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 return Json(new
                 {
-                    success = result,
-                    entity = "",
-                    message = "delete failed"
+                    success = result.Success,
+                    message = result.Message
                 }, JsonRequestBehavior.AllowGet);
             }
         }

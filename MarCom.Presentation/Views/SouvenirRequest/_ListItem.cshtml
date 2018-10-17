@@ -1,12 +1,14 @@
 ﻿@model IEnumerable<MarCom.ViewModel.SouvenirItemViewModel>
-
 @foreach (var item in Model)
 {
+
     <tr id="additem-button">
         @Html.HiddenFor(model => item.Id, new { @Id = "Id" })
+        @Html.HiddenFor(model => item.Create_By, new { @Id ="Create_By" })
+        @Html.HiddenFor(model => item.Create_Date, new { @Id = "Create_Date" })
         <td>
             @Html.DropDownListFor(model => item.M_Souvenir_Id, (IEnumerable<SelectListItem>)
-                   ViewBag.Souvenir, "Select Souvenir", new { @class = "form-control", @Id = "M_Souvenir_Id", @disabled = "true" })
+                   ViewBag.Souvenir, item.SouvenirName, new { @class = "form-control", @Id = "M_Souvenir_Id", @disabled = "true" })
             @Html.ValidationMessageFor(model => item.M_Souvenir_Id, "", new { @class = "text-danger" })
         </td>
 

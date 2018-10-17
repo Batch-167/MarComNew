@@ -6,64 +6,98 @@
 
 
 @Styles.Render("~/AdminLTE/plugins/datatables/css")
-<div class="panel panel-info">
+<div class="panel panel-primary">
     <div class="panel-heading">
         <div class="row">
             <div class="col-lg-12">
-                <table>
-                    <tr>
-                        <td colspan="4"></td>
-                        <td class="col-lg-2">
-                            <button id="btn-new" type="button" class="btn btn-primary btn-sm">
-                                <span> Add </span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr id="search">
-                        <td class="col-lg-3">
-                            @Html.DropDownListFor(model => model.Code, (IEnumerable<SelectListItem>)
-               ViewBag.Menu1, "- Select Menu Code -", new { @id = "Code", @class = "form-control lg-2" })
-                            @*<input id="Code" name="Code" type="text" class="form-control col-lg-2" placeholder="Menu Code" />*@
-                        </td>
-                        <td class="col-lg-3">
-                            @Html.DropDownListFor(model => model.Name, (IEnumerable<SelectListItem>)
-               ViewBag.Menu2, "- Select Menu Name -", new { @id = "Name", @class = "form-control col-lg-3" })
-                            @*<input id="Name" name="Name" type="text" class="form-control col-lg-3" placeholder="Menu Name" value="@ViewBag.Menu" />*@
-                        </td>
-                        <td class="col-lg-2">
-                            <div class="input-group">
-                                <input id="Date" name="Date" class="form-control datepicker" placeholder="" type="date" />
-                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </td>
-                        <td class="col-lg-2">
-                            <input id="Created" name="Create" type="text" class="form-control" placeholder="Create" />
-                        </td>
-                        <td class="col-lg-2">
-                            <button id="btn-search" type="button" class="btn btn-warning btn-sm" onclick="Search()">
-                                <span>Search</span>
-                            </button>
-                        </td>
-                    </tr>
-                </table>
+                List Menu
             </div>
         </div>
     </div>
     <div class="panel-body">
+        <ol class="breadcrumb">
+            <li><a href="Home">Home</a></li>
+            <li><a>Master</a></li>
+            <li class="active">List Menu</li>
+        </ol>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td colspan="5"></td>
+                    <td class="col-lg-2">
+                        <button id="btn-new" type="button" class="btn btn-primary btn-sm">
+                            <span> Add </span>
+                        </button>
+                    </td>
+                </tr>
+                <tr id="search">
+                    <td class="col-lg-1">
+
+                    </td>
+                    <td class="col-lg-2">
+                        @Html.DropDownListFor(model => model.Code, (IEnumerable<SelectListItem>)
+               ViewBag.Menu1, "- Select Menu Code -", new { @id = "Code", @class = "form-control lg-2" })
+                        @*<input id="Code" name="Code" type="text" class="form-control col-lg-2" placeholder="Menu Code" />*@
+                    </td>
+                    <td class="col-lg-3">
+                        @Html.DropDownListFor(model => model.Name, (IEnumerable<SelectListItem>)
+               ViewBag.Menu2, "- Select Menu Name -", new { @id = "Name", @class = "form-control col-lg-3" })
+                        @*<input id="Name" name="Name" type="text" class="form-control col-lg-3" placeholder="Menu Name" value="@ViewBag.Menu" />*@
+                    </td>
+                    <td class="col-lg-2">
+                        <div class="input-group">
+                            <input id="Date" name="Date" class="form-control datepicker" placeholder="" type="date" />
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </td>
+                    <td class="col-lg-2">
+                        <input id="Created" name="Create" type="text" class="form-control" placeholder="Create" />
+                    </td>
+                    <td class="col-lg-2">
+                        <button id="btn-search" type="button" class="btn btn-warning btn-sm">
+                            <span>Search</span>
+                        </button>
+                    </td>
+                </tr>
+                <tr class="text-bold bg-blue text-center">
+                    <td>
+                        <span>No</span>
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Create_By)
+                    </td>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Create_Date)
+                    </td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody id="table-list">
+
+            </tbody>
+        </table>
+    </div>
+    @*<div class="panel-body">
         <div class="row">
-            <div class="col-lg-12" id="table-list">
+            <div class="col-lg-12" >
                 <h3>Loading . . .</h3>
             </div>
         </div>
-    </div>
+    </div>*@
 </div>
-
 <div class="modal fade" tabindex="-1" role="dialog" id="modal-input">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
+            <div class="modal-header bg-blue">
+                <h4 class="modal-title">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </h4>
             </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
@@ -133,16 +167,16 @@
             });
         }
 
-        function Action(act, id) {
+        function Action(act, id, name, code) {            
             $.ajax({
                 url: '/Menu/' + act,
                 type: 'get',
                 data: { id: id },
                 dataType: 'html',
                 success: function (result) {
-                    $('.modal-title').html(' ');
                     $('#modal-input').find('.modal-body').html(result);
                     $('#modal-input').modal('show');
+                    $('.modal-title').html(act + " Menu - "+name+" ( "+code+" )" );
                 },
             });
         }
@@ -158,11 +192,11 @@
                 data: vData,
                 success: function (result) {
                     if (result.success) {
-                        alert(info);
+                        alert(result.message);
                         $("#modal-input").modal("hide");
                         GetList();
                     } else {
-                        alert("Error");
+                        alert(result.message);
                     }
                 }
             });
