@@ -136,27 +136,31 @@ namespace MarCom.Presentation.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult SouSettRequest(SouvenirItemViewModel model)
+        //GET: Settlement Request
+        public ActionResult SouSettRequest(int id)
         {
-            ResultResponse result = SouvenirRequestRepo.UpdateQtyActual(model);
+            SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
+            return PartialView("_SouSettRequest", model);
+        }
+        //List Settlement Request
+        public ActionResult SouSettReqItem(int id)
+        {
+            return PartialView("_SouSettReqItem", SouvenirRequestRepo.GetItem(id));
+        }
+        //POST: Settlement Request
+        [HttpPost]
+        public ActionResult SouSettRequest(SouvenirRequestViewModel model,List<SouvenirItemViewModel> itemFile)
+        {
+            UserViewModel model2 = SouvenirRequestRepo.GetIdByName(User.Identity.Name);
+            model.Settlement_By = model2.M_Employee_Id;
+            model.Settlement_Date = DateTime.Now;
+            ResultResponse result = SouvenirRequestRepo.Settlement(model, itemFile);
             return Json(new
             {
                 success = result.Success,
                 entity = model,
                 message = result.Message
             }, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult SouSettRequest(int id)
-        {
-            SouvenirRequestViewModel model = SouvenirRequestRepo.GetById(id);
-            return PartialView("_SouSettRequest", model);
-        }
-
-        public ActionResult SouSettReqItem(int id)
-        {
-            return PartialView("_SouSettReqItem", SouvenirRequestRepo.GetItem(id));
         }
 
         public ActionResult SouSettApproved(int id)

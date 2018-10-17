@@ -135,7 +135,7 @@ namespace MarCom.Repository
                             T_Promotion_Item_File promotionFile = new T_Promotion_Item_File();
                             promotionFile.T_Promotion_id = promotion.Id;
                             promotionFile.Filename = item.Filename;
-                            promotionFile.ImagePath = item.ImagePath;
+                            //promotionFile.ImagePath = item.ImagePath;
                             promotionFile.Extention = item.Extention;
                             promotionFile.Qty = item.Qty;
                             promotionFile.Todo = item.Todo;
@@ -213,7 +213,7 @@ namespace MarCom.Repository
                                     T_Promotion_Item_File promotionFile = new T_Promotion_Item_File();
                                     promotionFile.T_Promotion_id = promotion.Id;
                                     promotionFile.Filename = item.Filename;
-                                    promotionFile.ImagePath = item.ImagePath;
+                                    //promotionFile.ImagePath = item.ImagePath;
                                     promotionFile.Extention = item.Extention;
                                     promotionFile.Qty = item.Qty;
                                     promotionFile.Todo = item.Todo;
@@ -232,7 +232,7 @@ namespace MarCom.Repository
                                     {
                                         promotionFile.T_Promotion_id = promotion.Id;
                                         promotionFile.Filename = item.Filename;
-                                        promotionFile.ImagePath = item.ImagePath;
+                                        //promotionFile.ImagePath = item.ImagePath;
                                         promotionFile.Extention = item.Extention;
                                         promotionFile.Qty = item.Qty;
                                         promotionFile.Todo = item.Todo;
@@ -325,7 +325,7 @@ namespace MarCom.Repository
                                     T_Promotion_Item_File promotionFile = new T_Promotion_Item_File();
                                     promotionFile.T_Promotion_id = promotion.Id;
                                     promotionFile.Filename = item.Filename;
-                                    promotionFile.ImagePath = item.ImagePath;
+                                    //promotionFile.ImagePath = item.ImagePath;
                                     promotionFile.Extention = item.Extention;
                                     promotionFile.Qty = item.Qty;
                                     promotionFile.Todo = item.Todo;
@@ -344,7 +344,7 @@ namespace MarCom.Repository
                                     {
                                         promotionFile.T_Promotion_id = promotion.Id;
                                         promotionFile.Filename = item.Filename;
-                                        promotionFile.ImagePath = item.ImagePath;
+                                        //promotionFile.ImagePath = item.ImagePath;
                                         promotionFile.Extention = item.Extention;
                                         promotionFile.Qty = item.Qty;
                                         promotionFile.Todo = item.Todo;
@@ -429,6 +429,7 @@ namespace MarCom.Repository
                               Id = pr.Id,
                               Code = pr.Code,
                               Title = pr.Title,
+                              Flag_Design=pr.Flag_Design,
                               T_Event_Id = pr.T_Event_Id,
                               EventCode = ev.Code,
                               T_Design_Id = pr.T_Design_Id,
@@ -480,11 +481,13 @@ namespace MarCom.Repository
             {
                 result = (from u in db.M_User
                           join e in db.M_Employee on u.M_Employee_Id equals e.Id
+                          join r in db.M_Role on u.M_Role_Id equals r.Id
                           where name == u.UserName
                           select new UserViewModel
                           {
                               Id = u.Id,
                               Password = u.PasswordHash,
+                              Role=r.Name,
                               M_Employee_Id = u.M_Employee_Id,
                               Fullname = e.First_Name + " " + e.Last_Name
                           }).FirstOrDefault();

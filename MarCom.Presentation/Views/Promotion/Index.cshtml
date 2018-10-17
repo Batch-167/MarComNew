@@ -311,11 +311,13 @@
 
         function create2() {
             var designID = $('#T_Design_Id').val();
+            var eventID = $('#T_Event_Id').val();
             //console.log(designID);
+            debugger
             $.ajax({
                 url: '@Url.Action("Create2","Promotion")',
                 type: 'get',
-                data: { designid: designID },
+                data: { designid: designID, eventid: eventID },
                 success: function (result) {
                     $(".modal-body").html(result);
                     $(".modal").modal("show");

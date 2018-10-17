@@ -9,6 +9,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
@@ -43,7 +44,7 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_Create", model);
         }
 
-        public ActionResult Create2(int designid)
+        public ActionResult Create2(int designid, int eventid)
         {
             ViewBag.EventCode = new SelectList(EventRepo.Get(), "id", "Code");
             ViewBag.DesignCode = new SelectList(DesignRequestRepo.Get(), "id", "Code");
@@ -53,6 +54,7 @@ namespace MarCom.Presentation.Controllers
             PromotionViewModel model = new PromotionViewModel();
             model.RequestBy = model2.Fullname;
             model.T_Design_Id = designid;
+            model.T_Event_Id = eventid;
             return PartialView("_Create2", model);
         }
 
@@ -120,9 +122,18 @@ namespace MarCom.Presentation.Controllers
         //View Approve
         public ActionResult Approve(int id)
         {
+            UserViewModel currentuser = PromotionRepo.GetIdByName(User.Identity.Name);
 
-            ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "FullName");
-            return PartialView("_Approve", PromotionRepo.GetById(id));
+            if (currentuser.Role=="Admin")
+            {
+                ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "FullName");
+                return PartialView("_Approve", PromotionRepo.GetById(id));
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
+            
         }
 
         [HttpPost]
@@ -160,7 +171,7 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Edit(int id)
         {
             PromotionViewModel model = PromotionRepo.GetById(id);
-            if (model.Flag_Design=="Yes")
+            if (model.Flag_Design=="1")
             {
                 return PartialView("_Edit", model);
             }
@@ -194,7 +205,7 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Edit(PromotionViewModel model, List<PromotionItemViewModel> itemModel, List<PromotionItemFileViewModel> fileModel)
         {
             model.Update_By = User.Identity.Name;
-            if (model.Flag_Design=="Yes")
+            if (model.Flag_Design=="1")
             {
                 ResultResponse result = PromotionRepo.Update(model, itemModel, fileModel);
                 return Json(new
