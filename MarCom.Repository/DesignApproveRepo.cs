@@ -101,13 +101,16 @@ namespace MarCom.Repository
                 result = (from u in db.M_User
                           join e in db.M_Employee
                           on u.M_Employee_Id equals e.Id
+                          join r in db.M_Role 
+                          on u.M_Role_Id equals r.Id
                           where name == u.UserName
                           select new UserViewModel
                           {
                               Id = u.Id,
                               Password = u.PasswordHash,
                               M_Employee_Id = u.M_Employee_Id,
-                              Fullname = e.First_Name + " " + e.Last_Name
+                              Fullname = e.First_Name + " " + e.Last_Name,
+                              Role = r.Name
                           }).FirstOrDefault();
             }
             return result;

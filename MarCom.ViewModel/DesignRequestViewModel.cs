@@ -48,6 +48,21 @@ namespace MarCom.ViewModel
         [DisplayName("Assign To")]
         public int? Assign_To { get; set; }
 
+        public string AssignName
+        {
+            get
+            {
+                if (Assign_To == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return NameRequest;
+                }
+            }
+        }
+
         public DateTime? Closed_Date { get; set; }
 
         [StringLength(255)]

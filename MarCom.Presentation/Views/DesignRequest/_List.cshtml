@@ -40,7 +40,6 @@
                     @(row += 1)
                 </td>
                 <td>
-                    @Html.HiddenFor(modelItem => item.Code)
                     @Html.DisplayFor(modelItem => item.Code)
                 </td>
                 <td>
@@ -50,10 +49,9 @@
                     @Html.DisplayFor(modelItem => item.Request_Date)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Assign_To)
+                    @Html.DisplayFor(modelItem => item.AssignName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Status)
                     @Html.DisplayFor(modelItem => item.StatusName)
                 </td>
                 <td>
@@ -64,29 +62,25 @@
                 </td>
                 <td>
                     <div class="btn-group" >
-                        @{ 
-                            string editStyle = "";
-                            string approveStyle = "";
-                            if (item.Status == 2)
+                       
+                        @{
+                            if (item.Status == 1)
                             {
-                                editStyle = "disabled";
+                                <button type="button" class="btn btn-warning btn-edit" data-id="@item.Id" title="Edit" id="design-edit" onclick="action('Edit', @item.Id, '@item.Code')">
+                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-approve" data-id="@item.Id" title="Approve" onclick="action('Approve', @item.Id, '@item.Code')">
+                                    <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                                </button>
                             }
-                            else if (item.Status == 0)
+                            else if (item.Status == 2)
                             {
-                                approveStyle = "disabled";
+                                <button type="button" class="btn btn-default btn-close" data-id="@item.Id" title="Close" onclick="action('Close', @item.Id , '@item.Code')">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
                             }
                         }
-                        <button type="button" class="btn btn-default btn-view" title="View" onclick="action('View', @item.Id, '@item.Code')">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                        <button type="button" class="btn btn-default btn-close" data-id="@item.Id" title="Close" onclick="action('Close', @item.Id)">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-warning btn-edit" @editStyle title="Edit" id="design-edit" onclick="action('Edit', @item.Id, '@item.Code')">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-approve" @approveStyle title="Approve" onclick="action('Approve', @item.Id, '@item.Code')">
-                            <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-                        </button>
+                       
                     </div>
                 </td>
             </tr>

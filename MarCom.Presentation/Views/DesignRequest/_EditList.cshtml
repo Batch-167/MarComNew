@@ -2,13 +2,16 @@
 
 @foreach (var item in Model)
 {
-    <tr>@Html.HiddenFor(model => item.Id, new { @Id = "Id" })
+    <tr id="additem-button">
+        
+        @Html.HiddenFor(model => item.Id, new { @Id = "Id" })
+
         <td>
-            @Html.DropDownListFor(model => item.M_Product_Id, (IEnumerable<SelectListItem>)ViewBag.Product, "-Select Souvenir-", new { @class = "form-control", @disabled = "true", @Id ="M_Product_Id" })
+            @Html.DropDownListFor(model => item.M_Product_Id, (IEnumerable<SelectListItem>)ViewBag.Product, "-Select Souvenir-", new { @class = "form-control", @disabled = "true", @Id = "M_Product_Id" })
             @Html.ValidationMessageFor(model => item.M_Product_Id, "", new { @class = "text-danger" })
         </td>
 
-        <td>
+        <td >
             @Html.DropDownListFor(model => item.Description, (IEnumerable<SelectListItem>)ViewBag.Description, "-Select Description-", new { @class = "form-control", @disabled = "true" })
             @Html.ValidationMessageFor(model => item.Description, "", new { @class = "text-danger" })
         </td>
@@ -24,7 +27,7 @@
         </td>
 
         <td>
-            @Html.EditorFor(model => item.Request_Due_Date, new { htmlAttributes = new { @class = "form-control datepicker", @type = "date", @disabled = "true", @Id = "Request_Due_Date" } })
+            @Html.EditorFor(model => item.Request_Due_Date, new { htmlAttributes = new { @class = "form-control datepicker", @disabled = "true", @Id = "Request_Due_Date" } })
             @Html.ValidationMessageFor(model => item.Request_Due_Date, "", new { @class = "text-danger" })
         </td>
 
@@ -49,3 +52,9 @@
         </td>
     </tr>
 }
+
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker({ format: 'mm-dd-yyyy' });
+    });
+</script>

@@ -246,7 +246,6 @@ namespace MarCom.Repository
 
         public static ResultResponse Approve(SouvenirRequestViewModel entity)
         {
-            int? stat = entity.Status;
             ResultResponse result = new ResultResponse();
             try
             {
@@ -256,12 +255,14 @@ namespace MarCom.Repository
                     if (souv != null)
                     {
                         souv.Reject_Reason = entity.Reject_Reason;
-                        souv.Status = stat;
+                        souv.Status = entity.Status;
+                        result.Message = "Data Rejected !! Transaction Souvenir Request with code " + entity.Code + " is rejected by Administrator";
 
                         if (entity.Status == 2)
                         {
                             souv.Approved_Date = DateTime.Now;
                             souv.Approved_By = entity.Approved_By;
+                            result.Message = "Data Approved !! Transaction Souvenir Request with code " + entity.Code + " has been approved.";
                         }
                         db.SaveChanges();
                     }

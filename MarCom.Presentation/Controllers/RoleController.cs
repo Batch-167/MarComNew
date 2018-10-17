@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
+    [Authorize]
     public class RoleController : Controller
     {
         // GET: Role
@@ -26,7 +28,16 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult List()
         {
-            return PartialView("_List", RoleRepo.Get());
+            UserViewModel access = DesignApproveRepo.GetIdByName(User.Identity.Name);
+            if (access.Role == "Admin")
+            {
+                return PartialView("_List", RoleRepo.Get());
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
+
         }
 
 
@@ -34,13 +45,23 @@ namespace MarCom.Presentation.Controllers
         public ActionResult Create()
         {
             ViewBag.Categories = new SelectList(RoleRepo.Get(), "Id", "Name");
-            return PartialView("_Create", new RoleViewModel());
+            UserViewModel access = DesignApproveRepo.GetIdByName(User.Identity.Name);
+            if (access.Role == "Admin")
+            {
+                return PartialView("_Create", new RoleViewModel());
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
+
         }
 
         //POS
         [HttpPost]
         public ActionResult Create(RoleViewModel model)
         {
+            model.Create_By = User.Identity.Name;
             ResultResponse result = RoleRepo.Update(model);
             return Json(new
             {
@@ -54,20 +75,38 @@ namespace MarCom.Presentation.Controllers
         public ActionResult View(int id)
         {
             RoleViewModel model = RoleRepo.GetById(id);
-            return PartialView("_View", model);
+            UserViewModel access = DesignApproveRepo.GetIdByName(User.Identity.Name);
+            if (access.Role == "Admin")
+            {
+                return PartialView("_View", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         public ActionResult Edit(int id)
         {
             ViewBag.Role = new SelectList(RoleRepo.Get(), "Id", "Name");
             RoleViewModel model = RoleRepo.GetById(id);
-            return View("_Edit", model);
+            UserViewModel access = DesignApproveRepo.GetIdByName(User.Identity.Name);
+            if (access.Role == "Admin")
+            {
+                return View("_Edit", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         //POST
         [HttpPost]
         public ActionResult Edit(RoleViewModel model)
         {
+            model.Create_By = User.Identity.Name;
+            model.Update_By = User.Identity.Name;
             ResultResponse result = RoleRepo.Update(model);
             return Json(new
             {
@@ -82,7 +121,15 @@ namespace MarCom.Presentation.Controllers
         {
 
             RoleViewModel model = RoleRepo.GetById(id);
-            return PartialView("_Delete", model);
+            UserViewModel access = DesignApproveRepo.GetIdByName(User.Identity.Name);
+            if (access.Role == "Admin")
+            {
+                return PartialView("_Delete", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         //POST
@@ -103,7 +150,7 @@ namespace MarCom.Presentation.Controllers
                 {
                     success = result,
                     entity = "",
-                    message = "delete success"
+                    message = "Data Deleted! Data Role has been deleted!"
                 }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -112,7 +159,7 @@ namespace MarCom.Presentation.Controllers
                 {
                     success = result,
                     entity = "",
-                    message = "delete failed"
+                    message = "Delete Failed!!!"
                 }, JsonRequestBehavior.AllowGet);
             }
         }

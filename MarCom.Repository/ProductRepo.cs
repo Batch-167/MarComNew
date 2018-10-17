@@ -30,7 +30,7 @@ namespace MarCom.Repository
                               Is_Delete = p.Is_Delete,
 
                               Create_Date = DateTime.Now,
-                              Create_By = "Administrator"
+                              Create_By = p.Create_By
                           }).Where(p => p.Is_Delete == all ? p.Is_Delete : true)
                             .ToList();
             }
@@ -47,31 +47,48 @@ namespace MarCom.Repository
                     if (entity.Id == 0)
                     {
                         M_Product product = new M_Product();
-                        product.Code = entity.Code;
-                        product.Name = entity.Name;
-                        product.Description = entity.Description;
-                        product.Is_Delete = entity.Is_Delete;
-                        product.Create_Date = DateTime.Now;
-                        product.Create_By = "Administrator";
+                        bool nameExists = db.M_Product.Any(nm => nm.Name.Equals(entity.Name));
 
-                        db.M_Product.Add(product);
-                        db.SaveChanges();
+                        if (nameExists)
+                        {
+                            result.Message = "Product with name " + entity.Name + "already exist!";
+                        }
+                        else
+                        {
+                            product.Code = entity.Code;
+                            product.Name = entity.Name;
+                            product.Description = entity.Description;
+                            product.Is_Delete = entity.Is_Delete;
+                            product.Create_Date = DateTime.Now;
+                            product.Create_By = entity.Create_By;
 
+                            db.M_Product.Add(product);
+                            db.SaveChanges();
+                            result.Message = "Data Saved ! New Product has been add with code " + entity.Code + "!";
+                        }
                     }
                     else
                     {
                         M_Product product = db.M_Product.Where(p => p.Id == entity.Id).FirstOrDefault();
                         if (product != null)
                         {
-                            product.Code = entity.Code;
-                            product.Name = entity.Name;
-                            product.Description = entity.Description;
+                            bool nameExists = db.M_Product.Any(nm => nm.Name.Equals(entity.Name) && nm.Code != entity.Code);
+                            if (nameExists)
+                            {
+                                result.Message = "Product with name " + entity.Name + "already exist!";
+                            }
+                            else
+                            {
+                                product.Code = entity.Code;
+                                product.Name = entity.Name;
+                                product.Description = entity.Description;
 
-                            product.Update_Date = DateTime.Now;
-                            product.Update_By = "Administrator";
+                                product.Update_Date = DateTime.Now;
+                                product.Update_By = entity.Update_By;
 
-                            db.SaveChanges();
-
+                                db.SaveChanges();
+                                result.Message = "Data Updated ! Data Product has been update!";
+                            }                            
                         }
                     }
                 }

@@ -17,7 +17,7 @@
     </td>
 
     <td>
-        @Html.EditorFor(model => model.Request_Pic,  new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
+        @Html.DropDownListFor(model => model.Request_Pic, (IEnumerable<SelectListItem>)ViewBag.Employee, "-Select Employee-", new { @class = "form-control", @disabled = "true" })
         @Html.ValidationMessageFor(model => model.Request_Pic, "", new { @class = "text-danger" })
     </td>
 

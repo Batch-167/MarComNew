@@ -21,18 +21,18 @@ namespace MarCom.Repository
             using (var db = new MarComContext())
             {
                 result = (from r in db.M_Role
-                            select new RoleViewModel
-                            {
-                                Id = r.Id,
-                                Code = r.Code,
-                                Name = r.Name,
-                                Description = r.Description,
-                                Is_Delete = r.Is_Delete,
+                          select new RoleViewModel
+                          {
+                              Id = r.Id,
+                              Code = r.Code,
+                              Name = r.Name,
+                              Description = r.Description,
+                              Is_Delete = r.Is_Delete,
 
-                                Create_Date = DateTime.Now,
-                                Create_By = "Administrator",
+                              Create_Date = DateTime.Now,
+                              Create_By = r.Create_By,
 
-                            }).Where(r => r.Is_Delete == all ? r.Is_Delete : true)
+                          }).Where(r => r.Is_Delete == all ? r.Is_Delete : true)
                             .ToList();
             }
             return result;
@@ -49,15 +49,25 @@ namespace MarCom.Repository
                     if (entity.Id == 0)
                     {
                         M_Role role = new M_Role();
-                        role.Code = entity.Code;
-                        role.Name = entity.Name;
-                        role.Description = entity.Description;
+                        bool nameExists = db.M_Role.Any(nm => nm.Name.Equals(entity.Name));
 
-                        role.Create_Date = DateTime.Now;
-                        role.Create_By = "Administrator";
+                        if (nameExists)
+                        {
+                            result.Message = "Role with name " + entity.Name + "already exist!";
+                        }
+                        else
+                        {
+                            role.Code = entity.Code;
+                            role.Name = entity.Name;
+                            role.Description = entity.Description;
 
-                        db.M_Role.Add(role);
-                        db.SaveChanges();
+                            role.Create_Date = DateTime.Now;
+                            role.Create_By = entity.Create_By;
+
+                            db.M_Role.Add(role);
+                            db.SaveChanges();
+                            result.Message = "Data Saved ! New Role has been add with code " + entity.Code + "!";
+                        }
 
                     }
                     else
@@ -65,22 +75,30 @@ namespace MarCom.Repository
                         M_Role role = db.M_Role.Where(r => r.Id == entity.Id).FirstOrDefault();
                         if (role != null)
                         {
-                            role.Code = entity.Code;
-                            role.Name = entity.Name;
-                            role.Description = entity.Description;
+                            bool nameExists = db.M_Role.Any(nm => nm.Name.Equals(entity.Name) && nm.Code != entity.Code);
 
-                            role.Update_Date = DateTime.Now;
-                            role.Update_By = "Administrator";
+                            if (nameExists)
+                            {
+                                result.Message = "Role with name " + entity.Name + "already exist!";
+                            }
+                            else
+                            {
+                                role.Code = entity.Code;
+                                role.Name = entity.Name;
+                                role.Description = entity.Description;
 
-                            db.SaveChanges();
+                                role.Update_Date = DateTime.Now;
+                                role.Update_By = entity.Update_By;
 
+                                db.SaveChanges();
+                                result.Message = "Data Updated ! Data Role has been update!";
+                            }
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-
                 result.Success = false;
                 result.Message = ex.Message;
             }
@@ -130,11 +148,11 @@ namespace MarCom.Repository
             }
             return result;
         }
-        
+
         public static string GetNewCode()
         {
             string newRef = "RO";
-            using(var db = new MarComContext())
+            using (var db = new MarComContext())
             {
                 var result = (from r in db.M_Role
                               where r.Code.Contains(newRef)

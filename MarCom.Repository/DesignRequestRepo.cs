@@ -20,7 +20,7 @@ namespace MarCom.Repository
                 result = (from dr in db.T_Design
                           join e in db.T_Event on
                           dr.T_Event_Id equals e.Id
-                          join em in db.M_Employee on 
+                          join em in db.M_Employee on
                           dr.Request_By equals em.Id
                           select new DesignRequestViewModel
                           {
@@ -75,7 +75,7 @@ namespace MarCom.Repository
                             designItem.T_Design_Id = entity.Id;
                             designItem.M_Product_Id = item.M_Product_Id;
                             designItem.Title_Item = item.Title_Item;
-                            designItem.Request_Pic = 1;
+                            designItem.Request_Pic = item.Request_Pic;
                             designItem.Request_Due_Date = item.Request_Due_Date;
                             designItem.Note = item.Note;
                             designItem.Is_Delete = item.Is_Delete;
@@ -87,11 +87,12 @@ namespace MarCom.Repository
 
                         }
                         db.SaveChanges();
+                        result.Message = "Data Saved ! Transaction Design Request has been add with code " + entity.Code;
                     }
                     else
                     {
                         T_Design design = db.T_Design.Where(td => td.Id == entity.Id).FirstOrDefault();
-                        if(design != null)
+                        if (design != null)
                         {
                             design.Code = entity.Code;
                             design.T_Event_Id = entity.T_Event_Id;
@@ -103,50 +104,37 @@ namespace MarCom.Repository
 
                             design.Update_Date = DateTime.Now;
                             design.Update_By = entity.Update_By;
-                           
-                            foreach(var item in entityitem)
+
+                            foreach (var item in entityitem)
                             {
+                                T_Design_Item designItem = new T_Design_Item();
+                                designItem.T_Design_Id = entity.Id;
+                                designItem.M_Product_Id = item.M_Product_Id;
+                                designItem.Title_Item = item.Title_Item;
+                                designItem.Request_Pic = item.Request_Pic;
+                                designItem.Request_Due_Date = item.Request_Due_Date;
+                                designItem.Note = item.Note;
+                                designItem.Is_Delete = item.Is_Delete;
+
                                 if (item.Id == 0)
                                 {
-                                    T_Design_Item designItem = new T_Design_Item();
-                                    designItem.T_Design_Id = entity.Id;
-                                    designItem.M_Product_Id = item.M_Product_Id;
-                                    designItem.Title_Item = item.Title_Item;
-                                    designItem.Request_Pic = 1;
-                                    designItem.Request_Due_Date = item.Request_Due_Date;
-                                    designItem.Note = item.Note;
-                                    designItem.Is_Delete = item.Is_Delete;
-
-                                    designItem.Create_By = entity.Create_By;
+                                    designItem.Create_By = entity.Update_By;
                                     designItem.Create_Date = DateTime.Now;
-
-                                    db.T_Design_Item.Add(designItem);
                                 }
                                 else
                                 {
-                                    T_Design_Item designItem = db.T_Design_Item.Where(di => di.Id == item.Id).FirstOrDefault();
-                                    if (designItem != null)
-                                    {
-                                       designItem.T_Design_Id = entity.Id;
-                                        designItem.M_Product_Id = item.M_Product_Id;
-                                        designItem.Title_Item = item.Title_Item;
-                                        designItem.Request_Pic = 1;
-                                        designItem.Request_Due_Date = item.Request_Due_Date;
-                                        designItem.Note = item.Note;
-                                        designItem.Is_Delete = item.Is_Delete;
-
-                                        designItem.Update_By = entity.Create_By;
-                                        designItem.Update_Date = DateTime.Now;
-
-                                        db.T_Design_Item.Add(designItem);
-                                    }
+                                    designItem.Update_By = entity.Update_By;
+                                    designItem.Update_Date = DateTime.Now;
                                 }
+                                db.T_Design_Item.Add(designItem);
                             }
                             db.SaveChanges();
                         }
+                        result.Message = "Data Update ! Transaction Design Request with code " + entity.Code + " has been update";
                     }
                 }
             }
+
             catch (Exception ex)
             {
                 result.Success = false;
@@ -203,7 +191,26 @@ namespace MarCom.Repository
             return result;
         }
 
-        
+        public static List<EmployeeViewModel> GetPic()
+        {
+            List<EmployeeViewModel> result = new List<EmployeeViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from e in db.M_Employee
+                          join u in db.M_User
+                          on e.Id equals u.M_Employee_Id
+                          join r in db.M_Role
+                          on u.M_Role_Id equals r.Id
+                          where r.Name == "Requester"
+                          select new EmployeeViewModel
+                          {
+                              Id = e.Id,
+                              Full_Name = e.First_Name + " " + e.Last_Name
+                          }).ToList();
+            }
+            return result;
+        }
+
         public static DesignRequestViewModel GetById(int id)
         {
             DesignRequestViewModel result = new DesignRequestViewModel();
@@ -222,14 +229,14 @@ namespace MarCom.Repository
                               T_Event_Id = d.T_Event_Id,
                               EventCode = e.Code,
                               Title_Header = d.Title_Header,
-                              Status =d.Status,
+                              Status = d.Status,
                               Request_By = d.Request_By,
                               NameRequest = em.First_Name + " " + em.Last_Name,
                               Request_Date = d.Request_Date,
                               Note = d.Note
 
                           }).FirstOrDefault();
-                          
+
             }
             return result;
         }
@@ -237,7 +244,7 @@ namespace MarCom.Repository
         public static List<DesignItemViewModel> GetItem(int id)
         {
             List<DesignItemViewModel> result = new List<DesignItemViewModel>();
-            using (var db =  new MarComContext())
+            using (var db = new MarComContext())
             {
                 result = (from di in db.T_Design_Item
                           join td in db.T_Design on di.T_Design_Id equals td.Id
@@ -321,7 +328,7 @@ namespace MarCom.Repository
                               Create_Date = d.Create_Date,
                               Create_By = d.Create_By
                           }).ToList();
-                          
+
             }
             return result;
         }

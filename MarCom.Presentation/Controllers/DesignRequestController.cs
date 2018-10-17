@@ -8,9 +8,11 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
+    [Authorize]
     public class DesignRequestController : Controller
     {
         // GET: DesignRequest
@@ -22,7 +24,15 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult List()
         {
-            return PartialView("_List", DesignRequestRepo.Get());
+            UserViewModel access = DesignApproveRepo.GetIdByName(User.Identity.Name);
+            if (access.Role == "Requester" || access.Role == "Admin" || access.Role == "Staff")
+            {
+                return PartialView("_List", DesignRequestRepo.Get());
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         //FILTER
@@ -32,12 +42,21 @@ namespace MarCom.Presentation.Controllers
             return PartialView("_List", DesignRequestRepo.Filter(model));
         }
 
+        [AllowAnonymous]
         public ActionResult Approve(int id)
         {
+            UserViewModel result = UserRepo.GetIdByName(User.Identity.Name);
             ViewBag.Panel = "Approval Design Request";
             ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
             DesignApproveViewModel model = DesignApproveRepo.GetById(id);
-            return PartialView("_Approve", model);
+            if (result.Role == "Admin")
+            {
+                return PartialView("_Approve", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         [HttpPost]
@@ -58,14 +77,23 @@ namespace MarCom.Presentation.Controllers
         //GET : New Product
         public ActionResult Create()
         {
-           
+
             UserViewModel result = DesignRequestRepo.GetIdByName(User.Identity.Name);
             DesignRequestViewModel model = new DesignRequestViewModel();
             model.Request_By = result.M_Employee_Id;
             model.NameRequest = result.Fullname;
             model.Code = DesignRequestRepo.GetNewCode();
             ViewBag.DesignRequest = new SelectList(EventRepo.Get(), "Id", "Code");
-            return PartialView("_Create", model);
+            UserViewModel access = DesignApproveRepo.GetIdByName(User.Identity.Name);
+            if (access.Role == "Requester" || access.Role == "Admin")
+            {
+                return PartialView("_Create", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
+
         }
 
         [HttpPost]
@@ -86,6 +114,7 @@ namespace MarCom.Presentation.Controllers
         {
             ViewBag.Product = new SelectList(ProductRepo.Get(), "Id", "Name");
             ViewBag.Description = new SelectList(ProductRepo.Get(), "Id", "Description");
+            ViewBag.Employee = new SelectList(DesignRequestRepo.GetPic(), "Id", "Full_Name");
             DesignItemViewModel model = new DesignItemViewModel();
             return PartialView("_AddItem", model);
         }
@@ -97,7 +126,15 @@ namespace MarCom.Presentation.Controllers
         {
             DesignRequestViewModel model = DesignRequestRepo.GetById(id);
             ViewBag.DesignRequest = new SelectList(EventRepo.Get(), "Id", "Code");
-            return PartialView("_Edit", model);
+            UserViewModel access = DesignApproveRepo.GetIdByName(User.Identity.Name);
+            if (access.Role == "Requester" || access.Role == "Admin")
+            {
+                return PartialView("_Edit", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         //EDIT POST
@@ -121,7 +158,15 @@ namespace MarCom.Presentation.Controllers
         {
             ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
             DesignApproveViewModel model = DesignApproveRepo.GetById(id);
-            return PartialView("_Close", model);
+            UserViewModel access = DesignApproveRepo.GetIdByName(User.Identity.Name);
+            if (access.Role == "Staff" || access.Role == "Admin")
+            {
+                return PartialView("_Close", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         //Add Item EDIT
@@ -146,6 +191,7 @@ namespace MarCom.Presentation.Controllers
             ViewBag.Description = new SelectList(ProductRepo.Get(), "Id", "Description");
             List<DesignItemViewModel> model = DesignRequestRepo.GetCloseItem(id);
             return PartialView("_CloseList", DesignApproveRepo.Get(id));
+
         }
 
     }
