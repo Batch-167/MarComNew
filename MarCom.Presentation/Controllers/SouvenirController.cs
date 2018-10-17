@@ -52,20 +52,23 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Create(SouvenirViewModel model)
         {
+            model.Create_By = User.Identity.Name;
             if (ModelState.IsValid)
             {
-                model.Create_By = User.Identity.Name;
                 ResultResponse result = SouvenirRepo.Update(model);
                 return Json(new
                 {
                     success = result.Success,
-                    entity = model,
                     message = result.Message
                 }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return RedirectToAction("index");
+                return Json(new
+                {
+                    success = false,
+                    message = "A required data is still blank, Please fill Correctly",
+                }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -88,14 +91,24 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult Edit(SouvenirViewModel model)
         {
-            model.Update_By = User.Identity.Name;
-            ResultResponse result = SouvenirRepo.Update(model);
-            return Json(new
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
+                model.Update_By = User.Identity.Name;
+                ResultResponse result = SouvenirRepo.Update(model);
+                return Json(new
+                {
+                    success = result.Success,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "A required column is still blank, Please fill correctly",
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult Show(int id)
@@ -124,13 +137,14 @@ namespace MarCom.Presentation.Controllers
         [HttpPost]
         public ActionResult DeleteConfirm(int id)
         {
-            if (SouvenirRepo.Delete(id))
+            ResultResponse result = SouvenirRepo.Delete(id);
+            if (result.Success)
             {
-                return Json(new { success = true, }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = result.Success, message = result.Message }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, message = result.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }
