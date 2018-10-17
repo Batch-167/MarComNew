@@ -1181,7 +1181,7 @@
     <Content Include="Views\Employee\_Edit.cshtml" />
     <Content Include="Views\Employee\_Delete.cshtml" />
     <Content Include="Views\Employee\_View.cshtml" />
-    <Content Include="Views\_Create.cshtml" />
+    <Content Include="Views\User\_Create.cshtml" />
     <Content Include="Views\MenuAccess\Index.cshtml" />
     <Content Include="Views\User\_Add.cshtml" />
     <Content Include="Views\SouvenirStock\Index.cshtml" />

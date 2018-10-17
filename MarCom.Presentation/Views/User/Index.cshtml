@@ -1,8 +1,10 @@
-﻿@model MarCom.ViewModel.UserViewModel
+﻿@model IEnumerable<MarCom.ViewModel.UserViewModel>
 
 @{
     ViewBag.Title = "User";
 }
+
+@Scripts.Render("~/AdminLTE/plugins/datatables/css")
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="row">
@@ -16,48 +18,72 @@
             <li><a href="Home">Home</a></li>
             <li><a href="Master">Master</a></li>
             <li class="active">List User</li>
-        </ol><table>
-            <tr>
-                <td colspan="6"></td>
-                <td>
-                    <button type="button" id="btn-new" class="btn btn-primary btn-sm">Add</button>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-2">
-                    @Html.DropDownListFor(model => model.M_Employee_Id, (IEnumerable<SelectListItem>)ViewBag.Employee, "-Employee-", new { @id = "Employee", @class = "form-control" })
-                </td>
-                <td class="col-md-2">
-                    @Html.DropDownListFor(model => model.M_Role_Id, (IEnumerable<SelectListItem>)ViewBag.Role, "-Role-", new { @id = "Role", @class = "form-control" })
-                </td>
-                <td class="col-md-2">
-                    @Html.DropDownListFor(model => model.Company, (IEnumerable<SelectListItem>)ViewBag.Company, "-Company-", new { @id = "Company", @class = "form-control" })
-                </td>
-                <td class="col-md-2">
-                    <input id="Username" name="Username" type="text" class="form-control text-box single-line" placeholder="Username" />
-                </td>
-                <td class="col-md-2">
-                    <div class="input-group">
-                        <input id="Date" class="form-control datepicker" type="date" value="Created" />
-                        <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </td>
-                <td class="col-md-3">
-                    <input id="Create" name="Create" type="text" class="form-control text-box single-line" placeholder="Create By" />
-                </td>
-                <td>
-                    <button type="button" id="btn-search" class="btn btn-warning btn-sm" onclick="Searh()">Search</button>
-                </td>
-            </tr>
+        </ol>
+        <table class="table" id="example1">
+            <thead id="tb-input">
+                <tr>
+                    <td colspan="7"></td>
+                    <td>
+                        <button type="button" id="btn-new" class="btn btn-primary btn-sm">Add</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="col-md-offset-2">
+                        @Html.DropDownList("Fullname", (IEnumerable<SelectListItem>)ViewBag.Employee, "-Employee-", new { @id = "col1_filter", @class = "form-control column_filter", @data="1" })
+                    </td>
+                    <td class="col-md-offset-2">
+                        @Html.DropDownList("Role", (IEnumerable<SelectListItem>)ViewBag.Role, "-Role-", new { @id = "col2_filter", @class = "form-control column_filter", @data="2" })
+                    </td>
+                    <td class="col-md-offset-2">
+                        @Html.DropDownList("Company", (IEnumerable<SelectListItem>)ViewBag.Company, "-Company-", new { @id = "col3_filter", @class = "form-control column_filter", @data="3" })
+                    </td>
+                    <td class="col-md-offset-2">
+                        @Html.TextBox("UserName", null, new { @class="form-control column_filter", @id="col4_filter", @data="4", @placeholder="Username"})
+                    </td>
+                    <td class="col-md-offset-2">
+                        @Html.TextBox("Create_By", null, new { @class="form-control column_filter", @id="col5_filter", @data="5", @placeholder="Create By"})
+                    </td>
+                    <td class="col-md-offset-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control column_filter datepicker" id="col6_filter" data="6" placeholder="Create Date"/>
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" id="btn-search" class="btn btn-warning btn-sm" onclick="Search()">Search</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        No
+                    </td>
+                    <td class="col-md-offset-2">
+                        @Html.DisplayNameFor(model => model.Fullname)
+                    </td>
+                    <td class="col-md-offset-2">
+                        @Html.DisplayNameFor(model => model.Role)
+                    </td>
+                    <td class="col-md-offset-2">
+                        @Html.DisplayNameFor(model => model.Company)
+                    </td>
+                    <td class="col-md-offset-2">
+                        @Html.DisplayNameFor(model => model.Username)
+                    </td>
+                    <td class="col-md-offset-2">
+                        @Html.DisplayNameFor(model => model.Create_By)
+                    </td>
+                    <td class="col-md-offset-2">
+                        @Html.DisplayNameFor(model => model.Create_Date)
+                    </td>
+                    <td class="col-md-offset-2">Action</td>
+                </tr>
+            </thead>
+            <tbody id="table-list">
+                @Html.Partial("_List", Model)
+            </tbody>
         </table>
         <br>
-        <div class="row" id="table-list">
-            <div class="progress">
-                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
-                    <span class="sr-only">45% Complete</span>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -75,9 +101,38 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 @section Scripts{
+@Scripts.Render("~/AdminLTE/plugins/datatables/js")
     <script type="text/javascript">
+        //$(document).ready(function () {
+        //    GetList();
+        //});
+
         $(document).ready(function () {
-            GetList();
+            $('#example1').DataTable({
+                'sDom': 'tip',
+                ordering: false
+            });
+            $("#tb-input").find(".column_filter").on("keyup click", function () {
+                filterColumn($(this).attr("data-column"));
+            });
+
+        });
+
+        function filterColumn(i) {
+            $("#example1").DataTable().column(i).search(
+                $("#col" + i + "_filter").val()
+                ).draw();
+        }
+
+        $("#btn-search").click(function () {
+            $("#tb-input .form-control").each(function (i) {
+                filterColumn($(this).attr('data'));
+            });
+        });
+
+        $("#tb-input").find(".datepicker").datepicker({
+            format: "mm/dd/yyyy",
+            autoclose: true,
         });
 
         $("#btn-new").click(function () {
@@ -106,7 +161,7 @@
         }
 
 
-        $("#btn-search").click(function Search() {
+        @*$("#btn-search").click(function Search() {
             var data = {
                 employee: $("#Employee").val(),
                 role: $("#Role").val(),
@@ -126,7 +181,7 @@
                     $("#table-list").html(err);
                 }
             });
-        });
+        });*@
 
         function action(act, id, fullname, username) {
             $.ajax({
@@ -155,11 +210,11 @@
                 data: vData,
                 success: function (result) {
                     if (result.success) {
-                        alert("Data: " + result.entity.username + " has been saved");
+                        alert(result.message);
                         $("#modal-input").modal("hide");
                         GetList();
                     } else {
-                        alert("Error! User has not been saved. \n " + result.message);
+                        alert(result.message);
                     }
                 }
             });

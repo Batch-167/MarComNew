@@ -17,7 +17,6 @@ namespace MarCom.ViewModel
         public int Id { get; set; }
 
         [Display(Name ="Unit Code")]
-        [Required]
         [StringLength(50)]
         public string Code { get; set; }
 
@@ -27,12 +26,12 @@ namespace MarCom.ViewModel
         public string Name { get; set; }
 
         [StringLength(255)]
+        [Required]
         public string Description { get; set; }
 
         public bool Is_Delete { get; set; }
 
         [Display(Name = "Create By")]
-        [Required]
         [StringLength(50)]
         public string Create_By { get; set; }
 
@@ -41,7 +40,6 @@ namespace MarCom.ViewModel
         public DateTime Create_Date { get; set; }
 
         [Display(Name = "Update By")]
-        [Required]
         [StringLength(50)]
         public string Update_By { get; set; }
 

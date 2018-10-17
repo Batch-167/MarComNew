@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace MarCom.Presentation.Controllers
 {
@@ -45,43 +46,83 @@ namespace MarCom.Presentation.Controllers
 
         public ActionResult Add()
         {
+            UserViewModel result = UserRepo.GetIdByName(User.Identity.Name);
             ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
             SouvenirStockViewModel model = new SouvenirStockViewModel();
             model.Code = SouvenirStockRepo.GetNewCode();
-            return PartialView("_Add", model);
+            if (result.Role=="Staff" || result.Role=="Admin")
+            {
+                return PartialView("_Add", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         [HttpPost]
         public ActionResult Add(SouvenirStockViewModel model, List<SouvenirItemViewModel> item)
         {
-            model.Create_By = User.Identity.Name;
-            ResultResponse result = SouvenirStockRepo.Update(model, item);
-            return Json(new
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
+                model.Create_By = User.Identity.Name;
+                ResultResponse result = SouvenirStockRepo.Update(model, item);
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "wew"
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult Edit(int id)
         {
+            UserViewModel result = UserRepo.GetIdByName(User.Identity.Name);
             ViewBag.Employee = new SelectList(EmployeeRepo.Get(), "Id", "First_Name");
             SouvenirStockViewModel model = SouvenirStockRepo.GetById(id);
-            return PartialView("_Edit", model);
+            if (result.Role == "Staff" || result.Role == "Admin")
+            {
+                return PartialView("_Edit", model);
+            }
+            else
+            {
+                return new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccessDenied", action = "Index" }));
+            }
         }
 
         [HttpPost]
         public ActionResult Edit(SouvenirStockViewModel model, List<SouvenirItemViewModel> item)
         {
-            model.Update_By = User.Identity.Name;
-            ResultResponse result = SouvenirStockRepo.Update(model, item);
-            return Json(new
+            if (ModelState.IsValid)
             {
-                success = result.Success,
-                entity = model,
-                message = result.Message
-            }, JsonRequestBehavior.AllowGet);
+                model.Update_By = User.Identity.Name;
+                SouvenirStockRepo.DeleteItem(model.Id);
+                ResultResponse result = SouvenirStockRepo.Update(model, item);
+                return Json(new
+                {
+                    success = result.Success,
+                    entity = model,
+                    message = result.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                ResultResponse result = SouvenirStockRepo.Update(model, item);
+                return Json(new
+                {
+                    success = false,
+                    message = "Wew"
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
 
 

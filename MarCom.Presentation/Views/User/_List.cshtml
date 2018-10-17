@@ -3,72 +3,40 @@
 @{
     int row = 0;
 }
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                No
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fullname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Role)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Company)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Username)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Create_By)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Create_Date)
-            </th>
-            <th>Action</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @(row += 1)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fullname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Role)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Company)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Username)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Create_By)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Create_Date)
-                </td>
-                <td>
-                    <button type="button" class="btn btn-details" data-id="@item.Id" title="Details" onclick="action('Details', @item.Id,'@item.Fullname' , '@item.Username')">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" class="btn btn-edit" data-id="@item.Id" title="Edit" onclick="action('Edit', @item.Id,'@item.Fullname' , '@item.Username')">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" class="btn btn-delete" data-id="@item.Id" title="Delete" onclick="action('Delete', @item.Id,'@item.Fullname' , '@item.Username')">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @(row += 1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fullname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Role)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Company)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Create_By)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Create_Date)
+        </td>
+        <td>
+            <button type="button" class="btn btn-details" data-id="@item.Id" title="Details" onclick="action('Details', @item.Id,'@item.Fullname' , '@item.Username')">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-edit" data-id="@item.Id" title="Edit" onclick="action('Edit', @item.Id,'@item.Fullname' , '@item.Username')">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-delete" data-id="@item.Id" title="Delete" onclick="action('Delete', @item.Id,'@item.Fullname' , '@item.Username')">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+        </td>
+    </tr>
+}

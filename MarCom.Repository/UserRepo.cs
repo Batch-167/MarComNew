@@ -61,24 +61,35 @@ namespace MarCom.Repository
                         db.M_User.Add(user);
                         db.SaveChanges();
 
+                        result.Message = "Data Saved";
                     }
                     else
                     {
                         M_User user = db.M_User.Where(us => us.Id == entity.Id).FirstOrDefault();
                         if (user != null)
                         {
-                            user.UserName = entity.Username;
-                            if (!string.IsNullOrEmpty(entity.Password))
+                            bool nameExists = db.M_User.Any(nm => nm.UserName.Equals(entity.Username));
+                            if (nameExists)
                             {
-                                user.PasswordHash = entity.Password;
+                                result.Message = "Username " + entity.Username + " already exists";
                             }
-                            user.M_Employee_Id = entity.M_Employee_Id;
-                            user.M_Role_Id = entity.M_Role_Id;
-                            user.Is_Delete = entity.Is_Delete;
+                            else
+                            {
+                                user.UserName = entity.Username;
+                                if (!string.IsNullOrEmpty(entity.Password))
+                                {
+                                    user.PasswordHash = entity.Password;
+                                }
+                                user.M_Employee_Id = entity.M_Employee_Id;
+                                user.M_Role_Id = entity.M_Role_Id;
+                                user.Is_Delete = entity.Is_Delete;
 
-                            user.Update_By = "Admin";
-                            user.Update_Date = DateTime.Now;
-                            db.SaveChanges();
+                                user.Update_By = "Admin";
+                                user.Update_Date = DateTime.Now;
+                                db.SaveChanges();
+
+                                result.Message = "Data Update";
+                            }
                         }
                     }
                 }
@@ -189,5 +200,24 @@ namespace MarCom.Repository
             }
             return result;
         }
+
+        public static List<EmployeeViewModel> GetEmp()
+        {
+            List<EmployeeViewModel> result = new List<EmployeeViewModel>();
+            using (var db = new MarComContext())
+            {
+                result = (from e in db.M_Employee
+                          where e.Em_Role == 0
+                          select new EmployeeViewModel
+                          {
+                              Id = e.Id,
+                              Full_Name = e.First_Name + " " + e.Last_Name
+                          }
+                          ).ToList();
+            }
+            return result;
+        }
+
+      
     }
 }

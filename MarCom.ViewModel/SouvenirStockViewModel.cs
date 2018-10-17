@@ -18,7 +18,6 @@ namespace MarCom.ViewModel
 
 
         [Display(Name ="Transaction Code")]
-        [Required]
         [StringLength(50)]
         public string Code { get; set; }
 
@@ -34,7 +33,6 @@ namespace MarCom.ViewModel
         public DateTime? Received_Date { get; set; }
 
         [Display(Name = "Create By")]
-        [Required]
         [StringLength(50)]
         public string Create_By { get; set; }
 
@@ -58,7 +56,6 @@ namespace MarCom.ViewModel
 
         public int? Qty { get; set; }
 
-        [Required]
         [StringLength(255)]
         public string Note_Item { get; set; }
 

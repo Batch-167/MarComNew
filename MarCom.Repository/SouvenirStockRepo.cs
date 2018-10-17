@@ -87,40 +87,27 @@ namespace MarCom.Repository
 
                             foreach (var item in entityitem)
                             {
+                                T_Souvenir_Item tsouvItem = new T_Souvenir_Item();
+                                tsouvItem.T_Souvenir_Id = entity.Id;
+                                tsouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
+                                tsouvItem.Qty = item.Qty;
+                                tsouvItem.Note = item.Note;
+                                tsouvItem.Is_Delete = item.Is_Delete;
+
                                 if (item.Id == 0)
                                 {
-                                    T_Souvenir_Item tsouvItem = new T_Souvenir_Item();
-                                    tsouvItem.T_Souvenir_Id = entity.Id;
-                                    tsouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
-                                    tsouvItem.Qty = item.Qty;
-                                    tsouvItem.Note = item.Note;
-                                    tsouvItem.Is_Delete = item.Is_Delete;
-
-                                    tsouvItem.Create_By = entity.Create_By;
+                                    tsouvItem.Create_By = entity.Update_By;
                                     tsouvItem.Create_Date = DateTime.Now;
-
-                                    db.T_Souvenir_Item.Add(tsouvItem);
                                 }
                                 else
                                 {
-                                    T_Souvenir_Item tsouvItem = db.T_Souvenir_Item.Where(ti => ti.Id == item.Id).FirstOrDefault();
-                                    if (tsouvItem != null)
-                                    {
-                                        tsouvItem.T_Souvenir_Id = entity.Id;
-                                        tsouvItem.M_Souvenir_Id = item.M_Souvenir_Id;
-                                        tsouvItem.Qty = item.Qty;
-                                        tsouvItem.Note = item.Note;
-                                        tsouvItem.Is_Delete = item.Is_Delete;
-
-                                        tsouvItem.Update_By = entity.Update_By;
-                                        tsouvItem.Update_Date = DateTime.Now;
-
-                                        db.T_Souvenir_Item.Add(tsouvItem);
-                                    }
+                                    tsouvItem.Update_By = entity.Update_By;
+                                    tsouvItem.Update_Date = DateTime.Now;
                                 }
+                                db.T_Souvenir_Item.Add(tsouvItem);
                             }
+                            db.SaveChanges();
                         }
-                        db.SaveChanges();
                     }
                 }
             }
